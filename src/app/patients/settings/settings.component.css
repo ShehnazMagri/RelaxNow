@@ -1,0 +1,9 @@
+.submit-section .submit-btn {
+  padding: 12px 30px !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  min-width: 120px !important;
+}
+.required {
+  color: red !important;
+}

@@ -1,0 +1,137 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Answers</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Answers</li>
+          </ul>
+        </div>
+        <div class="col-sm-5 col">
+          <a class="btn btn-primary float-right mt-2" data-toggle="modal" (click)="openModal(answertemplate)">
+            Add
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Answer</th>
+                    <th>Value</th>
+                    <th>Group</th>
+                    <!-- <th>Created Date</th> -->
+                    <th width="100" class="text-right">Status</th>
+                    <th width="50" class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let Answer of answerData;index as i">
+                    <td>
+                      {{Answer?.ANSWER}}
+                    </td>
+                    <td>
+                      {{Answer?.VALUE}}
+                    </td>
+                    <td>{{getGroupName(Answer.GROUPID)}}</td>
+                    <!-- <td>
+                      {{Answer?.CREATED_Date | date}}
+                    </td> -->
+                    <td>
+                      <span class="d-none">{{Answer.ACTIVE}}</span>
+                      <div class="float-right status-toggle">
+                        <input type="checkbox" id="status_{{i}}" class="check" [checked]="Answer.ACTIVE"
+                          (change)="changeStatus($event.target.checked,Answer)">
+                        <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="actions" data-toggle="modal" (click)="openModal(answertemplate,Answer)">
+                        <i class="center fe fe-pencil"></i>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #answertemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{selectedAnswer?.ID ? 'Edit':'Add'}} Answer</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+      (click)="modalRef.hide();getAnswerList()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="submitForm(answerForm)" #answerForm="ngForm">
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Answer- {{abc}}</label>
+            <input type="text" class="form-control" name="answer" #answer="ngModel" (ngModelChange)="HtmlEncode(selectedAnswer.ANSWER)" [(ngModel)]="selectedAnswer.ANSWER"
+              [ngClass]="{'is-invalid':isSubmitted && answer.errors}" required>
+            <div class="invalid-feedback">
+              Please enter answer.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Value</label>
+            <input type="number" class="form-control" name="answerValue" #answerValue="ngModel"
+              [(ngModel)]="selectedAnswer.VALUE" [ngClass]="{'is-invalid':isSubmitted && answerValue.errors}" required>
+            <div class="invalid-feedback">
+              Please enter value.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12">
+          <div class="form-group">
+            <label>Group</label>
+            <select class="form-control" required name="Group" #Group="ngModel" [(ngModel)]="selectedAnswer.GROUPID"
+              [ngClass]="{'is-invalid':isSubmitted && Group.errors}">
+              <option *ngFor="let grp of groupData" [value]="grp?.ID">
+                {{grp?.NAME}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any one Group.
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{selectedAnswer?.ID ? 'Edit':'Save'}} </button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to delete this Answer?
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="deleteAnswer()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>

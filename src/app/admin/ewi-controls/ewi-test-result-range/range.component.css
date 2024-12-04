@@ -1,0 +1,6 @@
+.selected_smiley {
+  width: 70px !important;
+}
+::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .select-font {
+    display: none!important;
+}

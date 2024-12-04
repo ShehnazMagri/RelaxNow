@@ -1,0 +1,79 @@
+<!-- Profile Sidebar -->
+<div class="profile-sidebar">
+  <div class="widget-profile pro-widget-content">
+    <div class="profile-info-widget">
+      <a href="javascript:void(0)" class="booking-doc-img">
+        <img *ngIf="!userImage" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+        <img *ngIf="userImage" [src]="userImage" alt="User Image">
+        <!-- <img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image"> -->
+      </a>
+      <div class="profile-det-info">
+        <h3>{{prefix}} {{userFName}} {{userLName}}</h3>
+
+        <div class="patient-details">
+          <h5 class="mb-0">Organisational Admin</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-widget">
+    <nav class="dashboard-menu">
+      <ul>
+        <li [class.active]="name === 'Dashboard' || page === 'dashboard'" (click)="navigate('Dashboard')">
+          <a [routerLink]="'dashboard'">
+            <i class="fas fa-columns"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+          <li [class.active]="name === 'cart' || page === 'cart'" (click)="navigate('cart')">
+            <a [routerLink]="'cart'">
+              <i class="fas fa-shopping-cart"></i>
+              <span>Cart</span> <span class="badge badge-success" style="margin-top:-25px">{{cartCount}}</span>
+            </a>
+          </li>
+            <li [class.active]="name === 'my-purchases' || page === 'my-purchases'" (click)="navigate('my-purchases')">
+              <a [routerLink]="'my-purchases'">
+                <i class="fas fa-shopping-cart"></i>
+                <span>My Purchases</span>
+              </a>
+            </li>
+        <!-- <li [class.active]="name === 'My Patients' || page === 'patients'" (click)="navigate('My Patients')">
+          <a [routerLink]="'patients'">
+            <i class="fas fa-user-injured"></i>
+            <span>My Patients</span>
+          </a>
+        </li>  -->
+          <li [class.active]="name === 'Reports'" (click)="navigate('Reports')">
+            <a [routerLink]="['/b2b/reports',corporateCode]">
+              <i class="fas fa-lock"></i>
+              <span>My Report</span>
+            </a>
+          </li>
+            <li [class.active]="name === 'Report'" (click)="navigate('Report')">
+              <a [routerLink]="['/b2b/report']">
+                <i class="fas fa-lock"></i>
+                <span>Group Report</span>
+              </a>
+            </li>
+        <li [class.active]="name === 'Profile Settings' || page === 'settings'" (click)="navigate('Profile Settings')">
+          <a [routerLink]="'settings'">
+            <i class="fas fa-user-cog"></i>
+            <span>Profile Settings</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'Change Password'" (click)="navigate('Change Password')">
+          <a [routerLink]="'/b2b/change-password'">
+            <i class="fas fa-lock"></i>
+            <span>Change Password</span>
+          </a>
+        </li>
+            <li>
+          <a (click)="logout()" style="cursor: pointer;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

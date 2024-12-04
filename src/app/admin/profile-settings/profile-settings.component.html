@@ -1,0 +1,109 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">Profile</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Profile</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-header">
+                    <div class="row align-items-center">
+                        <div class="form-group">
+                          <div class="change-avatar">
+                            <div class="profile-img">
+                              <img *ngIf="!userImage" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+                              <img *ngIf="userImage" [src]="userImage" alt="User Image">
+                            </div>
+                            <div class="upload-img">
+                              <div class="change-photo-btn">
+                                <span><i class="fa fa-upload"></i> Upload Photo</span>
+                                <input type="file" class="upload" accept="image/*" (change)="onImageSelect($event)">
+                              </div>
+                              <small class="form-text text-muted">Allowed JPG or PNG. Max size of 5MB</small>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="profile-menu">
+                    <ul class="nav nav-tabs nav-tabs-solid">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="pass" (click)="pass()" >Password</a>
+                        </li>
+                    </ul>
+                </div> -->
+                <div class="tab-content profile-tab-cont">
+                    <!-- Personal Details Tab -->
+                    <div class="tab-pane fade show active" id="per_details_tab">
+
+                        <!-- Personal Details -->
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <!-- Change Password Tab -->
+                            <div *ngIf="changePass">
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Change Password</h5>
+                                        <div class="row">
+                                            <div class="col-md-10 col-lg-6">
+                                                <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+                                                  <div class="form-group">
+                                                    <label>Old Password<span class="required">*</span></label>
+                                                    <input (keydown.space)="$event.preventDefault()" type="password" class="form-control" formControlName="oldPassword"
+                                                      required [ngClass]="{'is-invalid':isSubmitted && form.controls.oldPassword.errors}">
+                                                    <div class="invalid-feedback">
+                                                      Please enter old password.
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label>New Password<span class="required">*</span></label>
+                                                    <input (keydown.space)="$event.preventDefault()" type="password" class="form-control" formControlName="newPassword"
+                                                      [ngClass]="{'is-invalid':isSubmitted && form.controls.newPassword.errors}">
+                                                    <div class="invalid-feedback">
+                                                      Please enter new password.
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label>Confirm Password<span class="required">*</span></label>
+                                                    <input (keydown.space)="$event.preventDefault()" type="password" class="form-control"
+                                                      formControlName="confirmPassword" [ngClass]="{'is-invalid':isSubmitted && form.controls.confirmPassword.errors}">
+                                                    <div class="invalid-feedback">
+                                                      Please enter confirm password.
+                                                    </div>
+                                                  </div>
+                                                  <div class="submit-section">
+                                                    <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
+                                                  </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                        <!-- /Personal Details -->
+                    </div>
+                    <!-- /Personal Details Tab -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /Page Wrapper -->

@@ -1,0 +1,101 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="page-title">Patients</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="'/doctor/dashboard'">Dashboard</a></li>
+        <li class="breadcrumb-item active">Patients</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /Page Header -->
+<div class="row">
+  <div class="col-9">
+    <input type="text" class="form-control" [(ngModel)]="searchText" name="search" placeholder="Search Patient" />
+  </div>
+
+  <div class="col-3">
+    <ng-select2 [(ngModel)]="dateSelected" [ngModelOptions]="{standalone: true}" name="dateSelected" width="100%"
+      (ngModelChange)="getPatientsByDate()">
+      <option value="0">Current Month</option>
+      <option value="1">Past Month</option>
+      <option value="2">Past 3 Months</option>
+      <option value="3">Past 6 Months</option>
+      <option value="4">Past Year</option>
+      <option value="5">All</option>
+    </ng-select2>
+  </div>
+  <br>
+</div>
+<div class="row row-grid mt-4">
+
+
+  <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let patient of patients|filter:searchText"
+    [hidden]="patients.length === 0">
+    <div class="card widget-profile pat-widget-profile">
+      <div class="card-body">
+        <div class="pro-widget-content"
+          [routerLink]="['/doctor/patient-details',patient?.CUSTOMER_ID,patient?.APPOINTMENT_ID||0]">
+          <div class="profile-info-widget">
+            <a class="booking-doc-img">
+              <img src="assets/img/NoImg.png" alt="User Image" *ngIf="!patient?.Customer_IMAGE">
+              <img [src]="patient?.Customer_IMAGE" alt="User Image" *ngIf="patient?.Customer_IMAGE">
+
+            </a>
+            <div class="profile-det-info">
+              <h3><a>{{patient.RN_CUSTOMER_FIRST_NAME}} {{patient.RN_CUSTOMER_LAST_NAME}}</a></h3>
+
+              <div class="patient-details">
+                <h5><b>Relationship ID :</b> {{patient.RELATIONSHIP_NUMBER}}</h5>
+                <h5 class="mb-0" *ngIf="patient.RN_CUSTOMER_ADDRESS"><i class="fas fa-map-marker-alt"></i>
+                  {{patient.RN_CUSTOMER_ADDRESS}}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="patient-info">
+          <ul>
+            <li>Phone<span>{{patient.RN_CUSTOMER_MOBILE}}</span></li>
+            <li style="margin-bottom:65px;">Email<span class="email-block">
+                {{patient.RN_CUSTOMER_EMAIL}}
+                <!-- {{(patient.RN_CUSTOMER_EMAIL.length>13)? (patient.RN_CUSTOMER_EMAIL |
+                slice:0:13)+'..':(patient.RN_CUSTOMER_EMAIL)}} -->
+              </span></li>
+
+          </ul>
+          <div>
+            <div class="contact-btn">
+              <a (click)="callUser(patient)" class="btn btn-white" [ngbTooltip]="'Audio Call'">
+                <img src="assets/img/call_64.png" style="width:20px;height:20px" />
+              </a>
+              &nbsp;
+              <a (click)="addChatToAppointment(patient)" class="btn btn-white" [ngbTooltip]="'Chat'">
+                <img src="assets/img/chat_64.png" style="width:20px;height:20px" />
+              </a>
+              &nbsp;
+              <a *ngIf="patient?.APPOINTMENT_ID" (click)="sendPushNOtification(patient)" class="btn btn-white" [ngbTooltip]="'Video Call'">
+                <img src="assets/img/video-player_64.png" style="width:20px;height:20px" />
+              </a>
+
+            </div>
+            <div class="view_btn">
+              <a class="btn btn-sm bg-info-light"
+                [routerLink]="['/doctor/patient-details',patient?.CUSTOMER_ID,patient?.APPOINTMENT_ID||0]">
+                <i class="far fa-eye"></i> View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--  <h4 *ngIf="appointments.length === 0" style="text-align:center;margin-top:1em;">No patients</h4 -->
+
+
+
+
+</div>

@@ -1,0 +1,265 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <nav aria-label="breadcrumb" class="page-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/p/dashboard'">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Doctor Profile</li>
+          </ol>
+        </nav>
+        <h2 class="breadcrumb-title">Doctor Profile</h2>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+  <div class="container">
+
+    <!-- Doctor Widget -->
+    <div class="card">
+      <div class="card-body">
+        <div class="doctor-widget">
+
+          <div class="doc-info-left">
+            <div class="doctor-img" *ngIf="doctorDetails?.BASE64CONTENT">
+              <a>
+                <img [src]="doctorDetails?.BASE64CONTENT" class="img-fluid" alt="User Image">
+              </a>
+            </div>
+            <div class="doc-info-cont">
+              <h4 class="doc-name"><a>{{doctorDetails?.Prefix}}
+                  {{doctorDetails?.FIRST_NAME}} {{doctorDetails?.LAST_NAME}}</a>
+              </h4>
+              <p class="doc-speciality">
+                {{doctorDetails?.EXP}} years experience overall
+              </p>
+              <!-- <p class="doc-speciality">
+                <span *ngFor="let edu of doctorDetails?.items;let i=index;">{{edu.QUALIFICATION}}
+                  {{i+1 === doctorDetails?.items.length ? '':', '}}</span>
+              </p> -->
+
+              <h5 class="doc-department">
+                <img src="assets/img/specialities/specialities-02.png"
+                  *ngIf="roleList.includes(doctorDetails?.ROLENAME)" class="img-fluid" alt="Speciality">
+                {{doctorDetails?.ROLENAME}}</h5>
+              <p class="doc-department">{{doctorDetails?.PEOPLE_PROFILE[0]?.PROFESSIONAL_TITLE}}</p>
+
+              <!-- <div class="rating">
+                <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 0}"></i>
+                <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 1}"></i>
+                <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 2}"></i>
+                <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 3}"></i>
+                <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 4}"></i>
+                <span class="d-inline-block average-rating">({{doctorDetails?.AvgRating || '0'}})</span>
+              </div> -->
+              <div class="clinic-details">
+                <p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{doctorDetails?.ADDRESS}}</p>
+                <!-- <ul class="clinic-gallery">
+                  <li>
+                    <a lightbox-group>
+                      <img   src="assets/img/specialities/specialities-02.png" lightbox />
+                    </a>
+                  </li>
+                </ul> -->
+              </div>
+              <div class="clinic-services" *ngIf="doctorDetails?.PEOPLE_PROFILE[0]?.SPECIALITY?.length">
+                <span *ngFor="let spc of doctorDetails?.PEOPLE_PROFILE[0]?.SPECIALITY?.split(',')">{{spc}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="doc-info-right">
+            <div class="clini-infos">
+              <ul>
+                <!-- <li><i class="far fa-thumbs-up"></i> {{doctorDetails?.PEOPLE_REVIEW?.length || '0'}}%</li> -->
+                <!-- <li><i class="far fa-comment"></i> 17 Feedback</li> -->
+                <li><i class="fas fa-user"></i> {{doctorDetails?.GENDER_ID == 6?'Female':''}}
+                  {{doctorDetails?.GENDER_ID == 5?'Male':''}}</li>
+                <li><i class="far fa-money-bill-alt"
+                    *ngIf="doctorDetails?.PEOPLE_PROFILE[0]?.FIRST_CONSULTATION_FEE || doctorDetails?.PEOPLE_PROFILE[0]?.FOLLOWUP_CONSULTATION_FEE"></i>
+                  INR {{doctorDetails?.PEOPLE_PROFILE[0]?.FIRST_CONSULTATION_FEE}} -
+                  INR
+                  {{doctorDetails?.PEOPLE_PROFILE[0]?.FOLLOWUP_CONSULTATION_FEE}}
+                </li>
+              </ul>
+            </div>
+            <div class="clinic-booking">
+              <a class="apt-btn" [routerLink]="'/p/booking'" [queryParams]="{id: docId}">Book
+                Appointment</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Doctor Widget -->
+
+    <!-- Doctor Details Tab -->
+    <div class="card">
+      <div class="card-body pt-0">
+
+        <!-- Tab Menu -->
+        <nav class="user-tabs mb-4">
+          <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+            <li class="nav-item">
+              <a class="nav-link active" href="#doc_overview" data-toggle="tab">Overview</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="#doc_locations" data-toggle="tab">Locations</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#doc_business_hours" data-toggle="tab">Business Hours</a>
+            </li>-->
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="#doc_reviews" data-toggle="tab">Reviews</a>
+            </li> -->
+          </ul>
+        </nav>
+        <!-- /Tab Menu -->
+
+        <!-- Tab Content -->
+        <div class="tab-content pt-0">
+
+          <!-- Overview Content -->
+          <div role="tabpanel" id="doc_overview" class="tab-pane fade show active">
+            <div class="row">
+              <div class="col-md-12 col-lg-9">
+
+                <!-- About Details -->
+                <div class="widget about-widget">
+                  <h4 class="widget-title">About Me</h4>
+                  <p>{{doctorDetails?.PEOPLE_PROFILE[0]?.PROFESSIONAL_STATEMENT}}</p>
+                </div>
+                <!-- /About Details -->
+
+                <!-- Education Details -->
+                <div class="widget education-widget">
+                  <h4 class="widget-title">Education</h4>
+                  <div class="experience-box">
+                    <ul class="experience-list">
+                      <li *ngFor="let edu of  doctorDetails?.Qualification;">
+                        <div class="experience-user">
+                          <div class="before-circle"></div>
+                        </div>
+                        <div class="experience-content">
+                          <div class="timeline-content">
+                            <a class="name">{{edu?.INSTITUTE}}</a>
+                            <div>{{edu?.QUALIFICATION}}</div>
+                            <span class="time"
+                              *ngIf="edu?.PRECUREMENT_YEAR?.start?.year">{{edu?.PRECUREMENT_YEAR?.start?.year}} -
+                              {{edu?.PRECUREMENT_YEAR?.end?.year}}</span>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- /Education Details -->
+
+                <!-- Experience Details -->
+                <div class="widget experience-widget">
+                  <h4 class="widget-title">Work & Experience</h4>
+                  <div class="experience-box">
+                    <ul class="experience-list">
+                      <li *ngFor="let exp of doctorDetails?.HOSPITAL_AFFILIATION;">
+                        <div class="experience-user">
+                          <div class="before-circle"></div>
+                        </div>
+                        <div class="experience-content">
+                          <div class="timeline-content">
+                            <a href="#/" class="name">{{exp?.HOSPITAL_NAME}}</a>
+                            <span class="time" *ngIf="exp?.START_TIME">{{exp?.START_TIME?.year}} -
+                              {{exp?.END_TIME?.year}}</span>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- /Experience Details -->
+
+              </div>
+            </div>
+          </div>
+          <!-- /Overview Content -->
+
+          <!-- Reviews Content -->
+          <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
+
+            <!-- Review Listing -->
+            <div class="widget review-listing">
+              <ul class="comments-list" *ngIf="reviews?.length">
+
+                <!-- Comment List -->
+                <li *ngFor="let review of reviews">
+                  <div class="comment">
+                    <img class="avatar avatar-sm rounded-circle" alt="User Image" src="assets/img/patients/patient.jpg">
+                    <div class="comment-body">
+                      <div class="meta-data">
+                        <span class="comment-author">{{review?.PATIENT_NAME}}</span>
+                        <span class="comment-date">Reviewed {{review.CREATED_Date | niceDateFormatPipe}}</span>
+                        <!-- <div class="review-count rating">
+                          <i class="fas fa-star" [ngClass]="{'filled':review?.OVERALL_RATING > 0}"></i>
+                          <i class="fas fa-star" [ngClass]="{'filled':review?.OVERALL_RATING > 1}"></i>
+                          <i class="fas fa-star" [ngClass]="{'filled':review?.OVERALL_RATING > 2}"></i>
+                          <i class="fas fa-star" [ngClass]="{'filled':review?.OVERALL_RATING > 3}"></i>
+                          <i class="fas fa-star" [ngClass]="{'filled':review?.OVERALL_RATING > 4}"></i>
+                        </div> -->
+                      </div>
+                      <p class="recommended"><i class="far fa-thumbs-up"></i> I recommend the doctor</p>
+                      <p class="comment-content">
+                        {{review.REVIEW}}
+                      </p>
+                      <!-- <div class="comment-reply">
+                        <a class="comment-btn" href="javascript:void(0)">
+                          <i class="fas fa-reply"></i> Reply
+                        </a>
+                        <p class="recommend-btn">
+                          <span>Recommend?</span>
+                          <a href="javascript:void(0)" class="like-btn">
+                            <i class="far fa-thumbs-up"></i> Yes
+                          </a>
+                          <a href="javascript:void(0)" class="dislike-btn">
+                            <i class="far fa-thumbs-down"></i> No
+                          </a>
+                        </p>
+                      </div> -->
+                    </div>
+                  </div>
+                </li>
+                <!-- /Comment List -->
+
+              </ul>
+
+              <!-- Show All -->
+              <div class="all-feedback text-center" *ngIf="allReviews?.length > 2 &&reviews?.length <= 2">
+                <a href="javascript:void(0)" class="btn btn-primary btn-sm" (click)="showAllReviews(true)">
+                  Show all feedback <strong>({{allReviews?.length}})</strong>
+                </a>
+              </div>
+              <!-- /Show All -->
+              <!-- Show Less -->
+              <div class="all-feedback text-center" *ngIf="reviews?.length > 2">
+                <a href="javascript:void(0)" class="btn btn-primary btn-sm" (click)="showAllReviews(false)">
+                  Show less feedback
+                </a>
+              </div>
+              <!-- /Show Less -->
+
+            </div>
+            <!-- /Review Listing -->
+
+          </div>
+          <!-- /Reviews Content -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /Doctor Details Tab -->
+
+  </div>
+</div>

@@ -1,0 +1,303 @@
+<!-- Header -->
+<div class="header">
+  <!-- Logo -->
+  <div class="header-left">
+    <a href="javascript:void(0);" routerLink="/admin/dashboard" class="logo">
+      <img src="assets/img/logo.png" routerLink="/admin/dashboard" alt="Logo" />
+    </a>
+    <a href="javascript:void(0);" class="logo logo-small">
+      <img src="assets/img/logo.png" alt="Logo" />
+    </a>
+  </div>
+  <!-- /Logo -->
+
+  <a href="javascript:void(0);" id="toggle_btn">
+    <i class="fe fe-text-align-left"></i>
+  </a>
+
+  <div class="top-nav-search">
+    <form>
+      <!-- <input type="text" class="form-control" placeholder="Search here">
+      <button class="btn" type="submit"><i class="fa fa-search"></i></button> -->
+    </form>
+  </div>
+
+  <!-- Mobile Menu Toggle -->
+  <a class="mobile_btn" id="mobile_btn">
+    <i class="fa fa-bars"></i>
+  </a>
+  <!-- /Mobile Menu Toggle -->
+
+  <!-- Header Right Menu -->
+  <ul class="nav user-menu">
+
+    <!-- Notifications -- >
+    <li class="nav-item dropdown noti-dropdown">
+      <a href="javascript:void(0)" class="dropdown-toggle nav-link" (click)="bell()"
+        [attr.aria-expanded]="!bellCollapsed" aria-controls="collapseExample1">
+        <i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+      </a>
+      <div class="dropdown-menu notifications" id="collapseExample1" [ngbCollapse]="bellCollapsed">
+        <div class="topnav-dropdown-header">
+          <span class="notification-title">Notifications</span>
+          <a href="javascript:void(0)" class="clear-noti" (click)="bellCollapsed = !bellCollapsed"> Clear All </a>
+        </div>
+        <div class="noti-content">
+          <ul class="notification-list">
+            <li class="notification-message" (click)="bellCollapsed = !bellCollapsed">
+              <a href="javascript:void(0)">
+                <div class="media">
+                  <span class="avatar avatar-sm">
+                    <img class="avatar-img rounded-circle" alt="User Image"
+                      src="assets/img/doctors/doctor-thumb-02.jpg">
+                  </span>
+                  <div class="media-body">
+                    <p class="noti-details"><span class="noti-title">Dr. Ruby Perrin</span> Schedule <span
+                        class="noti-title">her appointment</span></p>
+                    <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message" (click)="bellCollapsed = !bellCollapsed">
+              <a href="javascript:void(0)">
+                <div class="media">
+                  <span class="avatar avatar-sm">
+                    <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient1.jpg">
+                  </span>
+                  <div class="media-body">
+                    <p class="noti-details"><span class="noti-title">Charlene Reed</span> has booked her appointment to
+                      <span class="noti-title">Dr. Ruby Perrin</span></p>
+                    <p class="noti-time"><span class="notification-time">6 mins ago</span></p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message" (click)="bellCollapsed = !bellCollapsed">
+              <a href="javascript:void(0)">
+                <div class="media">
+                  <span class="avatar avatar-sm">
+                    <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient2.jpg">
+                  </span>
+                  <div class="media-body">
+                    <p class="noti-details"><span class="noti-title">Travis Trimble</span> sent a amount of $210 for his
+                      <span class="noti-title">appointment</span></p>
+                    <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message" (click)="bellCollapsed = !bellCollapsed">
+              <a href="javascript:void(0)">
+                <div class="media">
+                  <span class="avatar avatar-sm">
+                    <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/patients/patient3.jpg">
+                  </span>
+                  <div class="media-body">
+                    <p class="noti-details"><span class="noti-title">Carl Kelly</span> send a message <span
+                        class="noti-title"> to his doctor</span></p>
+                    <p class="noti-time"><span class="notification-time">12 mins ago</span></p>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="topnav-dropdown-footer">
+          <a href="javascript:void(0)" (click)="bellCollapsed = !bellCollapsed">View all Notifications</a>
+        </div>
+      </div>
+    </li>
+    < !-- /Notifications -->
+
+    <!-- User Menu -->
+    <li class="nav-item dropdown has-arrow" id="dropdown">
+      <a href="javascript:void(0)" class="dropdown-toggle nav-link" class="dropdown-toggle nav-link" (click)="user()"
+        [attr.aria-expanded]="!userCollapsed" aria-controls="collapseExample2">
+        <span class="user-img">
+           <img *ngIf="!userImage" src="assets/admin/img/profiles/avatar-01.jpg" width="31"
+            class="rounded-circle">
+          <img *ngIf="userImage" [src]="userImage" alt="User Image" width="31"
+            class="rounded-circle">
+          </span>
+      </a>
+      <div class="dropdown-menu" id="collapseExample2" [ngbCollapse]="userCollapsed">
+        <div class="user-header">
+          <div class="avatar avatar-sm">
+            <img *ngIf="!userImage" src="assets/admin/img/profiles/avatar-01.jpg" alt="User Image"
+              class="avatar-img rounded-circle">
+            <img *ngIf="userImage" [src]="userImage" alt="User Image" class="avatar-img rounded-circle">
+          </div>
+          <div class="user-text">
+            <h6>{{userData.FIRSTNAME}} {{userData.LASTNAME}}</h6>
+            <p class="text-muted mb-0">{{userData.ROLE}}</p>
+          </div>
+        </div>
+        <a class="dropdown-item" [routerLink]="'profile-settings'">My Profile</a>
+        <!-- <a class="dropdown-item" [routerLink]="'settings'">Settings</a> -->
+        <a class="dropdown-item" (click)="clickLogout()">Logout</a>
+      </div>
+    </li>
+    <!-- /User Menu -->
+
+  </ul>
+  <!-- /Header Right Menu -->
+
+</div>
+<!-- /Header -->
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-inner slimscroll">
+    <div id="sidebar-menu" class="sidebar-menu">
+      <ul>
+        <li class="menu-title">
+          <span>Main</span>
+        </li>
+        <li [routerLink]="'/admin/dashboard'" [class.active]="page.includes('dashboard')">
+          <a><i class="fe fe-home" style="color: #fff"></i>
+            <span style="color: #fff">Dashboard</span></a>
+        </li>
+        <li class="submenu">
+          <a href="javascript:void(0)" [ngClass]="page.includes('/admin/appointment') ? 'subdrop':''"><i
+              class="fe fe-user-plus"></i> <span> Consultant/Psychologist </span> <span class="menu-arrow"></span></a>
+          <ul>
+            <li [class.active]="page.includes('/admin/on-boarding')">
+              <a [routerLink]="'/admin/on-boarding'">
+                <span>OnBoarding</span></a>
+            </li>
+            <li [class.active]="page.includes('/admin/scheduletiming')">
+              <a [routerLink]="'/admin/scheduletiming'">
+                <span>Schedule Timings</span>
+              </a>
+            </li>
+            <li [class.active]="page.includes('/admin/doctor')">
+              <a [routerLink]="'/admin/doctor'">
+                <span>Doctors</span></a>
+            </li>
+          </ul>
+        </li>
+        <li class="submenu">
+          <a href="javascript:void(0)" [ngClass]="page.includes('/admin/appointment') ? 'subdrop':''"><i
+              class="fe fe-layout"></i> <span> Appointments </span> <span class="menu-arrow"></span></a>
+          <ul>
+            <li [class.active]="page.includes('/admin/appointment')">
+              <a [routerLink]="'/admin/appointment'">
+                <span>Appointment</span></a>
+            </li>
+            <li [routerLink]="'/admin/book-appointment'" [class.active]="page.includes('book-appointment')">
+              <a>
+                <span style="color: #fff">Book Appointment</span></a>
+            </li>
+            <li [routerLink]="'/admin/pending-appointment'" [class.active]="page.includes('pending-appointment')">
+              <a>
+                <span style="color: #fff">Pending Appointment</span></a>
+            </li>
+            <li [class.active]="page.includes('/admin/cancelled-appointment')">
+              <a [routerLink]="'/admin/cancelled-appointment'">
+                <span>Cancelled Appointments</span></a>
+            </li>
+          </ul>
+        </li>
+        <li class="submenu">
+          <a href="javascript:void(0)" [ngClass]="page.includes('organizational') ? 'subdrop':''"><i
+              class="fe fe-user"></i>
+            <span> B2B </span> <span class="menu-arrow"></span></a>
+          <ul>
+            <li [class.active]="page.includes('/admin/Organizational-Clients')">
+              <a [routerLink]="'/admin/Organizational-Clients'">
+                <span>Assignments</span></a>
+            </li>
+            <li [class.active]="page.includes('/admin/b2b-organizational-clients')">
+              <a [routerLink]="'/admin/b2b-organizational-clients'">
+                <span>Invitations</span></a>
+            </li>
+            <li [class.active]="page.includes('Ewi-reports')"><a [routerLink]="'/admin/Organizational-Clients-report'">
+              Corporate Report
+            </a>
+          </li>
+          <li [class.active]="page.includes('/admin/payment-configuration')">
+            <a [routerLink]="'/admin/payment-configuration'">
+              <span>Payment Configuration</span></a>
+          </li>
+          </ul>
+        </li>
+        <li class="submenu">
+          <a href="javascript:void(0)" [ngClass]="page.includes('organizational') ? 'subdrop':''"><i
+            class="fe fe-document"></i>
+            <span> Test </span> <span class="menu-arrow"></span></a>
+          <ul>
+            <li class="submenu">
+              <a href="javascript:void(0)" [ngClass]="page.includes('ewi-controls') ? 'subdrop':''"><span> EWI Controls </span> <span class="menu-arrow"></span></a>
+              <ul>
+                <li [class.active]="page.includes('answers')"><a [routerLink]="'/admin/ewi-controls/answers'"> Answers
+                  </a>
+                </li>
+                <li [class.active]="page.includes('categories')"><a [routerLink]="'/admin/ewi-controls/categories'">
+                    Category
+                  </a>
+                </li>
+                <li [class.active]="page.includes('groups')"><a [routerLink]="'/admin/ewi-controls/groups'">Groups </a>
+                </li>
+                <li [class.active]="page.includes('questions')"><a
+                    [routerLink]="'/admin/ewi-controls/questions'">Questions
+                  </a>
+                </li>
+                <li [class.active]="page.includes('tests')"><a [routerLink]="'/admin/ewi-controls/tests'">Tests </a>
+                </li>
+                <li [class.active]="page.includes('test-range')"><a
+                    [routerLink]="'/admin/ewi-controls/test-range'">Result
+                    Range
+                  </a></li>
+                </ul>
+            </li>
+            <li class="submenu">
+              <a href="javascript:void(0)" [ngClass]="page.includes('/admin/schedule') ? 'subdrop':''"><span> Schedule Test </span> <span class="menu-arrow"></span></a>
+              <ul>
+                <li [class.active]="page==='/admin/schedule-test'"><a [routerLink]="'/admin/schedule-test'"> Add
+                    Test </a>
+                </li>
+                <li [class.active]="page.includes('scheduled-test-list')"><a [routerLink]="'/admin/scheduled-test-list'">
+                    Tracking List
+                  </a>
+                </li>
+
+              </ul>
+            </li>
+            <li [class.active]="page.includes('Ewi-reports')"><a [routerLink]="'/admin/reports'"> EWI Reports
+            </a>
+          </li>
+          <li [class.active]="page.includes('Ewi-reports')"><a [routerLink]="'/admin/schedule-test-reports'"> Schedule
+              Test Reports
+            </a>
+          </li>
+          </ul>
+        </li>
+         <li class="submenu">
+          <a href="javascript:void(0)" [ngClass]="page.includes('organizational') ? 'subdrop':''"><i class="fa fa-gear"></i>
+            <span> Miscellaneous </span> <span class="menu-arrow"></span></a>
+          <ul>
+            <li [class.active]="page.includes('/admin/patients')">
+              <a [routerLink]="'/admin/patients'">
+                <span>Patients</span></a>
+            </li>
+            <li [class.active]="page.includes('/admin/coupons')">
+              <a [routerLink]="'/admin/coupons'">
+                <span>Discount Coupons</span></a>
+            </li>
+            <li [class.active]="page.includes('/admin/manage-password')">
+              <a [routerLink]="'/admin/manage-password'">
+                <span>Manage Password</span></a>
+            </li>
+            <li [class.active]="page.includes('/admin/logs')">
+              <a [routerLink]="'/admin/logs'">
+                <span>Logs</span></a>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /Sidebar -->

@@ -1,0 +1,686 @@
+<div class="modal-body">
+  <div class="row">
+    <div class="col">
+
+      <div class="card widget-profile pat-widget-profile">
+        <div class="card-body">
+          <h4>Basic Information</h4>
+
+          <div class="pro-widget-content">
+            <div class="profile-info-widget">
+              <a class="booking-doc-img">
+                <img src="assets/img/NoImg.png" alt="User Image"
+                  *ngIf="patient?.ImageBase64==null || patient?.ImageBase64==''">
+                <img src="{{patient?.ImageBase64}}" alt="User Image"
+                  *ngIf="patient?.ImageBase64!=null && patient?.ImageBase64!=''">
+
+              </a>
+              <div class="profile-det-info">
+                <h3><a>{{patient?.FIRST_NAME}} {{patient?.LAST_NAME}}</a></h3>
+
+                <div class="patient-details">
+                  <h4><b>Relationship Number :</b> {{patient?.RELATIONSHIP_NUMBER}}</h4>
+                  <h4>
+                    <div *ngIf="!appointment?.FSTATUS" class="avatar avatar-online">
+                    </div>
+                    <div *ngIf="appointment?.FSTATUS ==='EDITING'" class="avatar avatar-away">
+                    </div>
+                    <div *ngIf="appointment?.FSTATUS ==='COMPLETED'" class="avatar avatar-offline">
+                    </div>
+                    First Assessment
+                    {{appointment?.FSTATUS ==='EDITING' ? 'In Progress' : (appointment?.FSTATUS ==='COMPLETED'
+                    ?'Completed ': 'Pending')}}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="patient-info row">
+            <div class="col-md-12 text-center">
+              <div class="row"></div>
+              <table class="patient-info-table">
+                <tr>
+                  <td>Phone</td>
+                  <td>{{patient?.MOBILE}}</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>{{patient?.EMAIL}}</td>
+                </tr>
+                <tr>
+
+                </tr>
+                <tr class="action-icons">
+                  <td><a (click)="callUser()" class="btn btn-white">
+                      <img src="assets/img/call_64.png" style="width:20px;height:20px" />
+                    </a><br />Audio Call</td>
+                  <td> <a href="javascript:void(0);" (click)="addChatToAppointment()" class="btn btn-white">
+                      <img src="assets/img/chat_64.png" style="width:20px;height:20px" />
+                    </a><br />Chat</td>
+                  <td> <a (click)="videoCall()" class="btn btn-white">
+                      <img src="assets/img/video-player_64.png" style="width:20px;height:20px" />
+                    </a><br />Video Call</td>
+                </tr>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="appointment-tab" *ngIf="appointment?.DOCTOR_ID == userId">
+
+    <div class="card">
+      <!-- Appointment Tab -->
+      <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/doctor/first-assessment',patientId,appointmentId]"
+            data-toggle="tab">First
+            Assessment</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab">Current Visit</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+  <div class="accordion" id="notes">
+    <div class="card">
+      <div class="card-header" id="medication">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#notesDiv"
+            aria-expanded="true" aria-controls="notesDiv">
+            Add Notes
+          </button>
+        </h2>
+
+        <div id="notesDiv" class="collapse" aria-labelledby="notes" data-parent="#notes">
+          <div class="row">
+            <div class="col-12">
+              <div class="card widget-profile pat-widget-profile" #medView>
+                <div class="card-body">
+                  <div class="form-group">
+                    <select class="form-control" [(ngModel)]="notes_type" (ngModelChange)="prescription=''">
+                      <option value="1">Counselling Notes</option>
+                      <option value="2">Follow Up Notes</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <!-- <h4>{{selectedPrescId ? 'Edit':''}} Counseling notes</h4> -->
+                    <label>Notes <span class="required"></span> </label>
+                    <angular-editor [(ngModel)]="prescription" [config]="config"></angular-editor>
+                    <!-- <textarea class="form-control" name="prescription" [(ngModel)]="prescription"></textarea>
+                    <div class="invalid-feedback">
+                      Please enter new password.
+                    </div> -->
+                  </div>
+                  <div class="form-group">
+                    <label>Domicile</label>
+                    <input type="text" class="form-control" name="domicile" [(ngModel)]="domicile" />
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-4">
+
+                      <input type="radio" id="r1" name="DiagnosisKey" value="0" [(ngModel)]="DiagnosisKey" />&nbsp;
+                      <label for="r1">Include Diagnosis Key</label>
+                    </div>
+
+                    <div class="col-md-4">
+                      <input type="radio" id="r2" name="DiagnosisKey" value="1" [(ngModel)]="DiagnosisKey" />
+                      &nbsp; <label for="r2">Include Diagnosis Code</label>
+                    </div>
+                    <div class="col-md-4">
+                      <input type="radio" id="r3" name="DiagnosisKey" value="2" [(ngModel)]="DiagnosisKey" />
+                      &nbsp; <label for="r3">Include Both</label>
+                    </div>
+
+                  </div>
+                  <div class="form-group">
+                    <label>Upload Document</label>
+                    <div class="custom-file">
+                      <input id="uploadFile" class="custom-file-input" type="file" class="upload" name="filetoUpload"
+                        [(ngModel)]="filetoUpload" required #file="ngModel" accept=".png, .jpeg,.jpg,.pdf"
+                        (change)="onFileSelect($event)" required [ngClass]="{'is-invalid':isSubmitted && file.errors}">
+                      <div class="invalid-feedback">Please add a file to upload.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary btn-block" (click)="InsertMedicationDetails(true)">{{selectedPrescId ?
+                'Update Notes':'Submit Notes'}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion" id="documents" [hidden]="userRole !=='Psychiatrist'">
+    <div class="card">
+      <div class="card-header" id="medication">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#medicationDiv"
+            aria-expanded="true" aria-controls="medicationDiv">
+            Add Medication
+          </button>
+        </h2>
+      </div>
+      <div id="medicationDiv" class="collapse" aria-labelledby="medication" data-parent="#documents">
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card widget-profile pat-widget-profile">
+              <div class="card-body">
+                <div class="form-group">
+                  <div class="add-more">
+                    <h4>{{selectedPrescId ? 'Edit':'Add'}} Medication</h4>
+                    <a class="add-education" (click)="addMedication()" *ngIf="!medication.length"><i
+                        class="fa fa-plus-circle"></i>
+                      Add More</a>
+                  </div>
+                  <div class="row" *ngFor="let item of medication;let i= index">
+                    <div class="col-sm-6 col-xs-6"></div>
+                    <div class="col-sm-6 col-xs-6">
+                      <div class="form-group" style="text-align: end;">
+                        <div class="add-more">
+                          <a class="add-education" (click)="addMedication()" *ngIf="medication.length==(i+1)"><i
+                              class="fa fa-plus-circle"></i> Add More</a>
+                          &nbsp;&nbsp;
+                          <a (click)="removeMedication(i)"><i class="fa fa-trash" style="cursor: pointer;"></i></a>
+                        </div>
+                        <!-- <i class="fa fa-plus" (click)="addMedication()" *ngIf="medication.length==(i+1)"
+                    style="cursor: pointer;"></i>
+                  -->
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-xs-12">
+
+                      <div class="form-group">
+                        <label>Name</label>
+                        <ng-select2 [(ngModel)]="item.Name" [ngModelOptions]="{standalone: true}" width="100%">
+                          <option value="">-Select Medicine-</option>
+                          <option *ngFor="let medicine of medicineList" [value]="medicine.Name">{{medicine.Name}}
+                          </option>
+                        </ng-select2>
+                        <!-- <input type="text" class="form-control" name="prescription" [(ngModel)]="item.Name" /> -->
+                      </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-3">
+
+                      <div class="form-group">
+                        <label>Potency</label>
+                        <input type="text" class="form-control" name="prescription" [(ngModel)]="item.Potency" />
+                      </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-3">
+                      <div class="form-group">
+                        <label>Dose</label>
+                        <input type="text" class="form-control" name="dose" [(ngModel)]="item.Dose" />
+                      </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-3">
+                      <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" class="form-control" name="duration" [(ngModel)]="item.Duration" />
+                      </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-3">
+                      <div class="form-group">
+                        <label>Plan Of Action</label>
+                        <select class="form-control" name="planofaction" [(ngModel)]="item.POA">
+                          <option>None</option>
+                          <option>Increase</option>
+                          <option>Decrease</option>
+                          <option>Stop</option>
+                          <option>Discontinue</option>
+                          <option>Fixed</option>
+                          <option>Intolerant</option>
+                          <option>Ineffective</option>
+                          <option>Worsened</option>
+                          <option>Unused</option>
+                        </select>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <button class="btn btn-primary btn-block" (click)="InsertMedicationDetails()">{{selectedPrescId ?
+              'Update Prescription':'Submit Prescription'}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion" id="accordionExample" style="margin-top: 10px;">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne">
+            Psychodiagnostics/Certificate/Documents
+
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+          <div class="form-group">
+            <h4 class="float-left" style="visibility: hidden;">Psychodiagnostics/Certificate/Documents</h4>
+            <div class="row">
+              <div class="col-6"></div>
+              <div class="col-6">
+                <div class="change-photo-btn" (click)="openModal(uploadtemplate)" style="float: right;">
+                  <span><i class="fa fa-upload"></i> Upload File</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="row-border hover table table-hover table-center mb-0">
+              <thead>
+                <tr>
+                  <th>Certificate Name</th>
+                  <th>Uploaded Date</th>
+                  <!-- <th>Preview</th> -->
+                  <th>View Report</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of reports">
+
+                  <tr *ngIf="item.RESULT_FILE_BASEURL!=null && item.RESULT_FILE_BASEURL!=''">
+                    <td>{{item?.NAME|| item?.RESULT_FILE}}</td>
+                    <td>{{item?.CreatedDate | date:'MMMM d, y'}}</td>
+                    <!-- <td>
+                      <iframe *ngIf="isPDF(item.RESULT_FILE)" [src]="createURL(item)" width="200PX"
+                        height="100px"></iframe>
+                      <img *ngIf="!isPDF(item.RESULT_FILE)" [src]="createURL(item)" width="200PX" height="100px" />
+                    </td> -->
+                    <td><a href="{{item.RESULT_FILE_BASEURL}}{{item.RESULT_FILE}}" target="_blank">
+                        <img src="assets/img/PDFReport.png" style="width:30px" />
+                      </a>
+                      <!-- <a href="{{item.RESULT_FILE_BASEURL}}{{item.RESULT_FILE}}" target="_blank">
+                                        <img src="assets/img/print.png" style="width:30px" />
+                                      </a> -->
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr class="text-center" *ngIf="!reports.length">
+                  <td colspan="2"> No reports Found</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
+          aria-expanded="false" aria-controls="collapseTwo">
+          Referred To
+
+        </button>
+      </h2>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+        <div class="card-body">
+          <div class="form-group">
+
+            <div class="row">
+              <div class="col-md-6">
+                <h4 class="float-left">Referred To<span class="required">*</span></h4>
+                <ng-select2 [(ngModel)]="referral.category" (ngModelChange)="getRefferedConsultant()"
+                  [ngModelOptions]="{standalone: true}" width="100%">
+                  <option [value]="0">--Select Referred--</option>
+                  <option *ngFor="let item of refferedCategory" [value]="item.Id">{{item.Name}}
+                  </option>
+                </ng-select2>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-6" *ngIf="referral.category!=0">
+                <h4 class="float-left">Consultant<span class="required">*</span></h4>
+                <ng-select2 [(ngModel)]="referral.consultant" [ngModelOptions]="{standalone: true}" width="100%">
+                  <option [value]="0">--Select Consultant--</option>
+                  <option *ngFor="let item of refferedConsultant" [value]="item.Id">{{item.NAME}}
+                  </option>
+                </ng-select2>
+              </div>
+
+              <div class="col-md-6" *ngIf="referral.category!=49 && referral.category!=0">
+                <h4 class="float-left">Notes<span class="required">*</span></h4>
+                <input type="text" class="form-control" [(ngModel)]="referral.notes"
+                  [ngModelOptions]="{standalone: true}" width="100%">
+              </div>
+              <div class="col-md-6" *ngIf="referral.category==49">
+                <h4 class="float-left">Type<span class="required">*</span></h4>
+                <ng-select2 [(ngModel)]="referral.type" [ngModelOptions]="{standalone: true}" width="100%">
+                  <option [value]="0">--Select Type--</option>
+                  <option *ngFor="let item of refferedType" [value]="item.id">{{item.TYPE}}
+                  </option>
+                </ng-select2>
+              </div>
+
+              <div class="col-md-6" *ngIf="referral.category==49">
+                <h4 class="float-left">Frequency<span class="required">*</span></h4>
+                <ng-select2 [(ngModel)]="referral.frequency" [ngModelOptions]="{standalone: true}" width="100%">
+                  <option [value]="0">--Select Frequency--</option>
+                  <option *ngFor="let item of refferedFrequency" [value]="item.id">{{item.FREQUENCY}}
+                  </option>
+                </ng-select2>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3" style="padding-top: 35px;">
+                <button class="btn btn-primary" [disabled]="referral.category==0" (click)="addReferral()">Add</button>
+              </div>
+            </div>
+          </div>
+
+          <table class="row-border hover table table-hover table-center mb-0">
+            <thead>
+              <tr>
+                <th>Referred By</th>
+                <th>Referred To</th>
+                <th>Referred Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of refferedHistory">
+                <td>{{item.referredby}}</td>
+                <td>{{item.referredto}}</td>
+                <td><span class="d-none">{{item.referreddate | date:'y-MM-dd'}}</span>{{item.referreddate | date}}</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
+          aria-expanded="false" aria-controls="collapseThree">
+          Suggestions
+        </button>
+      </h2>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+      <div class="card-body">
+        <div class="form-group">
+
+          <div class="row">
+            <div class="col-md-12 col-lg-5 col-xl-5">
+              <h4 class="float-left"></h4>
+              <ng-select2 [(ngModel)]="suggestionId" [ngModelOptions]="{standalone: true}" width="100%">
+                <option [value]="0">-Select Suggestion-</option>
+                <option *ngFor="let suggestion of suggestionList" [value]="suggestion.Id">{{suggestion.Name}}
+                </option>
+              </ng-select2>
+            </div>
+            <div class="col-md-12 col-lg-2 col-xl-2" style="padding-top: 4px;">
+              <button class="btn btn-primary" [disabled]="suggestionId==0"
+                (click)="insertSuggestionForAppointment()">Add</button>
+            </div>
+            <div class="col-md-12 col-lg-5 col-xl-5" style="padding-top: 4px;">
+              <button class="btn btn-primary" (click)="openModal(addSuggestion)">Add Suggestion</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="row-border hover table table-hover table-center mb-0">
+            <thead>
+              <tr>
+                <th>Suggestion</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of customerSuggestionList">
+                <td>{{item.Name}}</td>
+                <td>
+                  <a (click)="deleteSuggestions(item.ID)"><i class="fa fa-trash" style="cursor: pointer;"></i></a>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card widget-profile pat-widget-profile">
+          <div class="card-body">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-4"><button class="btn btn-primary float-right mt-30" type="button"
+                    (click)="getPrescription(testformtemplate)">Preview
+                    Prescription</button></div>
+                <div class="col-sm-4"><button class="btn btn-primary float-right mt-30" type="button"
+                    (click)="sendPrescription()">Send
+                    Prescription</button></div>
+                <div class="col-sm-4" *ngIf="appointment.APPOINTMENT_STATUS!='Closed'">
+                  <!-- *ngIf="!isCompleted" -->
+                  <button class="btn btn-primary float-right mt-30" type="button" (click)="completeAppointment()">Close
+                    Appointment</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingFour">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour"
+          aria-expanded="false" aria-controls="collapseFour">
+          Patient History Till Date
+
+        </button>
+
+        <div class="change-photo-btn" (click)="printPrescription()">
+          <span><i class="fa fa-print"></i> Print</span>
+        </div>
+      </h2>
+    </div>
+    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+      <div class="card-body">
+        <div class="form-group">
+          <div class="widget awards-widget">
+            <div class="experience-box">
+              <ul class="experience-list">
+                <li *ngFor="let item of arrayHistory" [hidden]="selectedPrescId === item.id">
+                  <div class="experience-user">
+                    <div class="before-circle"></div>
+
+                  </div>
+                  <div class="experience-content">
+                    <div class="timeline-content">
+                      <div class="presc-container">
+                        <div class="presc-body">
+
+                          <div class="add-more float-right">
+                            <a class="add-education edit" (click)="editPrescription(item,medView)">
+                              <i class="fas fa-pencil" title="click to edit prescription"></i>
+                              Edit</a>
+                            <a class="add-education" (click)="copyPrescription(item,medView)">
+                              <i class="fas fa-copy" title="click to cpoy prescription"></i>
+                              Copy</a>
+                          </div>
+                          <table class="presc-table">
+                            <tr class="header-row">
+                              <td>
+                                <strong>Appointment Date:</strong> {{item?.APPOINTMENT_DATE}}
+                              </td>
+                              <td *ngIf="item?.PRESCRIPTION_DATE">
+                                <strong>
+                                  {{userRole == 'Psychiatrist' ? 'Prescription Date:':'Counselling Notes Date'}}
+                                </strong> {{item?.PRESCRIPTION_DATE| date:'yyyy-MM-dd'}}
+                              </td>
+                              <td *ngIf="item?.PRESCRIPTION_BY">
+                                <strong>Prescription By:</strong> {{item?.PRESCRIPTION_BY}}
+                              </td>
+                            </tr>
+                            <tr class="data-row">
+                              <td colspan="4">
+                                <strong *ngIf="item?.NOTES_TYPE==1">Counselling Notes:</strong>
+                                <strong *ngIf="item?.NOTES_TYPE==2">Follow Up Notes:</strong>
+                                <p [innerHTML]="item?.Notes"></p>
+                              </td>
+                            </tr>
+                            <ng-container *ngFor="let _item of item?.items">
+                              <tr class="data-row" *ngIf="_item?.Name">
+                                <td colspan="4">
+                                  <strong>Medicine Name: </strong> {{_item?.Name}}
+                                </td>
+                              </tr>
+                              <tr class="data-row" *ngIf="_item?.Potency || _item?.Dose|| _item?.Duration">
+                                <td colspan="2">
+                                  <strong>Potency:</strong> {{_item?.Potency}}
+                                </td>
+                                <td colspan="2">
+                                  <strong>Dose:</strong> {{_item?.Dose}}
+                                </td>
+
+                              </tr>
+                              <tr class="data-row" *ngIf="_item?.Duration || _item?.Action">
+                                <td colspan="2">
+                                  <strong>Duration:</strong> {{_item?.Duration}}
+                                </td>
+                                <td colspan="2">
+                                  <strong>Plan of Action:</strong> {{_item?.Action}}
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #uploadtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Upload File</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="uploadFile(uploadForm)" #uploadForm="ngForm">
+      <div class="row form-row">
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Document Name<span class="required">*</span></label>
+            <!-- <input type="text" class="form-control" name="fileName" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required
+              appInputrestriction="[a-zA-Z]"> -->
+            <select class="form-control" name="fileName" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required>
+              <option *ngFor="let item of documentsLists" value="{{item.id}}"> {{item.value}} </option>
+            </select>
+            <div class="invalid-feedback">
+              {{name?.errors?.requied ? 'Please enter a name.' :'Special Character not allowed'}}
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>&nbsp;</label>
+
+            <div class="custom-file">
+              <input id="uploadFile" class="custom-file-input" type="file" class="upload" name="filetoUpload"
+                [(ngModel)]="filetoUpload" required #file="ngModel" accept=".png, .jpeg,.jpg,.pdf"
+                (change)="onFileSelect($event)" required [ngClass]="{'is-invalid':isSubmitted && file.errors}">
+              <div class="invalid-feedback">Please add a file to upload.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Upload</button>
+    </form>
+  </div>
+</ng-template>
+
+
+
+<ng-template #addSuggestion>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add New Suggestion</h4>
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="addNewSuggestion(suggestionForm)" #suggestionForm="ngForm">
+      <div class="row form-row">
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Suggestion<span class="required">*</span></label>
+            <input type="text" class="form-control" name="newSuggestion" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="newSuggestion" required
+              appInputrestriction="[a-zA-Z]">
+            <div class="invalid-feedback">
+              Please add suggestion
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+  </div>
+</ng-template>
+
+
+<ng-template #testformtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Prescription</h4>
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="prescriptionHtml">
+    <!-- {{prescriptionHtml}} -->
+    <div class="row col-md-12" style="text-align: end; display: block;"><button type="button" class="btn btn-primary"  (click)="modalRef.hide();printMainPrescription()">
+      Print Prescription
+    </button></div>
+
+    <div [innerHTML]="prescriptionHtml"></div>
+  </div>
+</ng-template>

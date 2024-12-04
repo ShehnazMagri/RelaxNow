@@ -1,0 +1,111 @@
+ <div class="page-wrapper">
+   <div class="content container-fluid">
+     <!-- Page Header -->
+     <div class="page-header">
+       <div class="row">
+         <div class="col-sm-12">
+           <h3 class="page-title">List of Doctors</h3>
+           <ul class="breadcrumb">
+             <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+             <li class="breadcrumb-item"><a href="javascript:(0);">Users</a></li>
+             <li class="breadcrumb-item active">Doctor</li>
+           </ul>
+         </div>
+       </div>
+     </div>
+     <!-- /Page Header -->
+
+     <div class="row">
+       <div class="col-sm-12">
+         <div class="card">
+           <div class="card-body">
+             <div class="table-responsive" *ngIf="doctorsList">
+               <table class="datatable table table-hover table-center mb-0">
+                 <thead>
+                   <tr>
+                     <th>Doctor Name</th>
+                     <th>State</th>
+                     <th>City</th>
+                     <th>Role</th>
+                     <th>Phome</th>
+                     <th>Action</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr *ngFor="let item of docters">
+                     <td>
+                       <h2 class="table-avatar" [routerLink]="['/admin/on-boarding/details',item.DOCTOR_ID]">
+                         <a href="javascript:void(0)" class="avatar avatar-sm mr-2"><img
+                             class="avatar-img rounded-circle"
+                             [src]="item?.BASE64CONTENT ||'assets/img/doctors/doctor-thumb-01.jpg'"
+                             alt="User Image"></a>
+                         <a href="javascript:void(0)">{{item.Prefix }} {{item.FIRST_NAME }} {{item.LAST_NAME}} </a>
+                       </h2>
+                     </td>
+                     <td>{{item.STATE_NAME}}</td>
+                     <td>{{item.CITY_NAME}}</td>
+                     <td>{{item.ROLENAME}}</td>
+                     <td>
+                       {{item.MOBILE}}
+                       <!-- <i class="fe fe-star text-warning"></i>
+                      <i class="fe fe-star text-warning"></i>
+                      <i class="fe fe-star text-warning"></i>
+                      <i class="fe fe-star text-warning"></i>
+                      <i class="fe fe-star-o text-secondary"></i> -->
+                     </td>
+                     <td>
+                       <div class="actions">
+                         <a class="btn btn-sm bg-success-light" data-toggle="modal"
+                           (click)="openModal(resettemplate,item)">
+                           <i class="fas fa-lock"></i> Reset Password
+                         </a>
+                       </div>
+                     </td>
+                   </tr>
+                 </tbody>
+               </table>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+   </div>
+ </div>
+
+ <ng-template #resettemplate>
+   <div class="modal-header">
+     <h4 class="modal-title pull-left">Reset Password</h4>
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+       <span aria-hidden="true">&times;</span>
+     </button>
+   </div>
+   <div class="modal-body">
+     <form novalidate (ngSubmit)="submitPassword(resetPassword)" #resetPassword="ngForm">
+       <div class="row form-row">
+         <div class="col-6 col-sm-6">
+           <div class="form-group">
+             <label>New Password</label>
+             <input type="password" class="form-control" name="new_password" #new_password="ngModel"
+               [ngClass]="{'is-invalid':isSubmitted && new_password.errors}" [(ngModel)]="newPassword" required>
+             <div class="invalid-feedback">
+               Please enter new password.
+             </div>
+           </div>
+         </div>
+         <div class="col-6 col-sm-6">
+           <div class="form-group">
+             <label>Confirm Password</label>
+             <input type="password" class="form-control" name="confirm_password" #confirm_password="ngModel"
+               [ngClass]="{'is-invalid':isSubmitted && (confirm_password.errors || confirm_password.value !== new_password.value)}"
+               [(ngModel)]="confirmPassword" required>
+             <div class="invalid-feedback">
+               New password and confirm password should be same.
+             </div>
+           </div>
+         </div>
+       </div>
+       <button type="submit" class="btn btn-primary btn-block">Save Password</button>
+     </form>
+   </div>
+ </ng-template>

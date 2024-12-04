@@ -1,0 +1,252 @@
+
+
+<!-- Page Content -->
+<div class="content">
+  <div class="container-fluid">
+    <div class="row" *ngIf="!testDone">
+      <div class="col-lg-12" *ngIf="testStarted">
+        <div class="row">
+          <div class="col-md-1 text-left">
+            <img src="assets/img/GVSCALE.png" class="ques_img" *ngIf="testId==3" />
+            <img src="assets/img/ewi-logo.png" class="ques_img" *ngIf="testId!=3" />
+
+          </div>
+          <div class="col-md-8 ">
+
+            <h3 class="" *ngIf="questionData?.length"><b>{{questionData[0]?.TestName}}</b></h3>
+            <!-- <p *ngIf="questionData?.length">{{questionData[0]?.CategoryName}} </p> -->
+          </div>
+          <div class="col-md-3 text-right">
+            <h3 class="text-uppercase">{{userDetails.FIRSTNAME}} {{userDetails.LASTNAME}}</h3>
+          </div>
+        </div>
+        <div class="ques_outer">
+          <!-- <ul class="nav nav-tabs nav-tabs-solid nav-justified">
+              <li class="nav-item"><a class="nav-link" href="#solid-justified-tab1" data-toggle="tab">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="#solid-justified-tab2" data-toggle="tab">Profile</a></li>
+              <li class="nav-item"><a class="nav-link" href="#solid-justified-tab3" data-toggle="tab">Messages</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane" id="solid-justified-tab1">
+                Tab content 1
+              </div>
+              <div class="tab-pane" id="solid-justified-tab2">
+                Tab content 2
+              </div>
+              <div class="tab-pane" id="solid-justified-tab3">
+                Tab content 3
+              </div>
+            </div> -->
+          <ul class="nav nav-tabs nav-tabs-bottom nav-justified" (click)="checkQuestionDone();">
+            <li class="nav-item" *ngFor="let item of questionData;let idx=index"><a class="nav-link"
+                [ngClass]="{'active': selectedIndex===idx,'disabled':!stepDone.includes(idx)}"
+                (click)="selectedIndex=idx;" href="#tabs{{item.CategoryID}}" data-toggle="tab">
+                {{item.CategoryName}}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div *ngFor="let item of questionData;let idx=index" class="tab-pane" id="tabs{{item.CategoryID}}"
+              [ngClass]="{'active show' : selectedIndex===idx}">
+              <ng-container *ngFor="let ques of item.QuestionList;index as i">
+
+                <div class="ques" *ngIf="ques?.Option_list?.length">
+                  <div class="ques_heading">
+
+                    <h5>{{ques?.Question}} </h5>
+
+                    <ul>
+                      <li *ngFor="let opt of ques.Option_list" [ngStyle]="{'width': (95/ques.Option_list.length)+'%'}">
+                        <label class="answer_list">
+                          <input type="radio" name="answer_{{item?.CategoryID}}{{ques?.QuestionID}}"
+                            (click)="submitAnswer(ques,opt,item.CategoryID)" [checked]="opt?.checked">
+                          <span class="checkmark"></span>
+                          <p>{{opt.Answer}}</p>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <button type="button" class="btn btn-success btn-lg" (click)="submitTest()"
+              [disabled]="isButtonDisabled">{{selectedIndex ===questionData.length-1 ? 'Submit':'Continue'}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3" *ngIf="!testStarted"></div>
+      <div class="col-lg-6" *ngIf="!testStarted">
+
+        <div class="card">
+          <div class="card-body pt-0">
+            <div class="intro-text justify-content-center" [innerHTML]="testDescription ">
+
+              <!-- <p>
+        EMOTIONAL WELLNESS INDEX
+        What does one do when one gets some physical problem? We go to the doctor and then he uses some measure to
+        check the degree of problem we have eg. If one has high BP , one gets blood pressure measured or if one has
+        Diabetes one gets blood sugar tested. Subsequently, medical help is given , as per the reading with that
+        doctor of either the BP or sugar. However , there are no such accurate test/biomarkers available for
+        measuring stress.
+
+        Scientifically, it becomes very challenging for us to measure the level of stress or to understand the
+        degree of stress one is facing.</p>
+      <img src="http://103.91.90.242/RelaxNow/assets/img/assement.png" alt="" width="100%"/>
+
+      <p>
+        While green denotes no stress on one hand and red is the other extreme denoting maximum stress requiring
+        professional help and blue/yellow /orange are in areas in between the two elements i.e normal & severe.
+        For example, in our life due to various challenges, responsibilities and aspirations, we can go from green
+        zone to other zones either stepwise or sometimes even directly into the red zone which might take few hours,
+        months or even years
+        Many a times we may not realize the drift which could be very gradual in one case to sudden in another
+        However, in my clinical experience of over 20 years, I have seen that if one gets the right guidance at the
+        right time and gets the right professional help, one can retrace the path from red/orange /yellow/blue band
+        to green band through counseling &/or medicines
+        Based on this color ban, we can identify the level of stress in our lives as per the corresponding color and
+        a tool like stress-o-meter can give us an idea about the color/stress-zone we are in.
+        By answering few questions related to you and your life , we can actually have some idea of the level of
+        stress in your life and based on your answers we can tell you which colour zone you are in!
+        Welcome to the world of Stress-o-meter! – by Dr. Sandeep Vohra. Click here to continue…..
+
+      </p>
+      <p><b>By Clicking on "Start the Test", you agree to our <a href="javascript:void(0);" class="link">Terms and Conditions</a></b>
+      </p>
+       -->
+              <br />
+
+            </div>
+
+            <div class="text-center intro-text justify-content-center">
+              <p><b>By Clicking on "Start the Test", you agree to our <a class="link"
+                    href="assets/terms-condition/EWICONSENT.pdf" target="_blank">Terms &amp;
+                    Conditions</a></b></p><br />
+
+              <!-- <button type="button" style="margin: 20px;" class="btn btn-success btn-lg" [disabled]="testCompleted"
+            (click)="startTest()">Start the Test</button><br /> -->
+              <button type="button" style="margin: 20px;" class="btn btn-success btn-lg" (click)="startTest()">Start the
+                Test</button><br />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3" *ngIf="!testStarted"></div>
+
+    </div>
+    <div class="row justify-content-center" *ngIf="testDone">
+      <div class="col-lg-3"></div>
+      <div class="col-lg-10">
+
+        <!-- Success Card -->
+        <div class="card success-card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-9">
+              </div>
+              <div class="col-md-3">
+                <div class="invoice-details">
+                  <h3 class="text-uppercase">{{userDetails?.FIRSTNAME}} {{userDetails?.LASTNAME}}</h3>
+                  <ul class="list-unstyled mb-0">
+                    <li>Test Taken on: <span>{{todayDate}}</span></li>
+                    <!-- <li *ngIf="this.testId!=3"><a href="{{reportpath}}" style="color:#004a83" target="_blank"><i
+                          class="fa fa-file"></i> View
+                        Report</a></li> -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="success-cont">
+              <i class="fas fa-check"></i>
+              <h3>Thank You !!!</h3>
+              <p>You have successfully completed the <strong>{{questionData[0]?.TestName}}</strong></p>
+
+              <div class="card card-table">
+                <div class="card-body">
+
+                  <!-- Invoice Table -->
+                  <div class="table-responsive">
+                    <table class="table table-hover table-center mb-0">
+                      <thead>
+                        <tr>
+                          <th>
+                            <!-- Your Score: {{totalMarks}} -->
+
+
+                          </th>
+                          <th style="background-color: {{bColor}};">
+                            <h3>{{stressText}}</h3>
+
+                          </th>
+                          <th >
+                            <img width="100" src="assets/admin/img/{{level}}.png" alt="" />
+                          </th>
+
+
+                        </tr>
+                          <tr>
+                            <th colspan="3" style="text-align: right">
+                              <span style="margin:20px" *ngFor="let element of descriptionData"><span style=" height: 25px;width: 25px;background-color: {{element.COLOR}};border-radius:
+                                                           25%;display: inline-block;"></span>
+                                {{element.RESULT_TERM}}</span>
+                            </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                    <div *ngIf="testId !==3" [innerHtml]="resultDescription | safe: 'html'"
+                      class="width:100%;margin-top:10px;"></div>
+                  </div>
+                  <!-- /Invoice Table -->
+
+                </div>
+              </div>
+              <div>
+
+                <div class="row invoice-payment">
+
+                  <div class="col-sm-8 text-left">
+                    <div class="m-b-20">
+                      <p>For any further queries or assistance, Please contact</p>
+                      <p>Mobile: +91 78279 90371</p>
+                      <p>Email: <a href="mailto:emotionalwellness@nwt.ai">emotionalwellness@nwnt.ai</a></p>
+                      <p>Website: <a href="https://nwnt.ai" target="_blank">www.nwnt.ai</a></p>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                  </div>
+                </div>
+                <div class="row " style="background-color: #00C2F7;"
+                  *ngIf="pendingTest &&pendingTest[0]&& pendingTest[0]?.testId">
+                  <div class="col-8  justify-content-center  d-flex align-items-center">
+                    <p style="margin: 20px;">{{pendingTest[0]?.TestName}}</p>
+
+                  </div>
+                  <div class="col-4">
+                    <button type="button" style="margin: 20px;" class="btn btn-success btn-lg"
+                      (click)="startNextTest()">Next Test</button><br />
+                  </div>
+                </div>
+                <!-- <div class="invoice-info">
+                  <h5>Disclaimer</h5>
+                  <p class="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed dictum
+                    ligula, cursus blandit risus. Maecenas eget metus non tellus dignissim aliquam ut a ex. Maecenas sed
+                    vehicula dui, ac suscipit lacus. Sed finibus leo vitae lorem interdum, eu scelerisque tellus
+                    fermentum. Curabitur sit amet lacinia lorem. Nullam finibus pellentesque libero.</p>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Success Card -->
+
+      </div>
+      <div class="col-lg-3"></div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>

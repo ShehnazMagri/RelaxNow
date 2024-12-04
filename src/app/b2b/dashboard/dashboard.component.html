@@ -1,0 +1,107 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="page-title">Welcome  {{username}}!</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="'/b2b/dashboard'">Dashboard</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div>
+<h3>
+ Services Offered
+</h3>
+</div>
+<!-- /Page Header -->
+  <!-- Page Content -->
+  <div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7 col-lg-9 col-xl-12">
+                <div class="row">
+                    <div class="col-md-12 col-lg-4 col-xl-4 product-custom" *ngFor="let item of testData" >
+                        <div class="profile-widget">
+                            <div class="doc-img">
+                                <a [routerLink]="['/b2b/product-desc',item.TESTID]" tabindex="-1" *ngIf="item.TESTID>0">
+                                      <img src="assets/img/GVSCALE.png" class="img-fluid" *ngIf="item.TESTID==3" style="height: 181px;width: 75% !important;margin-left: 28px;" />
+                                      <img src="assets/img/ewi-logo.png" class="img-fluid" *ngIf="item.TESTID!=3" style="height: 200px;width: 100%;" />
+
+                                </a>
+                                <a  tabindex="-1" *ngIf="item.TESTID<0">
+                                  <img class="img-fluid" alt="Product image" src="assets/img/bg_1.png">
+                                  <img class="img-fluid services-img" alt="Product image" src="assets/img/psychologist.png"  *ngIf="item.TESTID==-2"
+                                     >
+                                    <img src="assets/img/counselling.png" class="img-fluid services-img" *ngIf="item.TESTID==-1"
+                                     />
+
+                                </a>
+                            </div>
+                            <div class="pro-content">
+                                <h3 class="title pb-4">
+                                    <a href="javascript:void(0);" tabindex="-1">{{item.TESTNAME}}</a>
+                                </h3>
+                                <div class="row align-items-center">
+                                    <div class="col-lg-4">
+                                        <span class="price">INR {{item.PAYMENT}}</span>
+                                        <!-- <span class="price-strike">$45.00</span> -->
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <a class="cart-icon ml-1" [ngbTooltip]="'Trial Test'"  (click)="openQuestionModal(questions,item)" *ngIf="item.TESTID>0"><i class="fas fa-play"></i></a>
+                                        <a class="cart-icon ml-1" [ngbTooltip]="'Sample Report'" *ngIf="item.TESTID==3 && item.TESTID>0"
+                                           href="javascript:void(0);" (click)="openPDFReportModal(reportdetail,'https://noworrynotension.in/RelaxNow/assets/Reports/UW_748_1633272574847.pdf')"><i class="fas fa-search"></i></a>
+
+                                           <a class="cart-icon ml-1" [ngbTooltip]="'Sample Report'" *ngIf="item.TESTID!=3 && item.TESTID>0"
+                                                 href="javascript:void(0);"
+                                              (click)="openPDFReportModal(reportdetail,'https://noworrynotension.in/RelaxNow/assets/Reports/PDFReport_Normal.pdf')"
+                                            ><i class="fas fa-search"></i></a>
+                                        <a (click)="addToCart(item)" class="cart-icon ml-1" [ngbTooltip]="'Add To Cart'"><i class="fas fa-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                 </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  <ng-template #reportdetail>
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body text-center">
+      <iframe [src]="pdf" *ngIf="pdf" height="1000px" width="100%"></iframe>
+    </div>
+  </ng-template>
+
+  <ng-template #reporlisttdetail>
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body text-center">
+        <img class="img-fluid" alt="Product image" src="assets/img/reportlist.PNG">
+    </div>
+  </ng-template>
+
+<ng-template #questions>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <app-questions-b2b [TESTID]="selectedTestId" (newItemEvent)="hideQuestions($event)"
+      *ngIf="hideQuestionsScreen==false"></app-questions-b2b>
+  </div>
+</ng-template>

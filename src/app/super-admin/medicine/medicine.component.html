@@ -1,0 +1,154 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Medicine</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/Organizational-Clients'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Medicine</li>
+          </ul>
+        </div>
+        <div class="col-sm-5 col">
+          <a class="btn btn-primary float-right mt-2" data-toggle="modal" (click)="openModal(medicineTemplate)">
+            Add
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger1"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Group Name</th>
+                    <th>Formulation Name</th>
+                    <th>Description</th>
+                    <th width="50" class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of medicineList;index as i">
+                    <td>{{item.Name}}</td>
+                    <td>
+                      {{item?.Group_Name}}
+                    </td>
+                    <td>
+                      {{item?.Formulation_Name}}
+                    </td>
+                    <td>{{item?.Description}}</td>
+
+                    <td class="text-right">
+                      <div class="actions" data-toggle="modal" (click)="openModalEdit(medicineTemplate,item)">
+                        <i class="center fe fe-pencil"></i>
+                      </div>
+
+                      <div class="actions" data-toggle="modal" (click)="openDeleteModal(delete,item.Id)">
+                        <i class="center fe fe-trash"></i>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #medicineTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Medicine</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="submitForm(medicineForm)" #medicineForm="ngForm"
+      (keypress)="restrictSingleQuote($event)" autocomplete="off">
+      <div class="row form-row">
+        <div class="row col-12 col-sm-12">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Name <span class="required">*</span></label>
+              <input type="text" class="form-control" name="Name" #Name="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && Name.errors}" [value]="medicneDetails.Name"
+                [(ngModel)]="medicneDetails.Name" required>
+                  <div class="invalid-feedback">
+                    Please enter a name.
+                  </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Description <span class="required">*</span></label>
+              <input type="text" class="form-control" name="Description" #Description="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && Description.errors}" [value]="medicneDetails.Description"
+                [(ngModel)]="medicneDetails.Description" required>
+              <div class="invalid-feedback">
+                Please enter a description.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row col-12 col-sm-12">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Medicine Group</label>
+
+              <ng-select2 width="100%" [options]="{ multiple: false, closeOnSelect: false }" name="medicineGroupId" #medicineGroupId="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && medicineGroupId.errors}" [(ngModel)]="medicneDetails.medicineGroupId" >
+                <option *ngFor="let item of listData" [value]="item.Id">{{item.Name}}
+                </option>
+              </ng-select2>
+            </div>
+
+          </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Chemical Formulation Group</label>
+
+                  <ng-select2 width="100%" [options]="{ multiple: false, closeOnSelect: false }" name="ChemicalFormulationGroupId"
+                    #ChemicalFormulationGroupId="ngModel" [ngClass]="{'is-invalid':isSubmitted && ChemicalFormulationGroupId.errors}"
+                    [(ngModel)]="medicneDetails.ChemicalFormulationGroupId">
+                    <option *ngFor="let item of fromulationGroupData" [value]="item.Id">{{item.Name}}
+                    </option>
+                  </ng-select2>
+                </div>
+
+              </div>
+         </div>
+
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Save</button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to delete this?
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="deleteData()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>
+
+

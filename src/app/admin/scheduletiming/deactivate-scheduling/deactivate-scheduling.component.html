@@ -1,0 +1,143 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title"><i class="back-btn fas fa-arrow-left" [routerLink]="'/admin/scheduletiming'"></i>
+            Deactivate Schedule</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item" [routerLink]="'/admin/scheduletiming'">Schedule Timings</li>
+            <li class="breadcrumb-item active">Deactivate Schedule</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{peopleName}}</h4>
+            <div class="profile-box">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Select Date</label>
+                    <input type="text" class="form-control" name="dp" [(ngModel)]="model" (click)="d.toggle()"
+                      ngbDatepicker #d="ngbDatepicker" (ngModelChange)="getSchedule()" [minDate]="maxDate">
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                </div>
+                <div class="col-lg-2" [hidden]="!currentSlots?.length">
+                  <a data-toggle="modal" (click)="openModal(confirm)" class="btn btn-primary float-right mt-10">
+                    Deactivate Slots
+                  </a>
+                </div>
+                <div class="col-lg-2" [hidden]="!model?.year">
+                  <a data-toggle="modal" (click)="openModal(adhocConfirm)" class="btn btn-primary float-right mt-10">
+                    Add Ad HOC Slots
+                  </a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card schedule-widget mb-0">
+                    <!-- Schedule Content -->
+                    <div class="tab-content schedule-cont">
+                      <!-- Sunday Slot -->
+                      <div class="tab-pane fase active">
+                        <h4 class="card-title d-flex justify-content-between">
+                          <span>Time Slots</span>
+                          <ul class="legend float-right">
+                            <li><span class="timing" style="background-color:#e9e9e9 !important"></span>Available ( Standard Schedule )</li>
+                            <li><span class="custom-slot"></span>Available ( Custom Schedule )</li>
+                            <li><span class="cancelled"></span> Cancelled</li>
+                            <li><span class="booked"></span> Booked</li>
+                          </ul>
+
+                        </h4>
+                        <!-- Slot List -->
+                        <div class="doc-times" *ngIf="currentSlots?.length">
+                          <ng-container *ngFor="let slot of currentSlots;index as i">
+
+                            <div class="doc-slot-list"
+                              [ngClass]="{'selected': (selectedSlots.includes(slot.SlotId) || !slot.STATUS),'disabled':!slot.STATUS, 'adHocSlot': (slot.EXCEPTION_ID && (adHocSlots.includes(slot.EXCEPTION_ID) || slot.STATUS ===2)),'custom-slot':slot.MonthData==1}"
+                              (click)="selectSlot(slot,slot.EXCEPTION_ID)">
+                              <a class="timing">
+                                <span>{{slot?.START_TIME}}</span> - <span>{{slot?.END_TIME}}</span>
+                              </a>
+                              <a *ngIf="slot?.APPOINTMENT_STATUS ==='1'">
+                                <span>| {{slot?.CUSTOMER_NAME}}</span>
+                              </a>
+                              <!-- <a href="javascript:void(0)" class="delete_schedule" (click)="removeSlot(i)">
+                                <i class="fa fa-times"></i>
+                              </a> -->
+                            </div>
+                          </ng-container>
+
+                        </div>
+                        <!-- /Slot List -->
+                        <p class="text-muted mb-0" *ngIf="!currentSlots?.length">Not Available</p>
+                      </div>
+                      <!-- /Sunday Slot -->
+
+                      <!-- /Schedule Content -->
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #confirm>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to deactivate selected slots?
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <input type="text" class="form-control" name="reason" [(ngModel)]="reason" placeholder="Reason">
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="deactivaeSlots()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="close()">No</button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #adhocConfirm>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to convert to Ad HOC slots?
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <input type="text" class="form-control" name="reason" [(ngModel)]="reason" placeholder="Reason">
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="addAdhocSlots()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="close()">No</button>
+    </div>
+  </div>
+</ng-template>

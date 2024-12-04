@@ -1,0 +1,11 @@
+.patient-info-table td {
+  padding: 10px 10px;
+}
+.patient-info-table {
+  display: inline-grid;
+  display: -moz-inline-grid;
+}
+
+::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .select-font {
+  display: none!important;
+}

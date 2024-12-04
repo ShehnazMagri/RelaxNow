@@ -1,0 +1,171 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Scheduled Test</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Scheduled Test</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Recent Orders -->
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="row-border hover table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Schedule Name</th>
+                    <th>Test</th>
+                    <th data-sort='YYYYMMDD'>Start Date</th>
+                    <th data-sort='YYYYMMDD'>End Date</th>
+                    <th>Total No. Of Registered</th>
+                    <th>No Of Users Complete</th>
+                    <th>Copy URL</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of scheduleTestList;let i=index">
+                    <td>
+                      {{item.NAME}}
+                    </td>
+                    <td>{{item.TESTNAME}}</td>
+
+                    <td><span class="d-none">{{item.START_DATE| date:'y-MM-dd'}}</span>{{item.START_DATE| date}}</td>
+                    <td><span class="d-none">{{item.END_DATE | date:'y-MM-dd'}}</span>{{item.END_DATE| date}}</td>
+                    <td>
+                      <span *ngIf="item.ANONYMOUS==true || item.ANONYMOUS==1">
+                        {{item.NO_OF_USERS}}
+                      </span>
+                      <span *ngIf="item.ANONYMOUS!=true && item.ANONYMOUS!=1">
+                        {{item.UserCOUNT}}
+                      </span>
+
+
+                    </td>
+                    <td>
+                      <a href="javascript:console.log('javascript')" *ngIf="item.ANONYMOUS==true || item.ANONYMOUS==1"
+                        (click)="getAnonymousTestUsers(item.ID,scheduleTestAnonyMous)"> {{item.CompleteCount}}</a>
+
+                      <a href="javascript:console.log('javascript')" *ngIf="item.ANONYMOUS==false || item.ANONYMOUS==0"
+                        (click)="getScheduleTestUsers(item.ID,scheduleTest)">
+                        {{item.CompleteCount}}</a>
+
+                    </td>
+                    <td>
+                      <button class="btn btn-primary" type="submit" (click)="copy(item.URL,item.TESTNAME)">Copy</button>
+                    </td>
+                    <td>
+                      <span class="d-none">{{item.ACTIVE}}</span>
+                      <div class="float-right status-toggle">
+                        <input type="checkbox" id="status_{{i}}" class="check" [checked]="item.ACTIVE"
+                          (change)="changeStatus($event.target.checked,item.ID)">
+                        <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td>
+                    <td>
+                      <a [routerLink]="['/admin/schedule-test',item.ID]" style="color: #86ab28 !important;">
+                        <i class="center fe fe-pencil"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Orders -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #scheduleTest>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">User List</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="row-border hover table table-hover table-center mb-0" id="testUsers">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Test Completed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of testUsers;let i=index">
+                <td>
+                  {{item.NAME}}
+                </td>
+                <td>{{item.EMAIL}}</td>
+                <td>
+                  <span *ngIf="item.TEST_ID!=null && item.TEST_ID>0 ">
+                    Yes
+                  </span>
+                  <span *ngIf="item.TEST_ID==null || item.TEST_ID==0 ">
+                    No
+                  </span>
+                </td>
+
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #scheduleTestAnonyMous>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">User List</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="row-border hover table table-hover table-center mb-0" id="testUsersAnonymous">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of testUsers;let i=index">
+                <td>
+                  {{item.FIRST_NAME}} {{item.LAST_NAME}}
+                </td>
+                <td>{{item.EMAIL}}</td>
+
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,116 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="chat-window">
+          <!-- Chat Right -->
+          <div class="row" [hidden]="currentChannel">
+            <p>Please wait...</p>
+          </div>
+          <div class="chat-cont-right" [hidden]="!currentChannel">
+            <div class="chat-header">
+              <a id="back_user_list" href="javascript:void(0)" (click)="backClicked()" class="back-user-list">
+                <i class="material-icons">chevron_left</i>
+              </a>
+              <div class="media">
+                <div class="media-img-wrap">
+                  <div class="avatar avatar-online">
+                    <img *ngIf="doctorDetails?.BASE64CONTENT" [src]="doctorDetails?.BASE64CONTENT" alt="User Image"
+                      class="avatar-img rounded-circle">
+                    <img *ngIf="!doctorDetails?.BASE64CONTENT" src="assets/img/patients/patient1.jpg" alt="User Image"
+                      class="avatar-img rounded-circle"> </div>
+                </div>
+                <div class="media-body">
+                  <div class="user-name">{{doctorDetails?.FIRST_NAME}}
+                    {{doctorDetails?.MIDDLE_NAME}}
+                    {{doctorDetails?.LAST_NAME}}</div>
+                  <div class="user-status">online</div>
+                </div>
+              </div>
+              <div class="chat-options">
+                <a (click)="callUser(doctorDetails)">
+                  <i class="material-icons">local_phone</i>
+                </a>
+                <a href="javascript:void(0)" (click)="videoCall()">
+                  <i class="material-icons">videocam</i>
+                </a>
+                <!-- <a href="javascript:void(0)">
+                  <i class="material-icons">more_vert</i>
+                </a> -->
+              </div>
+            </div>
+            <div class="chat-body">
+              <div class="chat-scroll" #chatDisplay>
+                <ul class="list-unstyled">
+
+                  <ng-container *ngFor="let message of messages ">
+                    <li class="chat-date">{{message.dateUpdated | niceDateFormatPipe}}</li>
+                    <li class="media" [ngClass]="(userData.EMAIL !== message.author) ? 'received' : 'sent'">
+
+                      <div class="media-body">
+                        <div class="msg-box">
+                          <div>
+                            <p *ngIf="message.body">{{message.body}}</p>
+                            <p *ngIf="message.media" class="media-file" (click)="downloadMedia(message)"> <img
+                                src="assets/img/attached.png" alt="medis" /></p>
+                            <ul class="chat-msg-info">
+                              <li>
+                                <div class="chat-time">
+                                  <span>{{message.dateUpdated | date: 'h:mm a'}}</span>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ng-container>
+                  <li class="media received" *ngIf="membersTyping.length">
+                    <div class="avatar">
+                      <img *ngIf="doctorDetails?.BASE64CONTENT" [src]="doctorDetails?.BASE64CONTENT" alt="User Image"
+                        class="avatar-img rounded-circle">
+                      <img *ngIf="!doctorDetails?.BASE64CONTENT" src="assets/img/patients/patient1.jpg" alt="User Image"
+                        class="avatar-img rounded-circle">
+                    </div>
+                    <div class="media-body">
+                      <div class="msg-box">
+                        <div>
+                          <div class="msg-typing">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <form (submit)="sendMessage()" autocomplete="off" name="chatForm" id="chatForm">
+
+              <div class="chat-footer">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="btn-file btn">
+                      <i class="fa fa-paperclip"></i>
+                      <input type="file" class="upload" accept="image/*,video/*" (change)="onFileSelect($event)">
+                    </div>
+                  </div>
+                  <input type="text" id="chatMessage" name="chatMessage" #chatElement
+                    class="input-msg-send form-control" [(ngModel)]="chatMessage" />
+                  <div class="input-group-append" (click)="sendMessage()">
+                    <button type="button" class="btn msg-send-btn"><i class="fab fa-telegram-plane"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+          <!-- /Chat Right -->
+        </div>
+      </div>
+    </div>
+    <!-- /Row -->
+  </div>
+</div>

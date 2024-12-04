@@ -1,0 +1,53 @@
+.align-input {
+  padding: 5px 8px;
+}
+.calendar {
+  border-left: 0px;
+  border-color: #dcdcdc;
+  padding-right: 20px;
+}
+.align-input {
+  border-right: 0px;
+}
+.clear-link {
+  color: #004a83;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.clear-link:hover {
+  color: #20c0f3;
+}
+.doc-speciality {
+  margin-bottom: 5px;
+  width: 40vw;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 1425px) {
+  .doc-info-left {
+    width: 70%;
+  }
+  .doc-info-cont {
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .doc-info-left {
+    width: 70%;
+  }
+  .doc-info-cont {
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 991.5px) {
+  .doc-info-left {
+    width: 100%;
+  }
+  .doc-info-cont {
+    width: 100%;
+  }
+}

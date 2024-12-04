@@ -1,0 +1,232 @@
+<div class="row">
+  <div class="col">
+
+    <div class="card widget-profile pat-widget-profile">
+      <div class="card-body">
+        <h4>Basic Information</h4>
+
+        <div class="pro-widget-content">
+          <div class="profile-info-widget">
+            <a class="booking-doc-img">
+              <img src="assets/img/NoImg.png" alt="User Image"
+                *ngIf="doctorDetails?.BASE64CONTENT==null || doctorDetails?.BASE64CONTENT==''">
+              <img src="{{doctorDetails?.BASE64CONTENT}}" alt="User Image"
+                *ngIf="doctorDetails?.BASE64CONTENT!=null && doctorDetails?.BASE64CONTENT!=''">
+
+            </a>
+            <div class="profile-det-info">
+              <h3><a>{{doctorDetails?.FIRST_NAME}} {{doctorDetails?.MIDDLE_NAME}} {{doctorDetails?.LAST_NAME}}</a></h3>
+
+              <div class="patient-details">
+                <h5 class="doc-department">
+                  <img src="assets/img/specialities/specialities-02.png" class="img-fluid" alt="Speciality">
+                  {{doctorDetails?.ROLENAME}}</h5>
+                <p class="doc-department">{{doctorDetails?.PEOPLE_PROFILE[0]?.PROFESSIONAL_TITLE}}</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="patient-info row">
+          <div class="col-md-12 text-center">
+            <div class="row"></div>
+            <table class="patient-info-table">
+              <tr>
+                <td>Phone</td>
+                <td>{{doctorDetails?.Mobile}}</td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td>{{doctorDetails?.EMAIL}}</td>
+              </tr>
+              <tr>
+                <td>Address</td>
+                <td><i class="fas fa-map-marker-alt"></i> {{doctorDetails?.ADDRESS}}</td>
+              </tr>
+              <tr>
+              </tr>
+              <tr *ngIf="enableCalling">
+                <td><a (click)="callUser()" class="btn btn-white">
+                    <img src="assets/img/call_64.png" style="width:15px;height:12px" />
+                  </a></td>
+                <td> <a [routerLink]="['/p/message',doctorId]" [queryParams]="{appointmentId: appointmentId}"
+                    class="btn btn-white">
+                    <img src="assets/img/chat_64.png" style="width:15px;height:12px" />
+                  </a></td>
+                <td> <a (click)="videoCall()" class="btn btn-white">
+                    <img src="assets/img/video-player_64.png" style="width:15px;height:12px" />
+                  </a></td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="accordion" id="accordionExample" style="margin-top: 10px;">
+  <div class="row">
+    <div class="col">
+      <div class="card widget-profile pat-widget-profile">
+        <div class="card-body">
+          <div class="form-group">
+            <h4 class="float-left">Patient Historic Details</h4>
+            <div class="row" *ngIf="arrayHistory.length!=0" style="margin-bottom: 10px;">
+              <div class="col-6"></div>
+              <div class="col-6 right-47">
+                <div class="change-photo-btn" (click)="printPrescription()">
+                  <span><i class="fa fa-print"></i> Print</span>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="arrayHistory.length==0">
+              <div class="col-6"></div>
+              <div class="col-6 right-47" style="visibility: hidden;">
+                <div class="change-photo-btn" (click)="printPrescription()">
+                  <span><i class="fa fa-print"></i> Print</span>
+                </div>
+              </div>
+            </div>
+            <div class="widget awards-widget">
+              <div class="experience-box">
+                <ul class="experience-list">
+                  <li *ngFor="let item of arrayHistory">
+                    <div class="experience-user">
+                      <div class="before-circle"></div>
+
+                    </div>
+                    <div class="experience-content">
+                      <div class="timeline-content">
+                        <div class="presc-container">
+                          <div class="presc-body">
+                            <table class="presc-table">
+                              <tr class="header-row">
+                                <td>
+                                  <strong>Appointment Date:</strong> {{item?.APPOINTMENT_DATE}}
+                                </td>
+                                <td *ngIf="item?.PRESCRIPTION_DATE">
+                                  <strong>Prescription Date:</strong> {{item?.PRESCRIPTION_DATE| date:'yyyy-MM-dd'}}
+                                </td>
+                                <td *ngIf="item?.PRESCRIPTION_BY">
+                                  <strong>Prescription By:</strong> {{item?.PRESCRIPTION_BY}}
+                                </td>
+                              </tr>
+                              <tr class="data-row">
+                                <td colspan="4">
+                                  <strong>Prescription:</strong>
+                                  <p [innerHTML]="item?.Notes"></p>
+                                </td>
+                              </tr>
+                              <ng-container *ngFor="let _item of item?.items">
+                                <tr class="data-row" *ngIf="_item?.Name">
+                                  <td colspan="4">
+                                    <strong>Medicine Name: </strong> {{_item?.Name}}
+                                  </td>
+                                </tr>
+                                <tr class="data-row" *ngIf="_item?.Potency || _item?.Dose|| _item?.Duration">
+                                  <td colspan="2">
+                                    <strong>Potency:</strong> {{_item?.Potency}}
+                                  </td>
+                                  <td colspan="2">
+                                    <strong>Dose:</strong> {{_item?.Dose}}
+                                  </td>
+
+                                </tr>
+                                <tr class="data-row" *ngIf="_item?.Duration || _item?.Action">
+                                  <td colspan="2">
+                                    <strong>Duration:</strong> {{_item?.Duration}}
+                                  </td>
+                                  <td colspan="2">
+                                    <strong>Plan of Action:</strong> {{_item?.Action}}
+                                  </td>
+                                </tr>
+                              </ng-container>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="arrayHistory.length==0">No Record found</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card" *ngIf="refferedHistory.length">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#refferHistory"
+          aria-expanded="false" aria-controls="refferHistory">
+          Referred Counselling Details
+        </button>
+      </h2>
+    </div>
+    <div id="refferHistory" class="collapse" aria-labelledby="refferHistory" data-parent="#accordionExample">
+      <div class="card-body">
+        <div class="card-body">
+          <div class="form-group">
+            <div class="row">
+              <table class="row-border hover table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Referred By</th>
+                    <th>Referred To</th>
+                    <th>Referred Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of refferedHistory">
+                    <td>{{item.referredby}}</td>
+                    <td>{{item.referredto}}</td>
+                    <td><span class="d-none">{{item.referreddate | date:'y-MM-dd'}}</span>{{item.referreddate| date}}
+                    </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card" *ngIf="customerSuggestionList.length">
+    <div class="card-header" id="headingThree">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
+          aria-expanded="false" aria-controls="collapseThree">
+          Suggestions
+        </button>
+      </h2>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="row-border hover table table-hover table-center mb-0">
+            <thead>
+              <tr>
+                <th>Suggestion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of customerSuggestionList">
+                <td>{{item.Name}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

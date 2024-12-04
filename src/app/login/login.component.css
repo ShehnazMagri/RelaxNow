@@ -1,0 +1,27 @@
+.required {
+  color: red;
+  padding-left: 3px;
+}
+.content {
+  padding-bottom: 50px;
+}
+.form-focus .focus-label {
+  font-size: 13px;
+}
+.form-control {
+  font-size: 14px !important;
+}
+.forgot-link {
+  color: #0954dc;
+  font-size: 16px;
+  text-decoration: underline;
+  font-weight: 500;
+}
+.login-right .dont-have {
+  font-size: 16px;
+}
+.login-right .dont-have a {
+  color: #0954dc;
+  text-decoration: underline;
+  font-weight: 500;
+}

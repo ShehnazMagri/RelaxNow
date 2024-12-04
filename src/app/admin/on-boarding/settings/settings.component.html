@@ -1,0 +1,232 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title"><i class="back-btn fas fa-arrow-left" [routerLink]="'/admin/on-boarding'"></i>
+            {{userDetails?.FIRST_NAME}}
+            {{userDetails?.LAST_NAME}}</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/on-boarding'">OnBoarding</a></li>
+            <li class="breadcrumb-item active">Basic Information</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Basic Information -->
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Basic Information( {{userDetails?.FIRST_NAME}} {{userDetails?.LAST_NAME}} )</h4>
+        <div class="row form-row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <div class="change-avatar">
+                <div class="profile-img">
+                  <img *ngIf="!userImage" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+                  <img *ngIf="userImage" [src]="userImage" alt="User Image">
+                </div>
+                <div class="upload-img">
+                  <div class="change-photo-btn">
+                    <span><i class="fa fa-upload"></i> Upload Photo</span>
+                    <input type="file" class="upload" accept="image/*" (change)="onImageSelect($event)">
+                  </div>
+                  <small class="form-text text-muted">Allowed JPG or PNG. Max size of 5MB</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Title </label>
+              <input type="text" class="form-control" name="title" [(ngModel)]="profileDetails.PROFESSIONAL_TITLE"
+                (blur)="saveBasicInfo(profileDetails.PROFESSIONAL_TITLE)" />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Practising From </label>
+              <input type="text" class="form-control" name="practiceFrom" [(ngModel)]="practiceDate"
+                (blur)="saveBasicInfo(practiceDate,true)" (click)="d1.toggle()" ngbDatepicker [maxDate]="maxDate"
+                #d1="ngbDatepicker" />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Specialization</label>
+              <tag-input [(ngModel)]="specialization" name="specialization" (onAdd)="saveBasicInfo(specialization)"
+                (onRemove)="saveBasicInfo(specialization)">
+              </tag-input>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Basic Information -->
+
+    <!-- About Me -->
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">About Me</h4>
+        <div class="form-group mb-0">
+          <label>Biography</label>
+          <textarea class="form-control" rows="5" name="statement" [(ngModel)]="profileDetails.PROFESSIONAL_STATEMENT"
+            (blur)="saveBasicInfo(profileDetails.PROFESSIONAL_STATEMENT)"></textarea>
+        </div>
+      </div>
+    </div>
+    <!-- /About Me -->
+
+    <!-- Pricing -->
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Pricing</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>First Consultation Fee </label>
+              <input type="number" min="0" class="form-control" name="firstConsultationFee"
+                [(ngModel)]="profileDetails.FIRST_CONSULTATION_FEE"
+                (blur)="saveBasicInfo(profileDetails.FIRST_CONSULTATION_FEE)" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Follow-Up Consultation Fee </label>
+              <input type="number" min="0" class="form-control" name="followupConsultationFee"
+                [(ngModel)]="profileDetails.FOLLOWUP_CONSULTATION_FEE"
+                (blur)="saveBasicInfo(profileDetails.FOLLOWUP_CONSULTATION_FEE)" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Reset Fee after Days</label>
+              <input type="number" min="0" class="form-control" name="resetNumberOfDays"
+                [(ngModel)]="profileDetails.RESET_DAYS" (blur)="saveBasicInfo(profileDetails.RESET_DAYS)" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- /Pricing -->
+
+    <!-- Education -->
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Education / Certification / Accreditation</h4>
+        <div class="education-info">
+          <div class="row form-row education-cont">
+            <div class="col-12 col-md-10 col-lg-11">
+              <div class="row form-row" *ngFor="let edu of educationFields;index as i">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-group">
+                    <label>Degree / Certification / Accreditation</label>
+                    <input type="text" class="form-control" name="qualification_{{i}}"
+                      [(ngModel)]="educationFields[i].QUALIFICATION" (blur)="saveEducation(i)" />
+                  </div>
+                </div>
+                <div class="col-6 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label>Date of Start</label>
+                    <input type="text" class="form-control" name="precurementYear_{{i}}" (click)="d2.toggle()"
+                      ngbDatepicker (dateSelect)="onDateSelection($event,i,'edu')" [maxDate]="maxDate"
+                      #d2="ngbDatepicker" [(ngModel)]="dateOfStart[i]" />
+                  </div>
+                </div>
+                <div class="col-6 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label>Date of Completion</label>
+                    <input type="text" class="form-control" name="precurementYear_{{i}}"
+                      [(ngModel)]="dateOfCompletion[i]" (click)="d3.toggle()" ngbDatepicker [minDate]="dateOfStart[i]"
+                      (dateSelect)="onDateSelection($event,i,'edu')" [maxDate]="maxDate" #d3="ngbDatepicker" />
+                  </div>
+                </div>
+                <div class="col-8 col-md-4 col-lg-3">
+                  <div class="form-group">
+                    <label>College / Institute</label>
+                    <input type="text" class="form-control" name="institute_{{i}}"
+                      [(ngModel)]="educationFields[i].INSTITUTE" (blur)="saveEducation(i)" />
+                  </div>
+                </div>
+
+                <div class="col-4 col-md-2 col-lg-1  text-center" *ngIf="edu.ID" (click)="removeEducationBlock(i)">
+                  <a class="trash"><i class="far fa-trash-alt"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="add-more">
+          <a class="add-education" (click)="addEducationBlock()"><i class="fa fa-plus-circle"></i> Add More</a>
+        </div>
+      </div>
+    </div>
+    <!-- /Education -->
+
+    <!-- Experience -->
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Experience</h4>
+        <div class="experience-info">
+          <div class="row form-row experience-cont">
+            <div class="col-12 col-md-10 col-lg-11">
+              <div class="row form-row" *ngFor="let exp of experienceFields;index as i">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-group">
+                    <label>Hospital Name</label>
+                    <input type="text" class="form-control" name="hospitalName_{{i}}"
+                      [(ngModel)]="experienceFields[i].HOSPITAL_NAME" (blur)="saveExperience(i)" />
+                  </div>
+                </div>
+                <div class="col-6 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label>From</label>
+                    <input type="text" class="form-control" name="startTime_{{i}}"
+                      [(ngModel)]="experienceFields[i].START_TIME" (click)="d.toggle()" ngbDatepicker
+                      [minDate]="practiceDate" [maxDate]="maxDate" #d="ngbDatepicker"
+                      (dateSelect)="onDateSelection($event,i,'exp')" />
+                  </div>
+                </div>
+                <div class="col-6 col-md-2 col-lg-2">
+                  <div class="form-group">
+                    <label>To</label>
+                    <input type="text" class="form-control" name="endTime_{{i}}"
+                      [(ngModel)]="experienceFields[i].END_TIME" (click)="d4.toggle()" ngbDatepicker
+                      [minDate]="experienceFields[i].START_TIME" [maxDate]="maxDate" #d4="ngbDatepicker"
+                      (dateSelect)="onDateSelection($event,i,'exp')" />
+                  </div>
+                </div>
+                <!-- <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-group">
+                    <label>Designation</label>
+                    <input type="text" class="form-control" name="designation_{{i}}"
+                      [(ngModel)]="experienceFields[i].designation" />
+                  </div>
+                </div> -->
+                <div class="col-8 col-md-4 col-lg-3">
+                  <div class="form-group">
+                    <label>Hospital Address</label>
+                    <input type="text" class="form-control" name="hospitalAddress_{{i}}"
+                      [(ngModel)]="experienceFields[i].HOSPITAL_ADDRESS" (blur)="saveExperience(i)" />
+                  </div>
+                </div>
+                <div class="col-4 col-md-2 col-lg-1  text-center" *ngIf="exp.ID" (click)="removeExperienceBlock(i)">
+                  <a class="trash"><i class="far fa-trash-alt"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="add-more">
+            <a class="add-experience" (click)="addExperienceBlock()"><i class="fa fa-plus-circle"></i> Add More</a>
+          </div>
+        </div>
+      </div>
+      <!-- /Experience -->
+      <div class="submit-section submit-btn-bottom">
+        <button type="button" class="btn btn-primary submit-btn" (click)="saveProfile()">Save Changes</button>
+      </div>
+    </div>
+  </div>

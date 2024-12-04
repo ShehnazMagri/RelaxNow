@@ -1,0 +1,83 @@
+.doc-slot-list {
+  background-color: #e9e9e9;
+  border: 1px solid #e9e9e9;
+  border-radius: 4px;
+  color: #757575;
+  font-size: 14px;
+  margin: 10px 10px 0 0;
+  padding: 6px 15px;
+  cursor: pointer;
+}
+
+.doc-slot-list a {
+  color: #757575;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.doc-slot-list:hover {
+  background-color: #d43f3a;
+}
+.doc-slot-list a:hover {
+  color: #fff;
+}
+.doc-slot-list.selected {
+  background-color: #d43f3a;
+}
+.doc-slot-list.selected a {
+  color: #fff;
+}
+
+.doc-slot-list.selected:hover {
+  background-color: #e9e9e9;
+}
+.doc-slot-list.selected a:hover {
+  color: #757575;
+}
+
+.doc-slot-list.adHocSlot {
+  background-color: #00ff37;
+}
+.doc-slot-list.adHocSlot a {
+  color: #fff;
+}
+
+.doc-slot-list.adHocSlot:hover {
+  background-color: #00ff37;
+}
+.doc-slot-list.adHocSlot a:hover {
+  color: #757575;
+}
+
+.doc-slot-list.selected.disabled:hover {
+  background-color: #00ff37;
+}
+.doc-slot-list.selected.disabled a:hover {
+  color: #757575;
+}
+/* basic positioning */
+.legend {
+  list-style: none;
+  font-size: 17px;
+}
+.legend li {
+  float: left;
+  margin-right: 10px;
+}
+.legend span {
+  border: 1px solid #ccc;
+  float: left;
+  width: 32px;
+  height: 16px;
+  margin: 2px;
+}
+/* your colors */
+.legend .adhoc {
+  background-color: #00ff37;
+}
+.legend .cancelled {
+  background-color: #d43f3a;
+}
+.legend .available {
+  background-color: #e9e9e9;
+}

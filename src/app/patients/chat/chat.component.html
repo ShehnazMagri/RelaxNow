@@ -1,0 +1,106 @@
+<div class="content">
+  <div class="container-fluid">
+
+    <!-- Call Wrapper -->
+    <div class="call-wrapper">
+      <div class="call-main-row">
+        <div class="call-main-wrapper">
+          <div class="call-view">
+            <div class="call-window">
+
+              <!-- Call Header -->
+              <div class="fixed-header">
+                <div class="navbar">
+                  <div class="user-details">
+                    <div class="float-left user-img">
+                      <a class="avatar avatar-sm mr-2"
+                        [routerLink]="['p/doctor-profile',appointmentDetails?.DOCTOR_ID]"
+                        title="{{appointmentDetails?.DOCTOR_FIRST_NAME}}">
+                        <img [src]="appointmentDetails?.People_IMAGE || 'assets/img/patients/patient.jpg'"
+                          alt="User Image" class="rounded-circle">
+                        <span class="status online"></span>
+                      </a>
+                    </div>
+                    <div class="user-info float-left">
+                      <a [routerLink]="'p/patient-profile'"><span>{{appointmentDetails?.DOCTOR_FIRST_NAME}}
+                          {{appointmentDetails?.DOCTOR_LAST_NAME}}</span></a>
+                      <span class="last-seen">Online</span>
+                    </div>
+                  </div>
+                  <!-- <ul class="nav float-right custom-menu">
+                    <li class="nav-item dropdown dropdown-action">
+                      <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false"><i class="fa fa-cog"></i></a>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a href="javascript:void(0)" class="dropdown-item">Settings</a>
+                      </div>
+                    </li>
+                  </ul> -->
+                </div>
+              </div>
+              <!-- /Call Header -->
+
+              <!-- Call Contents -->
+              <div class="call-contents">
+                <div class="call-content-wrap">
+                  <div class="user-video">
+                    <app-camera #participantcamera [style.display]="!!activeRoom ? 'none' : 'block'"></app-camera>
+                    <app-participants #participants (leaveRoom)="onLeaveRoom()"
+                      (participantsChanged)="onParticipantsChanged($event)"
+                      [style.display]="!!activeRoom ? 'block' : 'none'"
+                      [activeRoomName]="!!activeRoom ? activeRoom.name : null"></app-participants>
+                  </div>
+                  <div class="my-video">
+                    <ul>
+                      <li>
+                        <app-settings #settings (settingsChanged)="onSettingsChanged($event)"></app-settings>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <!-- Call Contents -->
+
+              <!-- Call Footer -->
+              <div class="call-footer">
+                <div class="call-icons">
+                  <span class="call-duration">{{counter}}</span>
+<span>ROOM: {{romm}}</span>
+                  <ul class="call-items">
+                    <li class="call-item">
+                      <a href="javascript:void(0)" [ngClass]="hideVideo ? 'badge-danger':''" tooltip="Enable Video"
+                        placement="top" (click)="toggleVideo()"><i class="fas fa-video camera"></i></a>
+                    </li>
+                    <li class="call-item">
+                      <a href="javascript:void(0)" [ngClass]="muteAudio ? 'badge-danger':''" tooltip="Mute"
+                        placement="top" (click)="toggleMute()"><i class="fa fa-microphone microphone"></i></a>
+                    </li>
+                    <!-- <li class="call-item">
+                      <a href="javascript:void(0)" tooltip="Add User" placement="top"><i
+                          class="fa fa-user-plus"></i></a>
+                    </li>
+                    <li class="call-item">
+                      <a href="javascript:void(0)" tooltip="Full Screen" placement="top"><i
+                          class="fas fa-arrows-alt-v full-screen"></i></a>
+                    </li> -->
+                  </ul>
+                  <div class="end-call">
+                    <a style="cursor: pointer;" (click)="onLeaveRoom()">
+                      <i class="material-icons">call_end</i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- /Call Footer -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- /Call Wrapper -->
+
+  </div>
+
+</div>

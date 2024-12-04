@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import "../../../assets/css/test-style.css";
+.optionStrip{
+  margin-bottom: -17px !important;
+}
+
+.hidePopUp
+{
+  display: none;
+}
+
+.optionStrip
+{
+  background-color: #044e80 !important;
+}
+
+.qrowhead h3 {
+  font-weight: 400 !important;
+  font-size: 23px !important;
+ }
+
+ .faqDrop li h3 {
+  border-left: 2px solid #044e80 !important;
+ }
+
+ .qright p {
+   font-size: 22px !important;
+ }
+ .faqDrop li p {
+  font-family: 'Open Sans' !important;
+ }
+
+

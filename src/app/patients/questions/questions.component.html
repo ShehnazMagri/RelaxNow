@@ -1,0 +1,139 @@
+
+
+<div class="sec1">
+
+  <div style="width:96%;margin:2%">
+    <div class="gvRow" style="margin-top: 20px;" *ngIf="testId==3">
+      <h3>Goulston Vohra</h3>
+      <h2>Scale of Happiness</h2>
+    </div>
+    <div class="gvRow" style="margin-top: 20px;" *ngIf="testId!=3">
+      <h3 style="font-size:25px;font-weight:bold ;">Emotional Wellness Index</h3>
+      <h2 *ngIf="testId==83">EWI ADULT</h2>
+      <h2 *ngIf="testId==84">EWI STUDENT</h2>
+    </div>
+
+    <div class="inner_white">
+      <div class="row">
+        <div class="col-lg-3" *ngIf="testId!=3">
+          <ul class="nav nav-tabs tabs-left">
+            <li *ngFor="let item of questionData;let idx=index"
+              [ngClass]="{'active': selectedIndex===idx,'disabled':!stepDone.includes(idx)}"
+              (click)="selectedIndex=idx;"><a href="#tabs{{item.CategoryID}} " data-toggle="tab"><img
+                  src="assets/User/img/icon{{idx+1}}.png">
+                <p>{{item.CategoryName}}</p>
+              </a></li>
+          </ul>
+        </div>
+        <div  [ngClass]="{'col-lg-9': testId!=3,'col-lg-12': testId==3}">
+          <div class="tab-content">
+            <div class="tab-pane home-banner-two" *ngFor="let item of questionData;let idx=index" class="tab-pane"
+              id="tabs{{item.CategoryID}}" [ngClass]="{'active show' : selectedIndex===idx}">
+              <div *ngIf="testId==3" class="tab_con_bg" style="background:url(assets/User/img/gvh.jpg) no-repeat top left; background-size: 100% 550px;">
+                <ngx-slick-carousel class="home-banner-three-slider" *ngIf="selectedIndex===idx"
+                  #slickModal="slick-carousel" [config]="slideConfig" (beforeChange)="beforeChange($event)">
+
+                  <div ngxSlickItem *ngFor="let ques of item.QuestionList;index as i">
+                    <div class="con_white con_white_3" *ngIf="ques?.Option_list?.length">
+                      <h3 style="border-bottom: 1px solid rgb(128 128 128 / 19%);
+                      padding-bottom: 12px;">{{ques?.Question}}</h3>
+                      <div class="row col-md-12">
+                        <div *ngIf="testId!=3" class="row col-md-12">
+                          <div class="col-md-4" *ngFor="let opt of ques.Option_list">
+                            <label class="cont">{{opt.Answer}}
+                              <input type="radio" name="answer_{{item?.CategoryID}}{{ques?.QuestionID}}"
+                                (click)="submitAnswer(ques,opt,item.CategoryID,item.QuestionList,i)" [checked]="opt?.checked" style="visibility: hidden;">
+                              <span class="checkmark"></span>
+                            </label>
+                          </div>
+                        </div>
+                        <div *ngIf="testId==3" class="row col-md-12">
+                          <div class=" col-md-1" *ngFor="let opt of ques.Option_list">
+                            <label class="cont">{{opt.Answer}}
+                              <input type="radio" name="answer_{{item?.CategoryID}}{{ques?.QuestionID}}"
+                                (click)="submitAnswer(ques,opt,item.CategoryID,item.QuestionList,i)" [checked]="opt?.checked" style="visibility: hidden;">
+                              <span class="checkmark"></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12" style="text-align: end;">
+                        <div class="sRow sRowFlex">
+                          <div class="leftinfo" style="text-align: left"><button type="button" *ngIf="selectedIndex
+                            ===questionData.length-1 && this.questionsDone.length == this.totalQuestions" class="btn btn-success btn-lg testButton" style="margin-top:20px"
+                                    (click)="submitTest()">Submit</button></div>
+                          <div class="rightinfo">
+                            <h2><span>Question</span> {{i+1}} <span>of {{item.QuestionList.length}}</span></h2>
+                          </div>
+                        </div>
+                        <!-- <h3> {{i+1}} of {{item.QuestionList.length}}</h3> -->
+                      </div>
+
+                    </div>
+                  </div>
+
+                </ngx-slick-carousel>
+              </div>
+
+              <div *ngIf="testId!=3" class="tab_con_bg"
+              [ngClass]="{'cls1': idx+1==1, 'cls2': idx+1==2,
+'cls3': idx+1==3,'cls4': idx+1==4,'cls5': idx+1==5}"
+              style=" background-size: 100% 550px;">
+                <ngx-slick-carousel class="home-banner-three-slider" *ngIf="selectedIndex===idx"
+                  #slickModal="slick-carousel" [config]="slideConfig">
+
+                  <div ngxSlickItem *ngFor="let ques of item.QuestionList;index as i">
+                    <div class="con_white con_white_3" *ngIf="ques?.Option_list?.length">
+                      <h3 style="border-bottom: 1px solid rgb(128 128 128 / 19%);
+                      padding-bottom: 12px;">{{ques?.Question}}</h3>
+                      <div class="row col-md-12">
+                        <div *ngIf="testId!=3" class="row col-md-12">
+                          <div class="col-md-4" *ngFor="let opt of ques.Option_list">
+                            <label class="cont">{{opt.Answer}}
+                              <input type="radio" name="answer_{{item?.CategoryID}}{{ques?.QuestionID}}"
+                                (click)="submitAnswer(ques,opt,item.CategoryID,item.QuestionList,i)" [checked]="opt?.checked" style="visibility: hidden;">
+                              <span class="checkmark"></span>
+                            </label>
+                          </div>
+                        </div>
+                        <div *ngIf="testId==3" class="row col-md-12">
+                          <div class=" col-md-1" *ngFor="let opt of ques.Option_list">
+                            <label class="cont">{{opt.Answer}}
+                              <input type="radio" name="answer_{{item?.CategoryID}}{{ques?.QuestionID}}"
+                                (click)="submitAnswer(ques,opt,item.CategoryID,item.QuestionList,i)" [checked]="opt?.checked" style="visibility: hidden;">
+                              <span class="checkmark"></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12" style="text-align: end;">
+                        <div class="sRow sRowFlex">
+                          <div class="leftinfo"  style="text-align: left">   <button type="button" *ngIf="selectedIndex
+                            ===questionData.length-1 && this.questionsDone.length == this.totalQuestions" class="btn btn-success btn-lg testButton" style="margin-top:20px"
+                                    (click)="submitTest()">Submit</button>
+                        </div>
+                          <div class="rightinfo">
+                            <h2><span>Question</span> {{i+1}} <span>of {{item.QuestionList.length}}</span></h2>
+                          </div>
+                        </div>
+                        <!-- <h3> {{i+1}} of {{item.QuestionList.length}}</h3> -->
+                      </div>
+
+                    </div>
+                  </div>
+
+                </ngx-slick-carousel>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-12" style="text-align:end">
+      <button type="button" *ngIf="selectedIndex
+===questionData.length-1" class="btn btn-success btn-lg testButton" style="margin-top:20px"
+        (click)="submitTest()">Submit</button>
+    </div> -->
+  </div>
+</div>

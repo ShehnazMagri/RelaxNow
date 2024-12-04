@@ -1,0 +1,120 @@
+/* You can add global styles to this file, and also import other style files */
+
+/*html, body { height: 100%; }
+body { margin: 0;     font-family: "Poppins",sans-serif; }*/
+/*@font-face {
+    font-family: 'FontAwesome';
+    src: url('./assets/admin/fonts/fontawesome-webfont.eot?v=4.0.3');
+    src: url('./assets/admin/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }*/
+.angular-tag.default-tag {
+  background-color: #009efb !important;
+}
+.angular-tags-input {
+  border-color: #dcdcdc;
+  box-shadow: inherit;
+  width: 100%;
+  border-radius: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 4px 6px;
+  color: #555;
+  vertical-align: middle;
+  max-width: 100%;
+  line-height: 22px;
+  cursor: text;
+}
+
+.height-table {
+  height: 600px !important;
+}
+
+.selected_smiley {
+  width: 50px !important;
+}
+.required {
+  color: red !important;
+}
+
+.timing {
+  cursor: pointer;
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.modal-sm2 {
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+@media only screen and (max-width: 600px) {
+  .appointments .appointment-action {
+    width: auto !important;
+  }
+}
+
+.profile-widget {
+  border: none !important;
+  background: #25a7f2 !important;
+  box-shadow: 0 0 10px -2px rgb(0 0 0 / 32%);
+  border-radius: 15px !important;
+  position: relative !important;
+}
+.profile-widget:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: url(/assets/img/bottom.png) no-repeat bottom left;
+  background-size: 100%;
+  width: 147px;
+  height: 95px;
+}
+.profile-widget .pro-content .title a {
+  color: #fff;
+  text-align: center;
+}
+.product-custom span.price {
+  color: #fff;
+}
+.product-custom .cart-icon {
+  background: #fff !important;
+  color: #25a7f2 !important;
+}
+.product-custom .profile-widget:hover .cart-icon {
+  background: #ffffff;
+  color: #004a83 !important;
+}
+table#DataTables_Table_2 th {
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 500;
+  background-color: #20c0f3;
+  color: #ffffff;
+}
+.dataTables_wrapper td,
+.dataTables_wrapper,
+.dataTables_wrapper a,
+.dataTables_wrapper button {
+  font-size: 14px;
+}
+.modal-dialog.modal-dialog-centered.modal-lg.modal-sm2.modal-xl {
+  max-width: 720px !important;
+}
+.modal-header {
+  border-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+.modal-body .content {
+  padding-top: 0;
+}
+.modal .card {
+  padding-top: 25px;
+}

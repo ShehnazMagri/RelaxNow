@@ -1,0 +1,101 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Appointments</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/reception/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Appointments</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Recent Orders -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row ">
+              <div class="col-md-4" style="margin:20px">
+                <label>Select Date Range</label>
+                <input type="text" class="form-control" name="daterangeInput" daterangepicker [options]="options"
+                  (selected)="selectedDate($event, daterange)" />
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="row-border hover table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>Doctor Name</th>
+                    <th>Role</th>
+                    <th>Patient Name</th>
+                    <th data-sort='YYYYMMDD HH:MM'>Appointment Time</th>
+                    <th>Cancel Appointment</th>
+                    <!-- <th width="100" class="text-right">Status</th> -->
+                    <!-- <th width="100" class="text-right">Amount</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of appointments">
+                    <td>
+                      <h2 class="table-avatar" [routerLink]="['/admin/on-boarding/details',item.PEOPLE_ID]">
+                        <a href="javascript:void(0)" class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.Doctor_ImageBase64 ||'assets/img/doctors/doctor-thumb-01.jpg'"
+                            alt="User Image"></a>
+                        <a href="javascript:void(0)">{{item.DOCTOR_Prefix }} {{item.DOCTOR_FIRST_NAME }}
+                          {{item.DOCTOR_LAST_NAME}}
+                        </a>
+                      </h2>
+                    </td>
+                    <td> {{item?.ROLE}}
+                    </td>
+                    <td>
+                      <h2 class="table-avatar">
+                        <a href="javascript:void(0)" class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.ImageBase64 ||'assets/img/doctors/doctor-thumb-01.jpg'" alt="User Image"></a>
+                        <a href="javascript:void(0)">{{item.RN_CUSTOMER_Prefix }} {{item.RN_CUSTOMER_FIRST_NAME }}
+                          {{item.RN_CUSTOMER_LAST_NAME}} </a>
+                      </h2>
+                    </td>
+                    <td><span class="d-none">{{item.APPOINTMENT_DATE| date:'y-MM-dd'}}</span>
+                      {{item.APPOINTMENT_DATE| date}} <span class="text-primary d-block">{{item.APPOINTMENT_TIME}} -
+                        {{item.APPOINTMENT_ENDTIME}}</span></td>
+                        <td>
+                          <a href="javascript:void(0);" class="btn btn-danger" (click)="cancelAppointment(item)" *ngIf="item.APPOINTMENT_DATE>currentDate">
+                                              Cancel
+                          </a>
+                        </td>
+                    <!-- <td class="text-right">
+                      <span class="d-none">{{+(item.STATUS=='1')}}</span>
+                      <div class="float-right status-toggle" *ngIf="item.STATUS=='1'">
+                        <input type="checkbox" id="{{item.RN_APPOINTMENT_ID}}" class="check"
+                          (change)="confirm(item,false)" checked>
+                        <label for="{{item.RN_APPOINTMENT_ID}}" class="checktoggle">checkbox</label>
+                      </div>
+
+                      <div class="float-right status-toggle" *ngIf="item.STATUS=='0'">
+                        <input type="checkbox" id="{{item.RN_APPOINTMENT_ID}}" class="check"
+                          (change)="confirm(item,true)">
+                        <label for="{{item.RN_APPOINTMENT_ID}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td> -->
+                    <!-- <td class="text-right">
+                      INR{{}}
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Orders -->
+      </div>
+    </div>
+  </div>
+</div>

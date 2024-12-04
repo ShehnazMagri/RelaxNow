@@ -1,0 +1,133 @@
+<footer class="footer">
+  <!-- Footer Top -->
+  <div class="footer-top">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+
+          <!-- Footer Widget -->
+          <div class="footer-widget footer-about">
+            <div class="footer-logo">
+              <img src="assets/img/footer-logo.png" class="footer-logo-img" alt="logo">
+            </div>
+            <div class="footer-about-content">
+              <p>Globally Tested Quality | Result Oriented Approach | 100% Privacy | Online tele-psychological &
+                tele-psychiatric services. </p>
+              <div class="social-icon">
+                <ul>
+                  <li>
+                    <a href="https://www.facebook.com/noworrynotension" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+                  </li>
+                  <li>
+                    <a href="https://twitter.com/nwnt_ai" target="_blank"><i class="fab fa-twitter"></i> </a>
+                  </li>
+                  <li>
+                    <a href="https://www.linkedin.com/company/noworrynotension/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                  </li>
+                  <li>
+                    <a href="https://www.instagram.com/noworrynotension/" target="_blank"><i class="fab fa-instagram"></i></a>
+                  </li>
+                  <!-- <li>
+                    <a href="javascript:void(0)" target="_blank"><i class="fab fa-dribbble"></i> </a>
+                  </li> -->
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- /Footer Widget -->
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <!-- Footer Widget -->
+          <div class="footer-widget footer-menu">
+            <h2 class="footer-title">For Patients</h2>
+            <ul>
+              <li><a [routerLink]="'/p/search-doctor'">Search for Doctors</a></li>
+              <li><a [routerLink]="'/login'">Login</a></li>
+              <li><a [routerLink]="'/Register'">Register</a></li>
+              <!-- <li><a [routerLink]="'/p/questions'" *ngIf="showAssesment">Assessment</a></li> -->
+              <li><a [routerLink]="'/p/dashboard'">Patient Dashboard</a></li>
+            </ul>
+          </div>
+          <!-- /Footer Widget -->
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <!-- Footer Widget -->
+          <div class="footer-widget footer-menu">
+            <h2 class="footer-title">For Doctors</h2>
+            <ul>
+              <li><a [routerLink]="'/doctor/appointment'">Appointments</a></li>
+              <!-- <li><a [routerLink]="'/doctor/message'">Chat</a></li> -->
+              <li><a [routerLink]="'/doctor/login'">Login</a></li>
+              <!-- <li><a [routerLink]="'/Register'">Register</a></li> -->
+              <li><a [routerLink]="'/doctor/dashboard'">Doctor Dashboard</a></li>
+            </ul>
+          </div>
+          <!-- /Footer Widget -->
+
+        </div>
+
+        <!-- <div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-contact">
+						<h2 class="footer-title">Contact Us</h2>
+						<div class="footer-contact-info">
+							<div class="footer-address">
+								<span><i class="fas fa-map-marker-alt"></i></span>
+								<p> 3556  Beech Street, San Francisco,<br> California, CA 94108 </p>
+							</div>
+							<p>
+								<i class="fas fa-phone-alt"></i>
+								+1 315 369 5943
+							</p>
+							<p class="mb-0">
+								<i class="fas fa-envelope"></i>
+								doccure@example.com
+							</p>
+						</div>
+					</div>
+
+				</div> -->
+
+      </div>
+    </div>
+  </div>
+  <!-- /Footer Top -->
+
+  <!-- Footer Bottom -->
+  <div class="footer-bottom">
+    <div class="container-fluid">
+
+      <!-- Copyright -->
+      <div class="copyright">
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <div class="copyright-text">
+              <p class="mb-0">© {{currentYear}} Relax Now. All rights reserved.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6" *ngIf="isSafari">
+            <p class="mb-0 blink" style="color: white;">Please use Chrome browser for better call experience</p>
+            <!-- Copyright Menu -->
+            <!-- <div class="copyright-menu">
+              <ul class="policy-menu">
+                <li><a [routerLink]="'/terms-conditions'">Terms and Conditions</a></li>
+                <li><a [routerLink]="'/privacy-policy'">Policy</a></li>
+              </ul>
+            </div> -->
+            <!-- /Copyright Menu -->
+
+          </div>
+        </div>
+      </div>
+      <!-- /Copyright -->
+
+    </div>
+  </div>
+  <!-- /Footer Bottom -->
+</footer>

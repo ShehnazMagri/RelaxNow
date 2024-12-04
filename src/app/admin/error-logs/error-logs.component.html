@@ -1,0 +1,99 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">List of Logs</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="javascript:(0);">Logs</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row col-12 col-sm-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>From Date</label>
+                  <input type="text" class="form-control" name="fromDate" [(ngModel)]="fromDate" ngbDatepicker
+                    (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" autocomplete="off" required>
+
+                </div>
+
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>To Date</label>
+                  <input type="text" class="form-control" name="toDate" [(ngModel)]="toDate" ngbDatepicker
+                    (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" autocomplete="off" required>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <br>
+                  <button type="submit" class="btn btn-primary btn-block" (click)="getLogs()">Search</button>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive" >
+              <table class="datatable table table-hover table-center mb-0"
+            datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>Page Name</th>
+                    <th>Type</th>
+                    <th>UserName</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Data Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of list">
+                    <td>
+                     {{item.CATEGORYNAME}}
+                    </td>
+                    <td>
+                    {{item.TYPE==1?'Error':'Info'}}
+                    </td>
+                    <td>
+                    {{item.USERNAME}}
+                    </td>
+                    <td>
+                    {{item.MESSAGE}}
+                    </td>
+                    <td>
+                      {{item.CREATED_DATE| date:'yyyy-MM-dd'}}
+                    </td>
+                    <td>
+                    {{item.JSON}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #resettemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Error JSON</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+  </div>
+</ng-template>

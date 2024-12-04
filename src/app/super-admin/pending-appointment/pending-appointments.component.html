@@ -1,0 +1,149 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Pending Appointments</h3>
+
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Recent Orders -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row ">
+              <div class="col-md-4" style="margin:20px">
+                <label>Select Date Range</label>
+                <input type="text" class="form-control" name="daterangeInput" daterangepicker [options]="options"
+                  (selected)="selectedDate($event, daterange)" />
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="row-border hover table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger"
+                [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>Doctor Name</th>
+<th>State</th>
+<th>City</th>
+                    <th>Patient Name</th>
+                    <th data-sort='YYYYMMDD HH:MM'>Appointment Time</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let item of appointments">
+                  <tr  *ngIf="item.CheckForDate>currentDate">
+                    <td>
+                      <h2 class="table-avatar">
+                        <a href="javascript:void(0)" class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.Doctor_ImageBase64 ||'assets/img/doctors/doctor-thumb-01.jpg'"
+                            alt="User Image"></a>
+                      {{item.DOCTOR_Prefix }} {{item.DOCTOR_FIRST_NAME }}
+                      {{item.DOCTOR_LAST_NAME}}
+                      <br />
+                      {{item?.ROLE}}
+
+                      </h2>
+                    </td>
+                    <td>{{item.STATE_NAME}}</td>
+                    <td>{{item.CITY_NAME}}</td>
+
+                    <td>
+                      <h2 class="table-avatar">
+                        <a href="javascript:void(0)" class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.ImageBase64 ||'assets/img/doctors/doctor-thumb-01.jpg'" alt="User Image"></a>
+                        <a href="javascript:void(0)">{{item.RN_CUSTOMER_Prefix }} {{item.RN_CUSTOMER_FIRST_NAME }}
+                          {{item.RN_CUSTOMER_LAST_NAME}}
+                          <br />
+                          {{item.RELATIONSHIP_NUMBER}}<br />
+                          {{item.RN_CUSTOMER_MOBILE}}
+                        </a>
+
+                      </h2>
+                    </td>
+
+                    <td><span class="d-none">{{item.APPOINTMENT_DATE| date:'y-MM-dd'}}</span>
+                      {{item.APPOINTMENT_DATE| date}} <span class="text-primary d-block">{{item.APPOINTMENT_TIME}} -
+                        {{item.APPOINTMENT_ENDTIME}}</span></td>
+                        <td>{{item.AMOUNT}}</td>
+                    <td>
+                      <a href="javascript:void(0);" class="btn btn-success" (click)="cashPayment(item)"
+                        >
+                        Confirm
+                      </a>
+                      <a href="javascript:void(0);" class="btn btn-danger" (click)="openModal(transferAppointment,item)"
+                        *ngIf="item.CheckForDate>currentDate">
+                        Transfer
+                      </a>
+                      <input type="submit" class="btn btn-danger" value="Delete" (click)="DeleteAppointment(item)" />
+                    </td>
+                  </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Orders -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #transferAppointment>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Transfer Appointment</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- Register Form -->
+    <form >
+      <div class="row form-row">
+        <div class="col-12 col-sm-12">
+          <div class="form-group">
+            <b>{{doctorName}}</b>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-12">
+          <div class="form-group">
+            <label>Select Transfer Date</label>
+            <input type="text" class="form-control" [minDate]="todayCurrentDate" name="fromDate" [(ngModel)]="fromDate"
+              ngbDatepicker (click)="d1.toggle()" (ngModelChange)="getSchedule()" ngbDatepicker #d1="ngbDatepicker"
+              autocomplete="off" required>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-12">
+          <div class="form-group">
+            <label>Select Slot</label>
+            <ng-select2 [(ngModel)]="selectedSlot" [ngModelOptions]="{standalone: true}" width="100%">
+              <option value="0">Select Slot</option>
+              <option *ngFor="let slot of currentSlots" [value]="slot.id">
+                {{slot?.from}} -
+                {{slot?.to}}</option>
+            </ng-select2>
+          </div>
+        </div>
+      </div>
+
+
+      <button class="btn btn-primary btn-block btn-lg login-btn" (click)="getAppointmentSlotsCount()" type="submit">Transfer</button>
+
+    </form>
+  </div>
+</ng-template>

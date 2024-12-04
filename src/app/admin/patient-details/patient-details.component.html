@@ -1,0 +1,193 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Patient Detail</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/patients'">Patients</a></li>
+            <li class="breadcrumb-item active">Detail</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col">
+        <div class="card widget-profile pat-widget-profile">
+          <div class="card-body">
+            <div class="pro-widget-content">
+              <div class="profile-info-widget">
+                <a class="booking-doc-img">
+                  <img src="assets/img/NoImg.png" alt="User Image"
+                    *ngIf="patient?.ImageBase64==null || patient?.ImageBase64==''">
+                  <img src="{{patient?.ImageBase64}}" alt="User Image"
+                    *ngIf="patient?.ImageBase64!=null && patient?.ImageBase64!=''">
+
+                </a>
+                <div class="profile-det-info">
+                  <h3><a>{{patient?.FIRST_NAME}} {{patient?.MIDDLE_NAME}} {{patient?.LAST_NAME}}</a></h3>
+
+                  <div class="patient-details">
+                    <h5><b>Relationship Number :</b> {{patient?.RELATIONSHIP_NUMBER}}</h5>
+                    <h5 *ngIf="patient?.ADDRESS" class="mb-0"><i class="fas fa-map-marker-alt"></i> {{patient?.ADDRESS}}
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="patient-info row">
+              <div class="col-md-12 text-center">
+                <div class="row"></div>
+                <table class="patient-info-table">
+                  <tr>
+                    <td>Phone</td>
+                    <td>{{patient?.MOBILE}}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td>{{patient?.EMAIL}}</td>
+                  </tr>
+                  <!-- <tr>
+                  <td>Monthly Income</td>
+                  <td>{{patient?.MONTHLY_INCOME}}</td>
+                </tr> -->
+                  <tr *ngIf="patient?.AADHAR_CARD_NO">
+                    <td>Occupation</td>
+                    <td>{{patient?.OCCUPATION}}</td>
+                  </tr>
+                  <tr *ngIf="patient?.AADHAR_CARD_NO">
+                    <td>Date Of Birth</td>
+                    <td>{{patient?.DOB}}</td>
+                  </tr>
+                  <!-- <tr>
+                  <td>Marital Status</td>
+                  <td>{{patient?.MARITAL_STATUS_ID}}</td>
+                </tr> -->
+                  <!-- <tr>
+                  <td>Citizen Country</td>
+                  <td>{{patient?.COUNTRY_ID}}</td>
+                </tr> -->
+                  <tr *ngIf="patient?.AADHAR_CARD_NO">
+                    <td>Aadhar Number</td>
+                    <td>{{patient?.AADHAR_CARD_NO}}</td>
+                  </tr>
+                  <tr>
+
+                  </tr>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion" id="accordionExample" style="margin-top: 10px;">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h2 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne"
+              aria-expanded="true" aria-controls="collapseOne">
+              Psychodiagnostics/Certificate/Documents
+
+            </button>
+          </h2>
+        </div>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+          <div class="card-body">
+            <div class="form-group">
+              <h4 class="float-left">Psychodiagnostics/Certificate/Documents</h4>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6">
+                  <div class="change-photo-btn" (click)="openModal(uploadtemplate)" style="float: right;">
+                    <span><i class="fa fa-upload "></i> Upload File</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Uploaded Date</th>
+                    <th>View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let item of reportsData">
+                    <tr *ngIf="item?.RESULT_FILE">
+                      <td>{{item?.NAME|| item?.RESULT_FILE}}</td>
+                      <td><span class="d-none">{{item?.CreatedDate | date:'y-MM-dd'}}
+                        </span>{{item?.CreatedDate | date}}</td>
+                      <td class="text-right">
+                        <div class="table-action">
+                          <a href="{{item?.RESULT_FILE_BASEURL}}{{item?.RESULT_FILE}}" target="_blank">
+                            <img src="assets/img/PDFReport.png" style="width:30px" />
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                  <tr class="text-center" *ngIf="!reportsData.length">
+                    <td colspan="2"> No reports Found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #uploadtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Upload File</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="uploadFile(uploadForm)" #uploadForm="ngForm">
+      <div class="row form-row">
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Document Name</label>
+            <!-- <input type="text" class="form-control" name="fileName" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required
+              appInputrestriction="[a-zA-Z]"> -->
+              <select class="form-control" name="fileName" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required>
+              <option *ngFor="let item of documentsLists" value="{{item.id}}"> {{item.value}} </option>
+            </select>
+            <div class="invalid-feedback">
+              {{name?.errors?.requied ? 'Please enter a name.' :'Special Character not allowed'}}
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>&nbsp;</label>
+
+            <div class="custom-file">
+              <input id="uploadFile" class="custom-file-input" type="file" class="upload" name="filetoUpload"
+                [(ngModel)]="filetoUpload" required #file="ngModel" accept=".png, .jpeg,.jpg,.pdf"
+                (change)="onFileSelect($event)" required [ngClass]="{'is-invalid':isSubmitted && file.errors}">
+              <div class="invalid-feedback">Please add a file to upload.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Upload</button>
+    </form>
+  </div>
+</ng-template>

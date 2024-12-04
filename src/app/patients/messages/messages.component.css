@@ -1,0 +1,7 @@
+.chat-cont-right {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+.media-file img{
+  width: 50px;
+}

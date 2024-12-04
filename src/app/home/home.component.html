@@ -1,0 +1,268 @@
+<!-- Home Banner -->
+<div class="home">
+  <!-- <section class="section section-search">
+    <div class="container-fluid">
+      <div class="banner-wrapper">
+        <div class="banner-header text-center">
+          <h1>Search Doctor, Make an Appointment</h1>
+          <p>Discover the best doctors, clinic & hospital the city nearest to you.</p>
+        </div>
+
+        < !-- Search -- >
+        <div class="search-box">
+          <form (ngSubmit)="searchForDoctor()">
+            < !-- <div class="form-group search-location">
+              <input type="text" class="form-control" placeholder="Search Location">
+              <span class="form-text">Based on your Location</span>
+            </div> -- >
+            <div class="form-group search-info">
+              < !-- <input type="text" class="form-control"
+                          placeholder="Search Doctors, Clinics, Hospitals, Diseases Etc" [(ngModel)]="keyword" [ngModelOptions]="{standalone: true}" />
+                      <span class="form-text">Ex : Dental or Sugar Check up etc</span> -- >
+              <ng-autocomplete [data]="doctors" type="text" class="form-control" [searchKeyword]="keyword"
+                placeHolder="Search Doctors" (selected)='selectEvent($event)' (inputChanged)='onChangeSearch($event)'
+                (inputFocused)='onFocused($event)' historyIdentifier="doctors" [itemTemplate]="itemTemplate"
+                [notFoundTemplate]="notFoundTemplate">
+              </ng-autocomplete>
+
+              <ng-template #itemTemplate let-item>
+                <a [innerHtml]="item.name"></a>
+              </ng-template>
+
+              <ng-template #notFoundTemplate let-notFound>
+                <div [innerHTML]="notFound"></div>
+              </ng-template>
+              <span class="form-text">Ex : Psychiatrists or Psychologist, Specialities etc</span>
+            </div>
+            <button type="submit" class="btn btn-primary search-btn"><i class="fas fa-search"></i>
+              <span>Search</span></button>
+          </form>
+        </div>
+        < !-- /Search -- >
+
+      </div>
+    </div>
+  </section> -->
+  <section class="section section-search-1">
+    <div class="icon-bar">
+      <a href="https://twitter.com/nwnt_ai" target="_blank"><img src="assets/img/twitter.png" alt="twitter"> </a>
+
+      <a href="https://www.facebook.com/noworrynotension" target="_blank"><img src="assets/img/facebook.png"
+          alt="twitter"> </a>
+
+      <a href="https://wa.me/917827990371" target="_blank"><img src="assets/img/whatsapp.png" alt="twitter"></a>
+
+    </div>
+    <div class="label-area">
+      <h1>When <span>‘I’</span> IS REPLACED BY <span>‘WE’</span>,
+      </h1>
+      <h1>EVEN <span>‘ILLNESS’</span> BECOMES <span>‘WELLNESS’</span>
+      </h1>
+    </div>
+  </section>
+  <!-- /Home Banner -->
+  <section class="section home-tile-section">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 m-auto">
+          <div class="section-header text-center">
+            <h2>What are you looking for?</h2>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 mb-3">
+              <div class="card text-center doctor-book-card">
+                <img src="assets/img/doctors/Counseling.jpg" alt="" class="img-fluid">
+                <div class="doctor-book-card-content tile-card-content-1">
+                  <div [routerLink]="'/p/search-doctor'" class="appointment-div">
+                    <h2 class="card-title mb-1">Find Doctors Near You</h2>
+                    <h4 class="card-title" tabindex="0">Book
+                      Appointments</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <div class="card text-center doctor-book-card">
+                <img src="assets/img/doctors/online.jpg" alt="" class="img-fluid">
+                <div class="doctor-book-card-content tile-card-content-1">
+                  <div class="appointment-div" [routerLink]="'/p/search-doctor'">
+                    <h2 class="card-title mb-0">Instant Video Consultation</h2>
+                    <h4 class="card-title" tabindex="0">Connect
+                      you instantly</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Clinic and Specialities -->
+  <section class="section section-specialities">
+    <div class="container-fluid">
+      <div class="section-header text-center">
+        <h2 class="highlight">Consult the right Therapist/ Psychiatrist online for any mental health related concern
+        </h2>
+        <p class="sub-title">Private online consultations with verified specialists in the field of mental and emotional
+          wellness
+        </p>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-9">
+          <!-- Slider -->
+
+          <div class="specialities-slider slider">
+            <div class="speicality-item text-center">
+              <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig3">
+                <div ngxSlickItem *ngFor="let slide of slides" class="slide col-md-4">
+                  <div class="speicality-img">
+                    <img src="{{slide.img}}" class="img-fluid" alt="Speciality">
+                    <!-- <span><i class="fa fa-circle" aria-hidden="true"></i></span> -->
+                  </div>
+                  <h3>{{slide.name}}</h3>
+
+                  <p class="summary">{{slide.msg}}</p>
+                  <!-- <p class="highlight">Consult now</p> -->
+
+                </div>
+              </ngx-slick-carousel>
+              <div class="text-center client-navbtn">
+                <button class="btn-next" (click)="next()"><i class="las la-caret-square-left"></i></button>
+                <button class="btn-prev" (click)="prev()"><i class="las la-caret-square-right"></i></button>
+              </div>
+
+            </div>
+          </div>
+          <!-- /Slider -->
+
+        </div>
+      </div>
+      <div class="view-all text-center about-content"><a href="javascript:void(0);">+ View All Specialities</a></div>
+    </div>
+  </section>
+  <!-- Clinic and Specialities -->
+
+
+  <!-- /Home Banner -->
+  <section class="section cta_section">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 m-auto">
+          <div class="row">
+            <div class="col-md-12 col-lg-6 col-xl-6">
+              <img src="assets/img/img-01-4.png" alt="APP" class="app_img">
+            </div>
+            <div class="col-md-12 col-lg-6 col-xl-6">
+              <div class="app_card">
+                <div class="section-headers">
+                  <h2>Care On The GO</h2>
+                  <h3>Download Mobile App</h3>
+                  <p>Access video consultation with India’s top doctors on the Relax Now app.
+                  </p>
+                  <p>Connect with Therapist/ Psychiatrist online, available 24/7, from the comfort of your home.
+                  </p>
+                  <ul class="dc-appicons">
+                    <li>
+                      <a target="_blank" href="#">
+                        <img src="assets/img/gplay.png">
+                      </a>
+                    </li>
+                    <li>
+                      <a target="_blank" href="#"><img src="assets/img/appstore.png">
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--popular section-->
+
+  <section class="section section-features">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 m-auto">
+          <div class="row">
+            <div class="col-md-5 features-img">
+              <img src="assets/img/features/feature.jpg" class="img-fluid" alt="Feature">
+            </div>
+            <div class="col-md-7">
+              <div class="section-header">
+                <h2 class="mt-2">Exclusive Features of Relax Now</h2>
+                <p>get connected to us via Audio/Video/Chat option to address your mental health concerns. </p>
+              </div>
+              <div class="features-slider slider">
+
+                <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig2">
+                  <div ngxSlickItem *ngFor="let slide of sliderContent">
+                    <div class="feature-item text-center">
+                      <img src="{{slide.img}}" class="img-fluid" alt="Feature">
+                      <p>{{slide.name}}</p>
+                    </div>
+                  </div>
+                </ngx-slick-carousel>
+                <!-- <div class="text-center client-navbtn">
+                              <button class="btn-next" (click)="nextslide()"><i
+                                      class="las la-caret-square-left"></i></button>
+                              <button class="btn-prev" (click)="prevslide()"><i
+                                      class="las la-caret-square-right"></i></button>
+                          </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- popular section-->
+  <section class="section section-doctor">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 m-auto">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="section-header ">
+                <h2>About Relax Now </h2>
+                <p>Providing high quality, trusted and accessible healthcare is our reason for being
+                </p>
+              </div>
+              <div class="about-content">
+                <p>Relax Now; a dream of Dr. Sandeep Vohra, a renowned Psychiatrist and founder of No Worry No Tension
+                  Healthcare Pvt. Ltd. aims to connect the entire Mental Health eco-system together- clients,
+                  Psychiatrist, Psychologist, Yoga Trainers etc.
+                </p>
+                <p>We integrate different parts of the Healthcare journey and put together end to end on our platform,
+                  so that clients can have one seamless experience irrespective of their needs.
+                </p>
+                <p>Relax Now provides therapy based self care tools for depression, Anxiety and other mental health
+                  concerns.
+                </p>
+                <p>We believe in Quality Mental health support. </p>
+                <a href="javascript:;">Read More..</a>
+              </div>
+            </div>
+            <div class="col-lg-4 doc_img">
+              <div class="doc_brief">
+                <img width="" height="" src="assets/img/img-01-2.png"> </div>
+              <figcaption>
+                <div class="dc-doccarecontent">
+                  <h3><em>Greetings &amp; Welcome</em> Dr. Vohra</h3>
+                </div>
+              </figcaption>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,106 @@
+<!-- Breadcrumb -->
+  <div class="page-header">
+    <div class="row">
+      <div class="col-sm-7 col-auto">
+        <h3 class="page-title">Cart</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="'/b2b/dashboard'">Dashboard</a></li>
+          <li class="breadcrumb-item active">Cart</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+  <div class="container">
+
+    <div class="card card-table">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-center mb-0">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of cartDetails">
+                <td>
+                  <!-- <h2 class="table-avatar">
+                                        <a [routerLink]="['/b2b/product-desc',item.ITEM_ID]" class="avatar avatar-sm mr-2"><img class="avatar-img" src="assets/img/products/product.jpg" alt="User Image"></a>
+                                    </h2> -->
+                  <a [routerLink]="['/b2b/product-desc',item.ITEM_ID]">{{item.Name}}</a>
+                </td>
+                <td>INR {{item.ITEM_COST}}</td>
+                <td class="text-right">
+                  <div class="table-action">
+                    <a href="javascript:void(0);" (click)="deleteProductFromCart(item)"
+                      class="btn btn-sm bg-danger-light">
+                      <i class="fas fa-times"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="cartDetails.length>0">
+      <div class="col-md-7 col-lg-8">
+      </div>
+
+      <div class="col-md-5 col-lg-4">
+
+        <!-- Booking Summary -->
+        <div class="card booking-card">
+          <div class="card-header">
+            <h4 class="card-title">Cart Totals</h4>
+          </div>
+          <div class="card-body">
+
+            <div class="booking-summary">
+              <div class="booking-item-wrap">
+                <ul class="booking-date">
+                  <li>Subtotal <span>INR {{totalAmount}}</span></li>
+                  <li *ngIf="currentUserRole=='B2BADMIN'">Users:
+                    <input type="text" (keydown)="keydown($event)" min="1" id="quantity1" name="quantity1"
+                      class="form-control" (change)="UpdateCartDetails()" [(ngModel)]="NO_OF_USERS">
+                  </li>
+                </ul>
+                <!-- <ul class="booking-fee pt-4">
+                                    <li>Tax <span>INR 0.00</span></li>
+                                </ul> -->
+                <div class="booking-total">
+                  <ul class="booking-total-list">
+                    <li>
+                      <span>Total</span>
+                      <span class="total-cost">
+                        INR {{totalAmount}}
+                      </span>
+                    </li>
+                    <li>
+                      <div class="clinic-booking pt-4">
+                        <a class="apt-btn" (click)="checkOut()">Proceed to checkout</a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Booking Summary -->
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /Page Content -->

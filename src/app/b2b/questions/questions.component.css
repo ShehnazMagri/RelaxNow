@@ -1,0 +1,148 @@
+.ques {
+  /* display: flex; */
+  padding: 20px 20px;
+  margin: 10px 0px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+img.ques_img {
+  width: 80px;
+  margin-right: 15px;
+}
+
+.ques h4 {
+  font-size: 24px;
+  color: #333333;
+  margin-bottom: 5px;
+}
+
+.ques h5 {
+  margin-bottom: 0;
+  color: #6c757d;
+  font-size: 18px;
+  margin-bottom: 3px;
+}
+
+.ques p {
+  margin-bottom: 0;
+  color: #777;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.ques_outer {
+  background: #f7f7f7;
+  padding: 20px 20px 40px 20px;
+  margin: 15px 0;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+  width: 100%;
+  display: inline-block;
+}
+
+.answer_list {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: 12px;
+  margin-top: 15px;
+  cursor: pointer;
+  color: #777;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.answer_list input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+  right: 0;
+  margin: 0 auto;
+}
+
+.answer_list:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.answer_list input:checked ~ .checkmark {
+  background-color: #86ab28;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.answer_list input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.answer_list .checkmark:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+.ques ul {
+  list-style-type: none;
+  margin: 15px 0 0 0;
+  position: relative;
+  padding: 0;
+  /* padding: 23px 8px;
+  border: 1px solid; */
+}
+
+.ques ul li {
+  /* width: 9.2%; */
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 -2px;
+  min-width: 100px;
+  top: ;
+}
+
+.ques li p {
+  position: relative;
+  top: 30px;
+}
+
+.ques ul:before {
+  content: "";
+  background: #ccc;
+  width: 94.5%;
+  position: absolute;
+  height: 2px;
+  top: 12px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.btn-success:disabled {
+  cursor: not-allowed !important;
+}
+.link {
+  color: #007bff !important;
+}
+.invoice-payment {
+  line-height: 0.5;
+}

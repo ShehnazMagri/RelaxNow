@@ -1,0 +1,39 @@
+/*.dropdown-menu.dropdown-menu-right.show {
+    right: 0;
+    left: auto;
+}*/
+/*.main-nav > li.active > a {
+    color: #09dca4 !important;
+}
+.main-nav > li > a {
+    color: #2E3842 !important;
+}*/
+#search {
+  display: -webkit-inline-box;
+  text-align: center;
+  margin: auto;
+  padding-top: 20px;
+}
+#search input {
+  padding-left: 40px;
+  margin: 0px 10px;
+}
+.search-info {
+  width: 500px;
+}
+
+.dropdown-menu {
+  opacity: 1;
+}
+.ewi-logo img {
+  height: 75px;
+  float: right;
+}
+@media only screen and (max-width: 575.98px) {
+  .ewi-logo img {
+    height: 40px;
+  }
+  .search-info {
+    width: 200px;
+  }
+}

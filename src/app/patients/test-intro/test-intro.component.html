@@ -1,0 +1,129 @@
+<section class="quizBox">
+  <div class="quizFlex">
+    <div class="qleft">
+      <img *ngIf="testID==3" src="assets/template/images/headFollower.png" alt="">
+      <img *ngIf="testID!=3" src="assets/template/images/EWI_FLOWER.png" alt="">
+    </div>
+    <div class="qright">
+      <div class="qrowhead">
+        <h3 *ngIf="testID==3">Goulston Vohra</h3>
+        <h3 *ngIf="testID!=3">Emotional <span style="color: black;"> Wellness Index</span></h3>
+        <h2 *ngIf="testID==3">Scale of happiness</h2>
+        <h2 *ngIf="testID==83">EWI ADULT</h2>
+        <h2 *ngIf="testID==84">EWI STUDENT</h2>
+      </div>
+      <p *ngIf="testID==3">These seven questions (about your life) can change your life. Seems too simple for your
+        sophisticated mind? Go ahead and try it and you'll learn something about yourself at the end of it.</p>
+      <p *ngIf="testID!=3">This is a little more intense. When you know that something about your happiness is off but
+        you don't quite know what it is, the EWI will probe deep and find you all the answers you need.</p>
+      <div class="quizCtrl"><a href="javascript:void(0);" (click)="startTest()" >Start <i
+            class="material-icons">arrow_circle_right</i>
+        </a></div>
+        <div style="margin-top:20px;font-family: 'Open Sans';">
+          <input type="checkbox" [(ngModel)]="termAndConditionAccepted"> I have read and acknowledged the <a href="assets/terms-condition/EWICONSENT.pdf" target="_blank">Terms & Conditions</a>
+        </div>
+    </div>
+  </div>
+  <!-- <div class="optionStrip">
+    <ul>
+      <li><a href="javascript:void(0);" (click)="hideTestPopUp=false">About Test</a></li>
+      <li><a href="javascript:void(0);" (click)="hideFAQTestPopUp=false">Faq</a></li>
+      <li><a href="assets/terms-condition/EWICONSENT.pdf" target="_blank">Terms & Conditions</a></li>
+    </ul>
+  </div> -->
+</section>
+
+
+<div class="popupFlex" *ngIf="!hideTestPopUp">
+  <div class="popUpbox">
+    <a class="cloaseBox" href="javascript:void(0)">
+      <i class="material-icons" (click)="hideTestPopUp=true"> cancel </i>
+    </a>
+    <div class="popupHeadeing">
+      <h2 *ngIf="testID==3">Goulston Vohra Scale of happiness</h2>
+      <h2 *ngIf="testID!=3">Emotional Wellness Index</h2>
+    </div>
+    <div class="popupContent">
+      <div class="popTxt" *ngIf="testID==3">
+        <p>
+          What drives you to act? The hedonistic principle says that our willingness to attain happiness (pleasure) and
+          avoid pain, motivates us to act and work towards a goal. This is why we, as parents, partners and working
+          professionals behave in a way that guarantees us happiness. But have you ever checked what your level of
+          happiness is?
+        </p>
+        <p>
+          The following scale will help you understand your present happiness levels. The Goulston Vohra Scale of
+          Happiness is a 7-item scale developed by Dr. Mark Goulston and Dr. Sandeep Vohra to assess how happy you are
+          and help you understand how your happiness levels can be increased.
+        </p>
+        <p>
+          <b>Here's what you need before taking the test:</b>
+
+        </p>
+        <ul>
+          <li><b>•</b> You will be asked to answer questions that will help you understand your level of happiness.
+          </li>
+          <li>
+            <b>•</b> You will have to answer all of them to complete the test successfully.
+          </li>
+          <li>
+            <b>• Respond to each of the following questions on a scale of 0 to 10 with 0 meaning ‘Absolutely not’ ,5
+              meaning ‘Sometimes’ and 10 meaning ‘Yes, absolutely’.</b>
+          </li>
+        </ul>
+      </div>
+      <div class="popTxt" *ngIf="testID!=3">
+        <p>
+          This is like your mental temperature and the EWI is the thermometer. Once you take this intense test with
+          honesty and as much clarity as you can muster, all the answers you need will be revealed through, wait for it,
+          the Emotional Wellness Index (this multicolour bar, in case it wasn't obvious!)
+        </p>
+        <p>
+          <img src="assets/img/image.png">
+        </p>
+        <p>
+          What does it mean?<br />
+          Green denotes no stress <br />
+          Red is the other extreme denoting maximum stress requiring professional help<br />
+          Blue/Yellow/Orange indicate varying degrees of mental stress <br />
+          By answering 55 questions related to your life in whole, we can glean the level of stress in your life and,
+          based on your answers, tell you what kind of help you need.
+
+        </p>
+      </div>
+      <div class="popImageBox">
+        <img src="assets/template/images/popupbg.png" alt="" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="popupFlex" *ngIf="!hideFAQTestPopUp">
+  <div class="popUpbox">
+    <a class="cloaseBox" href="javascript:void(0);" (click)="hideFAQTestPopUp=true">
+      <i class="material-icons"> cancel </i>
+    </a>
+    <div class="popupHeadeing">
+      <h2 *ngIf="testID==3">Goulston Vohra Scale of happiness</h2>
+      <h2 *ngIf="testID!=3">Emotional Wellness Index</h2>
+    </div>
+    <div class="popupContent">
+      <div class="popTxt">
+        <ul class="faqDrop">
+          <li *ngFor="let item of faqList;let i = index" (click)="selectedFAQ=i">
+            <h3>{{item.question}}</h3>
+            <p style="display: block;" *ngIf="selectedFAQ==i">
+              {{item.Answer}}
+            </p>
+          </li>
+
+        </ul>
+      </div>
+      <div class="popImageBox">
+        <img src="./images/popupbg.png" alt="" />
+      </div>
+    </div>
+  </div>
+</div>

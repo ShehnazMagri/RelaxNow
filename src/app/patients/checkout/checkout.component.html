@@ -1,0 +1,251 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <nav aria-label="breadcrumb" class="page-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/p/dashboard'">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+          </ol>
+        </nav>
+        <h2 class="breadcrumb-title">Checkout</h2>
+        <h2 class="breadcrumb-title"><a [routerLink]="'/p/dashboard'">Back to Dashboard</a></h2>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-7 col-lg-8">
+        <div class="card">
+          <div class="card-body">
+
+            <!-- Checkout Form -->
+            <form ngNoForm #payuForm action="https://secure.payu.in/_payment" name="payuform" method="POST"
+              target="payment_popup" (submit)="initPayment()">
+
+              <!-- Personal Information -->
+              <div class="info-widget">
+                <h4 class="card-title">Personal Information</h4>
+                <div class="row">
+                  <div class="col-md-6 col-sm-12">
+                    <div class="form-group card-label">
+                      <label>First Name<span class="required">*</span></label>
+                      <input class="form-control" type="text" name="firstname" readonly [(ngModel)]="firstName">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="form-group card-label">
+                      <label>Last Name<span class="required">*</span></label>
+                      <input class="form-control" type="text" name="lastname" readonly [(ngModel)]="lastName">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="form-group card-label">
+                      <label>Email<span class="required">*</span></label>
+                      <input class="form-control" type="email" name="email" readonly [(ngModel)]="email">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="form-group card-label">
+                      <label>Phone<span class="required">*</span></label>
+                      <input class="form-control" type="text" name="phone" [(ngModel)]="phone" readonly
+                        mask="0000000000">
+                    </div>
+                  </div>
+                </div>
+                <!-- <div *ngIf="!isLoggedIn" class="exist-customer">Existing Customer? <a
+                    [queryParams]="{redirect: '/p/doctor-profile/'+doctorId}" [routerLink]="'/login'">Click here
+                    to login</a></div> -->
+              </div>
+              <!-- /Personal Information -->
+
+              <div class="payment-widget">
+
+                <!-- Terms Accept -->
+                <div class="terms-accept">
+                  <div class="custom-checkbox">
+                    <input type="checkbox" id="terms_accept" name="terms" [(ngModel)]="terms" required
+                      (change)="checkPaymentToken();openModal(uploadtemplate,$event)">
+                    <label for="terms_accept">&nbsp;I have read and accept <a href="javascript:void(0)"
+                        href="assets/terms-condition/IC_U_form_for_Indian_Patients.PDF" target="_blank">Terms &amp;
+                        Conditions</a></label>
+                  </div>
+                </div>
+                <!-- /Terms Accept -->
+                <div *ngIf="payUData">
+                  <input type="text" id="amount" hidden name="amount" [value]="totalAmount">
+
+                  <textarea name="productinfo" id="productinfo" [(ngModel)]="payUData.productinfo" rows="2" cols="2"
+                    hidden></textarea>
+                  <textarea name="surl" id="surl" [(ngModel)]="payUData.surl" rows="2" cols="2" hidden></textarea>
+                  <textarea name="furl" id="furl" [(ngModel)]="payUData.furl" rows="2" cols="2" hidden></textarea>
+                  <textarea name="key" id="key" [(ngModel)]="payUData.key" rows="2" cols="2" hidden></textarea>
+                  <textarea name="hash" id="hash" [(ngModel)]="payUData.hash" rows="2" cols="2" hidden></textarea>
+                  <textarea name="txnid" id="txnid" [(ngModel)]="payUData.txnid" rows="2" cols="2" hidden></textarea>
+                  <!-- <textarea name="service_provider" id="service_provider" rows="2"
+                    [(ngModel)]="payUData.service_provider" cols="2" hidden></textarea> -->
+                </div>
+                <!-- Submit Section -->
+                <div class="submit-section mt-4">
+                  <button type="submit" class="btn btn-primary submit-btn">Confirm and
+                    Pay</button>
+                </div>
+                <!-- /Submit Section -->
+
+              </div>
+            </form>
+            <!-- /Checkout Form -->
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-5 col-lg-4">
+
+        <!-- Booking Summary -->
+        <div class="card booking-card">
+          <div class="card-header">
+            <h4 class="card-title">Booking Summary</h4>
+          </div>
+          <div class="card-body">
+
+            <!-- Booking Doctor Info -->
+            <div class="booking-doc-info">
+              <a class="booking-doc-img">
+                <img *ngIf="doctorImage" [src]="doctorDetails?.BASE64CONTENT" alt="User Image">
+              </a>
+              <div class="booking-info">
+                <h4><a>{{doctorDetails?.Prefix}}
+                    {{doctorDetails?.FIRST_NAME}}
+                    {{doctorDetails?.MIDDLE_NAME}} {{doctorDetails?.LAST_NAME}}</a></h4>
+                <!-- <div class="rating">
+                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 0}"></i>
+                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 1}"></i>
+                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 2}"></i>
+                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 3}"></i>
+                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 4}"></i>
+                  <span class="d-inline-block average-rating">({{doctorDetails?.AvgRating || '0'}})</span>
+                </div> -->
+                <div class="clinic-details">
+                  <h5 class="doc-department">
+                    <img src="assets/img/specialities/specialities-02.png" class="img-fluid" alt="Speciality">
+                    {{doctorDetails?.ROLENAME}}
+                  </h5>
+                </div>
+                <!-- <div class="clinic-services"
+                  *ngIf="doctorDetails?.PEOPLE_PROFILE && doctorDetails?.PEOPLE_PROFILE[0]?.SPECIALITY?.length">
+                  <span *ngFor="let spc of doctorDetails?.PEOPLE_PROFILE[0]?.SPECIALITY?.split(',')">{{spc}}</span>
+                </div> -->
+              </div>
+            </div>
+            <!-- Booking Doctor Info -->
+
+            <div class="booking-summary">
+              <div class="booking-item-wrap">
+                <ul class="booking-date">
+                  <li>Date <span>{{appointments?.time}}</span></li>
+                  <li>Time <span>{{appointments?.slot?.from}} - {{appointments?.slot?.to}}</span></li>
+                </ul>
+                <ul class="booking-fee" *ngIf="doctorDetails?.PEOPLE_PROFILE">
+                  <li>Consulting Fee
+                    <span>INR{{ isFollowUp ?
+                      doctorDetails?.PEOPLE_PROFILE[0]?.FOLLOWUP_CONSULTATION_FEE*allSlots.length:
+                      doctorDetails?.PEOPLE_PROFILE[0]?.FIRST_CONSULTATION_FEE*allSlots.length}}</span>
+                  </li>
+                </ul>
+                <ul class="booking-fee">
+                  <li>Discount Coupon</li>
+                  <li>
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" [(ngModel)]="discountCoupon" placeholder="Discount Coupon"
+                        aria-label="Discount Coupon" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="getDiscountCoupon()"
+                          type="button">Apply</button>
+                      </div>
+                    </div>
+                    <!-- <input type="text"   class="form-control" /> -->
+
+                  </li>
+                  <!-- <a>Apply</a><a>select coupon from list</a> -->
+
+                </ul>
+                <div class="booking-total" *ngIf="doctorDetails?.PEOPLE_PROFILE">
+                  <ul class="booking-total-list">
+                    <li>
+                      <span>Discount Amount</span>
+                      <span class="total-cost">INR {{discountAmount|number : '1.2-2'}}</span>
+                    </li>
+
+                    <li>
+                      <span>Total</span>
+                      <span class="total-cost">INR {{totalAmount| number : '1.2-2'}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Booking Summary -->
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- /Page Content -->
+
+
+<ng-template #uploadtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Upload your Identity Proof Document</h4>
+    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();checkboxEvent.currentTarget.checked=false">
+      <span aria-hidden="true">&times;</span>
+    </button> -->
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="uploadFile(uploadForm)" #uploadForm="ngForm">
+      <div class="row form-row">
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Document Name <span class="required">*</span></label>
+            <!-- <input type="text" class="form-control" name="fileName" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required
+              appInputrestriction="[a-zA-Z]"> -->
+            <select class="form-control" name="fileName" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required>
+              <option *ngFor="let item of documentsLists" value="{{item.id}}"> {{item.value}} </option>
+            </select>
+            <div class="invalid-feedback">
+              {{name?.errors?.requied ? 'Please enter a name.' :'Special Character not allowed'}}
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>&nbsp;</label>
+
+            <div class="custom-file">
+              <input id="uploadFile" class="custom-file-input" type="file" class="upload" name="filetoUpload"
+                [(ngModel)]="filetoUpload" required #file="ngModel" accept=".png, .jpeg,.jpg,.pdf"
+                (change)="onFileSelect($event)" required [ngClass]="{'is-invalid':isSubmitted && file.errors}">
+              <div class="invalid-feedback">Please add a file to upload.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Upload</button>
+    </form>
+  </div>
+</ng-template>

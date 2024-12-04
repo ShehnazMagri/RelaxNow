@@ -1,0 +1,130 @@
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+
+        <!-- Register Content -->
+        <div class="account-content">
+          <div class="row align-items-center justify-content-center">
+            <div class="col-md-7 col-lg-6 login-left">
+              <img src="assets/img/logo.png" class="img-fluid" alt="Relax Now">
+            </div>
+            <div class="col-md-12 col-lg-6 login-right">
+              <ul class="nav nav-tabs nav-tabs-top nav-justified">
+                <li class="nav-item"><a class="nav-link active">Individual Registration</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="/OCR">Organisational Registration</a></li>
+              </ul>
+
+              <!-- Register Form -->
+              <form [formGroup]="registerForm" (ngSubmit)="signup()">
+                <div class="form-group form-focus">
+                  <input type="text" class="form-control floating" name="name" formControlName="name"
+                    [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.name.errors}">
+                  <label class="focus-label">First Name<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please enter a first name.
+                  </div>
+                </div>
+                <div class="form-group form-focus">
+                  <input type="text" name="mName" formControlName="mName" class="form-control floating"
+                    [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.mName.errors}">
+                  <label class="focus-label">Middle Name</label>
+                  <div class="invalid-feedback">
+                    Please enter a middle name.
+                  </div>
+                </div>
+
+                <div class="form-group form-focus">
+                  <input type="text" name="lName" formControlName="lName" class="form-control floating"
+                    [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.lName.errors}" required>
+                  <label class="focus-label">Last Name<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please enter a last name.
+                  </div>
+                </div>
+                <div class="form-group form-focus">
+                  <input type="email" name="mEmail" formControlName="mEmail" class="form-control floating"
+                    [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.mEmail.errors}" required>
+                  <label class="focus-label">Email<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please enter a valid email.
+                  </div>
+                </div>
+                <div class="form-group form-focus">
+                  <select class="form-control" name="gender" formControlName="gender"
+                    [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.gender.errors}" required>
+                    <option value="5">Male</option>
+                    <option value="6">Female</option>
+                    <option value="7">Other</option>
+                  </select>
+                  <label class="focus-label select-label">Gender<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please select gender.
+                  </div>
+                </div>
+
+                <div class="form-group form-focus">
+                  <input type="text" class="form-control floating" name="mobile" formControlName="mobile" max="15"
+                    [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.mobile.errors}" mask="0000000000">
+                  <label class="focus-label">Mobile Number<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please enter a valid mobile number.
+                  </div>
+                </div>
+
+                <div class="form-group form-focus">
+                  <input type="password" name="password" formControlName="password" class="form-control floating"
+                    [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.password.errors}">
+                  <label class="focus-label">Create Password<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please enter a password.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="terms-accept">
+                    <div class="custom-checkbox">
+                      <input type="checkbox" id="terms_accept" name="terms" formControlName="terms"
+                        [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.terms.errors}">
+
+                      <label for="terms_accept">&nbsp;I have read and accept <a
+                          href="assets/terms-condition/NWNTServicesConsent.pdf" target="_blank">Terms &amp;
+                          Conditions</a></label>
+                      <div class="invalid-feedback">
+                        Please accept the terms to submit sign up.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <a class="forgot-link" [routerLink]="'/login'">Already have an account?</a>
+                </div>
+                <button class="btn btn-primary btn-block btn-lg login-btn" type="submit">Signup</button>
+                <!-- <div class="login-or">
+                  <span class="or-line"></span>
+                  <span class="span-or">or</span>
+                </div>
+                <div class="row form-row social-login">
+                  <div class="col-6">
+                    <a href="javascript:void(0)" class="btn btn-facebook btn-block"><i
+                        class="fab fa-facebook-f mr-1"></i> Login</a>
+                  </div>
+                  <div class="col-6">
+                    <a href="javascript:void(0)" class="btn btn-google btn-block"><i class="fab fa-google mr-1"></i>
+                      Login</a>
+                  </div>
+                </div> -->
+              </form>
+              <!-- /Register Form -->
+
+            </div>
+          </div>
+        </div>
+        <!-- /Register Content -->
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

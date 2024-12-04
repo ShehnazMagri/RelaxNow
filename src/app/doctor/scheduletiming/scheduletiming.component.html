@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Schedule Timings</h4>
+                <div class="profile-box">
+                    <div class="row" style="display: none;">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Timing Slot Duration</label>
+                                <ng-select2 [data]="exampleData" width="100%">
+                                    <option>-</option>
+                                    <option>15 mins</option>
+                                    <option selected="selected">30 mins</option>
+                                    <option>45 mins</option>
+                                    <option>1 Hour</option>
+                                </ng-select2>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card schedule-widget mb-0">
+
+                                <!-- Schedule Header -->
+                                <div class="schedule-header">
+
+                                    <!-- Schedule Nav -->
+                                    <div class="schedule-nav">
+                                        <ul class="nav nav-tabs nav-justified">
+                                            <li class="nav-item" *ngFor="let day of weekDays">
+                                                <a class="nav-link" href="#d_{{day}}" data-toggle="tab" (click)="getSelectedDaySlots(day)">{{day}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- /Schedule Nav -->
+
+                                </div>
+                                <!-- /Schedule Header -->
+
+                                <!-- Schedule Content -->
+                                <div class="tab-content schedule-cont">
+                                    <!-- Sunday Slot -->
+                                    <div class="tab-pane fase" id="d_{{selectedDay}}">
+                                        <!-- Slot List -->
+                                        <div class="doc-times" *ngIf="currentSlots?.length">
+                                            <ng-container *ngFor="let slot of currentSlots;index as i">
+
+                                                <div class="doc-slot-list">
+                                                    {{slot?.FROM}} - {{slot?.TO}}
+
+                                                </div>
+                                            </ng-container>
+
+                                        </div>
+                                        <!-- /Slot List -->
+                                        <p class="text-muted mb-0" *ngIf="!currentSlots?.length">Not Available</p>
+                                    </div>
+                                    <!-- /Sunday Slot -->
+
+                                    <!-- /Schedule Content -->
+
+                                </div>
+                                <!-- /Schedule Content -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

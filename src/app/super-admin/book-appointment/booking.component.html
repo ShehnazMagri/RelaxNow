@@ -1,0 +1,226 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Book Appointment</h3>
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-xs-12">
+                <div class="form-group">
+                  <label>
+                   <b> Select Consultant</b>
+                    <br>
+                    <span style="font-size: 15px;width:100%"> You can select a consultant to book appointment.</span>
+                    <br>
+                  </label><br>
+                  <ng-select2 [(ngModel)]="doctorId" [ngModelOptions]="{standalone: true}" width="100%"
+                    (ngModelChange)="onUserChange()">
+                    <option value="">-</option>
+                    <option *ngFor="let user of userData" [value]="user.ID">{{user?.FIRST_NAME}} {{user?.LAST_NAME}}
+                    </option>
+                  </ng-select2>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-xs-12">
+                <div class="form-group">
+                  <label>
+                    <b>Select User</b>
+                    <br>
+                    <span style="font-size: 15px;width:100%"> You can select a User for book appointment.</span>
+                    <br>
+                  </label><br>
+                  <ng-select2 [(ngModel)]="patientId" [ngModelOptions]="{standalone: true}" width="100%">
+                    <option value="">-</option>
+                    <option *ngFor="let user of patients" [value]="user.ID">{{user.FIRST_NAME }} {{user.LAST_NAME}} ({{user.MOBILE}})
+                      ({{user.RELATIONSHIP_NUMBER}})
+                    </option>
+                  </ng-select2>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-2 col-xs-12">
+                <br/><br />
+                <a class="btn btn-primary float-right mt-2" data-toggle="modal" (click)="openModal(addUser)">
+                  Add Customer
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="doctorId>0">
+          <div class="row">
+            <div class="col-4">
+              <h4 class="mb-1"> {{ doctorName }}</h4>
+              <h4 class="mb-1"> {{ currentDate.format("LL") }}</h4>
+              <p class="text-muted">{{ currentDate.format("dddd") }} </p>
+            </div>
+
+          </div>
+          <div class="card booking-schedule schedule-widget">
+            <div class="schedule-header">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="day-slot">
+                    <ul>
+                      <li class="left-arrow">
+                        <a (click)="changeWeek('prev')">
+                          <i class="fa fa-chevron-left"></i>
+                        </a>
+                      </li>
+                      <li [ngClass]="{ 'alert-info': day.selected }" *ngFor="let day of weekDays"
+                        (click)="selectWeekDay(day.mDate)">
+                        <span>{{ day.mDate.format("DD") }}</span>
+                        <span class="slot-date">{{ day.mDate.format("dddd") }}<small class="slot-year"></small></span>
+                      </li>
+                      <li class="right-arrow">
+                        <a (click)="changeWeek('next')">
+                          <i class="fa fa-chevron-right"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="schedule-cont">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="time-slot">
+                    <ul class="clearfix" *ngIf="currentSlots?.length">
+                      <ng-container *ngFor="let slot of currentSlots;index as i">
+                        <li (click)="selectSlot(slot,i)">
+                          <a class="timing"
+                           [ngClass]="{'selected': selectedSlots.indexOf(slot.id) > -1 ,'booked':!slot.available,'disabled':slot.cancelled,'adhoc-slot':(slot.adHoc && slot.available),'custom-slot':slot.MonthData==1}">
+                            <span>{{slot?.from}}</span> - <span>{{slot?.to}}</span>
+                          </a>
+                        </li>
+                      </ng-container>
+                    </ul>
+                    <p *ngIf="!currentSlots?.length">Sorry, No slots available!</p>
+                  </div>
+                </div>
+                  <div class="col-lg-12 col-md-12 col-xs-12" *ngIf="doctorId>0 && patientId>0 && selectedSlots.length>0">
+                    <div class="form-group">
+                      <br/>
+                      <a class="btn btn-primary col-md-12" (click)="bookAppointment()"><i class="fa fa-plus-circle"></i>
+                        Book Appointment
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-10">
+                    <ul class="legend float-right">
+                      <li><span class="timing" style="background-color:#e9e9e9 !important"></span>Available ( Standard Schedule )</li>
+                      <li><span class="custom-slot"></span>Available ( Custom Schedule )</li>
+                      <li><span class="cancelled"></span> Cancelled</li>
+                      <li><span class="booked"></span> Booked</li>
+                    </ul>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #addUser>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add New User</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- Register Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="signup()" autocomplete="off">
+      <div class="form-group form-focus">
+        <input type="text" class="form-control floating" name="name" formControlName="name"
+          [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.name.errors}">
+        <label class="focus-label">First Name<span class="required">*</span></label>
+        <div class="invalid-feedback">
+          Please enter a first name.
+        </div>
+      </div>
+      <div class="form-group form-focus">
+        <input type="text" name="mName" formControlName="mName" class="form-control floating"
+          [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.mName.errors}">
+        <label class="focus-label">Middle Name</label>
+        <div class="invalid-feedback">
+          Please enter a middle name.
+        </div>
+      </div>
+
+      <div class="form-group form-focus">
+        <input type="text" name="lName" formControlName="lName" class="form-control floating"
+          [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.lName.errors}" required>
+        <label class="focus-label">Last Name<span class="required">*</span></label>
+        <div class="invalid-feedback">
+          Please enter a last name.
+        </div>
+      </div>
+      <div class="form-group form-focus">
+        <input type="email" name="mEmail" formControlName="mEmail" class="form-control floating"
+          [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.mEmail.errors}" required>
+        <label class="focus-label">Email<span class="required">*</span></label>
+        <div class="invalid-feedback">
+          Please enter a valid email.
+        </div>
+      </div>
+      <div class="form-group form-focus">
+        <select class="form-control" name="gender" formControlName="gender"
+          [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.gender.errors}" required>
+          <option value="5">Male</option>
+          <option value="6">Female</option>
+          <option value="7">Other</option>
+        </select>
+        <label class="focus-label select-label">Gender<span class="required">*</span></label>
+        <div class="invalid-feedback">
+          Please select gender.
+        </div>
+      </div>
+
+      <div class="form-group form-focus">
+        <input type="text" class="form-control floating" name="mobile" formControlName="mobile" max="15"
+          [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.mobile.errors}" mask="0000000000">
+        <label class="focus-label">Mobile Number<span class="required">*</span></label>
+        <div class="invalid-feedback">
+          Please enter a valid mobile number.
+        </div>
+      </div>
+
+      <div class="form-group form-focus">
+        <input type="password" name="password" formControlName="password" class="form-control floating"
+          [ngClass]="{'is-invalid':isSubmitted && registerForm.controls.password.errors}">
+        <label class="focus-label">Create Password<span class="required">*</span></label>
+        <div class="invalid-feedback">
+          Please enter a password.
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block btn-lg login-btn" type="submit">Signup</button>
+      <!-- <div class="login-or">
+                      <span class="or-line"></span>
+                      <span class="span-or">or</span>
+                    </div>
+                    <div class="row form-row social-login">
+                      <div class="col-6">
+                        <a href="javascript:void(0)" class="btn btn-facebook btn-block"><i
+                            class="fab fa-facebook-f mr-1"></i> Login</a>
+                      </div>
+                      <div class="col-6">
+                        <a href="javascript:void(0)" class="btn btn-google btn-block"><i class="fab fa-google mr-1"></i>
+                          Login</a>
+                      </div>
+                    </div> -->
+    </form>
+  </div>
+</ng-template>

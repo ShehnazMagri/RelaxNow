@@ -1,0 +1,19 @@
+.user-video {
+  width: 60vh;
+  margin: auto;
+  height: 50vh;
+  overflow: hidden;
+  padding: auto;
+}
+.call-content-wrap {
+  height: 50vh;
+}
+
+@media only screen and (max-width: 768px) {
+
+  .user-video {
+    width: 70% !important;
+  }
+
+
+}

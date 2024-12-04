@@ -1,0 +1,109 @@
+<div class="profile-sidebar">
+  <div class="widget-profile pro-widget-content">
+    <div class="profile-info-widget">
+      <a href="javascript:void(0)" class="booking-doc-img">
+        <img *ngIf="!userImage" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+        <img *ngIf="userImage" [src]="userImage" alt="User Image"> </a>
+      <input type="file" class="upload" accept="image/*" (change)="onImageSelect($event)">
+
+      <div class="profile-det-info">
+        <h3>{{userData.FIRSTNAME}} {{userData.LASTNAME}}</h3>
+        <div class="patient-details">
+          <!-- <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
+					<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, USA</h5> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-widget">
+    <nav class="dashboard-menu">
+      <ul>
+        <li [class.active]="name === 'dashboard'">
+          <a (click)="navigate('Dashboard')" [routerLink]="'dashboard'" (click)="navigate('Dashboard')">
+            <i class="fas fa-columns"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'my-purchases'" (click)="navigate('my-purchases')">
+          <a [routerLink]="'/p/my-purchases'">
+            <i class="fas fa-shopping-cart"></i>
+            <span>My Purchases</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'cart'" (click)="navigate('cart')">
+          <a [routerLink]="'/p/cart'">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span> <span class="badge badge-success" style="margin-top:-25px">{{cartCount}}</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'search-doctor'">
+          <a (click)="navigate('Search Consultant')" [routerLink]="'/p/search-doctor'">
+            <i class="fas fa-search"></i>
+            <span>Book Your Appointment</span>
+          </a>
+        </li>
+
+        <li [class.active]="name === 'appointment-list'">
+          <a (click)="navigate('Appointments')" [routerLink]="'/p/appointment-list'">
+            <i class="fas fa-calendar-check"></i>
+            <span>My Appointments</span>
+          </a>
+        </li>
+
+        <li [class.active]="name === 'billing'">
+          <a (click)="navigate('Billing')" [routerLink]="'/p/billing'">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>My Appointment Billing</span>
+          </a>
+        </li>
+
+        <!-- <li [class.active]="name === 'reviews'">
+          <a (click)="navigate('Feedback')" [routerLink]="'/p/reviews'">
+            <i class="fas fa-rss"></i>
+            <span>Feedback</span>
+          </a>
+        </li> -->
+
+        <li [class.active]="name === 'settings'">
+          <a (click)="navigate('View Profile')" [routerLink]="'settings'">
+            <i class="fas fa-user-cog"></i>
+            <span>View Profile</span>
+          </a>
+        </li>
+
+        <li [class.active]="name === 'change-password'">
+          <a (click)="navigate('View Profile')" [routerLink]="'/p/change-password'">
+            <i class="fas fa-lock"></i>
+            <span>Change Password</span>
+          </a>
+        </li>
+        <!-- <li [class.active]="name === 'Favourites'">
+					<a (click)="navigate('Favourites')" [routerLink]="'favourites'">
+						<i class="fas fa-bookmark"></i>
+						<span>Favorites</span>
+					</a>
+				</li>
+				<li [class.active]="name === 'message'">
+					<a [routerLink]="'message'">
+						<i class="fas fa-comments"></i>
+						<span>Message</span>
+						<small class="unread-msg">23</small>
+					</a>
+				</li>
+				<li>
+					<a [routerLink]="'/change-password'">
+						<i class="fas fa-lock"></i>
+						<span>Change Password</span>
+					</a>
+				</li> -->
+        <li>
+          <a (click)="logout()" style="cursor: pointer;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+</div>

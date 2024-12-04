@@ -1,0 +1,198 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Discount Coupons</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Discount Coupons</li>
+          </ul>
+        </div>
+        <div class="col-sm-5 col">
+          <a class="btn btn-primary float-right mt-2" data-toggle="modal" (click)="openModal(coupontemplate)">
+            Add
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtTrigger]="dtTrigger" class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Coupons Type</th>
+                    <th>Description</th>
+                    <th>Usage/Limit</th>
+                    <th>Used</th>
+                    <th data-sort='YYYYMMDD'>Expiry Date</th>
+                    <th width="100" class="text-right">Status</th>
+                    <th width="50" class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let coupon of couponsData;let i=index;">
+                    <td>{{coupon?.CODE}}</td>
+                    <td>
+                      {{coupon?.DISCOUNT_TYPE ? 'Percentage' :'Flat'}} Discount
+                    </td>
+                    <td>
+                      {{coupon?.DESCRIPTION}}
+                    </td>
+
+                    <td>
+                      {{coupon?.USAGE_PER_LIMIT}}
+                    </td>
+                    <td>{{coupon?.Used_COUNT}}</td>
+                    <td>
+                      <span class="d-none">{{coupon?.EXPIRY_DATE | date:'y-MM-dd'}}</span>
+                      {{coupon?.EXPIRY_DATE | date}}
+                    </td>
+                    <td>
+                      <span class="d-none">{{coupon.ACTIVE}}</span>
+                      <div class="float-right status-toggle">
+                        <input type="checkbox" id="status_{{i}}" class="check" [checked]="coupon.ACTIVE"
+                          (click)="openModal(confirm,coupon)">
+                        <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="actions" data-toggle="modal" (click)="openModal(coupontemplate,coupon)">
+                        <i class="center fe fe-pencil"></i>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #coupontemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{selectedCoupon?.ID ? 'Edit':'Add'}} Discount Coupon</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="submitForm(couponForm)" #couponForm="ngForm">
+      <div class="row form-row">
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Coupon Code</label>
+            <input type="text" class="form-control" name="couponCode" #couponCode="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && couponCode.errors}" [value]="selectedCoupon.CODE"
+              [(ngModel)]="selectedCoupon.CODE" required>
+            <div class="invalid-feedback">
+              Please enter a coupon code.
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Coupon Description</label>
+            <textarea class="form-control" maxlength="490" name="couponDescription" #couponDescription="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && couponDescription.errors}" [value]="selectedCoupon.DESCRIPTION"
+              [(ngModel)]="selectedCoupon.DESCRIPTION" required></textarea>
+            <div class="invalid-feedback">
+              Please enter a coupon description.
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Discount Type</label>
+            <select class="form-control" required name="discount_type" #discount_type="ngModel"
+              [(ngModel)]="selectedCoupon.DISCOUNT_TYPE"
+              (ngModelChange)="checkPercentage()"
+              [ngClass]="{'is-invalid':isSubmitted && discount_type.errors}">
+              <option value="0">Flat</option>
+              <option value="1">Percent</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select discount type.
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Discount {{+selectedCoupon.DISCOUNT_TYPE ===1 ? 'Percentage':'Amount'}}</label>
+            <input type="number" min="0" class="form-control" name="discAmount" #discAmount="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && discAmount.errors}" [(ngModel)]="selectedCoupon.DISCOUNT_AMOUNT"
+              required (keyup)="checkPercentage()">
+            <div class="invalid-feedback">
+              Please enter discount {{selectedCoupon.DISCOUNT_TYPE ? 'percentage':'amount'}}.
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Usage/Limit</label>
+            <input type="number" min="0" class="form-control" name="usageLimit" #usageLimit="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && usageLimit.errors}" [value]="selectedCoupon.USAGE_PER_LIMIT"
+              [(ngModel)]="selectedCoupon.USAGE_PER_LIMIT" required>
+            <div class="invalid-feedback">
+              Please enter usage/limit.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Expiry Date</label>
+            <input type="text" class="form-control" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" name="amount"
+              #exp_date="ngModel" [ngClass]="{'is-invalid':isSubmitted && exp_date.errors}"
+              [value]="selectedCoupon.EXPIRY_DATE" [(ngModel)]="expDate" required [minDate]="minDate">
+            <div class="invalid-feedback">
+              Please enter expiry date.
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{selectedCoupon?.ID ? 'Edit':'Save'}} </button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to delete this coupon?
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="deleteCoupon()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #confirm>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to change it's status?
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="confirmChange()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>

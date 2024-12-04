@@ -1,0 +1,91 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Cancelled Appointments</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Cancelled Appointments</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Recent Orders -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row ">
+              <div class="col-md-4" style="margin:20px">
+                <label>Select Date Range</label>
+                <input type="text" class="form-control" name="daterangeInput" daterangepicker [options]="options"
+                  (selected)="selectedDate($event, daterange)" />
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="row-border hover table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger"
+                [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>Doctor Name</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Patient Name</th>
+                    <th data-sort='YYYYMMDD HH:MM'>Cancelled Appointment</th>
+                    <th>Refund Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of appointments">
+                    <td>
+                      <h2 class="table-avatar">
+                        <a href="javascript:void(0)" class="avatar avatar-sm mr-2">
+                          <img class="avatar-img rounded-circle"
+                            [src]="item?.Doctor_ImageBase64 ||'assets/img/doctors/doctor-thumb-01.jpg'"
+                            alt="User Image"></a>
+                        {{item.DOCTOR_Prefix }} {{item.DOCTOR_FIRST_NAME }}
+                        {{item.DOCTOR_LAST_NAME}}
+                        <br />
+                        {{item?.ROLE}}
+
+
+                      </h2>
+                    </td>
+                    <td>{{item.STATE_NAME}}</td>
+                    <td>{{item.CITY_NAME}}</td>
+                    <td>
+                      <h2 class="table-avatar">
+                        <a href="javascript:void(0)" class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.ImageBase64 ||'assets/img/doctors/doctor-thumb-01.jpg'" alt="User Image"></a>
+                        <a href="javascript:void(0)">{{item.RN_CUSTOMER_Prefix }} {{item.RN_CUSTOMER_FIRST_NAME }}
+                          {{item.RN_CUSTOMER_LAST_NAME}}
+                          <br />
+                          {{item.RELATIONSHIP_NUMBER}}<br />
+                          {{item.RN_CUSTOMER_MOBILE}}
+                        </a>
+
+                      </h2>
+                    </td>
+                    <td><span class="d-none">{{item.APPOINTMENT_DATE| date:'y-MM-dd'}}</span>
+                      {{item.APPOINTMENT_DATE| date}} <span class="text-primary d-block">{{item.APPOINTMENT_TIME}} -
+                        {{item.APPOINTMENT_ENDTIME}}</span></td>
+                    <td>{{item.REFUND_STATUS}}</td>
+                    <!-- <td class="text-right">
+                      INR{{}}
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Orders -->
+      </div>
+    </div>
+  </div>
+</div>

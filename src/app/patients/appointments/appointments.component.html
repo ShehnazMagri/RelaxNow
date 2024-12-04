@@ -1,0 +1,289 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="page-title">Appointments</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="'/p/dashboard'">Dashboard</a></li>
+        <li class="breadcrumb-item active">Appointments</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /Page Header -->
+<div class="appointments">
+  <!-- Appointment List -->
+  <ul class="nav nav-tabs nav-tabs-top nav-justified">
+    <li class="nav-item"><a class="nav-link active" href="#solid-justified-tab1" data-toggle="tab">UpComing</a></li>
+    <li class="nav-item"><a class="nav-link" href="#solid-justified-tab2" data-toggle="tab">Previous</a></li>
+    <li class="nav-item"><a class="nav-link" href="#solid-justified-tab3" data-toggle="tab">Reports</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="solid-justified-tab1">
+      <input type="text" class="form-control" [(ngModel)]="searchText" name="search"
+        placeholder="Search Appointment" /><br>
+
+      <div class="appointment-list" *ngFor="let people of upcomingAppointment|filter:searchText">
+        <div class="profile-info-widget">
+          <a class="booking-doc-img">
+            <img *ngIf="!people?.People_IMAGE" class="avatar-img rounded-circle" src="assets/img/NoImg.png"
+              alt="User Image" />
+            <img *ngIf="people?.People_IMAGE" class="avatar-img rounded-circle" [src]="people?.People_IMAGE"
+              alt="User Image" />
+          </a>
+
+          <div class="profile-det-info">
+            <h3><a>{{people.DOCTOR_FIRST_NAME}} {{people.DOCTOR_LAST_NAME}}</a></h3>
+            <div class="patient-details">
+              <h5><i class="far fa-clock"></i> {{people.APPOINTMENT_DATE| date : 'dd MMM yyyy'}}
+                {{people.APPOINTMENT_TIME}} - {{people.APPOINTMENT_ENDTIME}}
+              </h5>
+              <h5><i class="fas fa-graduation-cap"></i> {{people?.PROFESSIONAL_TITLE}}</h5>
+              <h5><i class="fas fa-envelope"></i> {{people.PEOPLE_EMAIL}}</h5>
+              <h5 class="mb-0"><i class="fas fa-user"></i> {{people.DOCTOR_RELATIONSHIP_NUMBER}}</h5>
+            </div>
+          </div>
+          <!-- /Appointment List -->
+
+        </div>
+
+        <div class="appointment-action">
+          <ng-container *ngIf="people?.enableCall">
+            <a (click)="callUser(people)" class="btn btn-white">
+              <img src="assets/img/call_64.png" style="width:20px;height:20px" />
+            </a>
+            <a [routerLink]="['/p/message',people.DOCTOR_ID]"
+              [queryParams]="{appointmentId: people.RN_APPOINTMENT_ID}" class="btn btn-white">
+              <img src="assets/img/chat_64.png" style="width:20px;height:20px" />
+            </a>
+            <a (click)="videoCall(people)" class="btn btn-white">
+              <img src="assets/img/video-player_64.png" style="width:20px;height:20px" />
+            </a>
+          </ng-container>
+          <a href="javascript:void(0)" class="btn btn-sm bg-info-light" style="float: right;width: 151px;"
+            [routerLink]="['/p/appointment-details',people.RN_APPOINTMENT_ID,people.DOCTOR_ID]">
+            <i class="far fa-eye"></i> View Details
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="solid-justified-tab2">
+      <input type="text" class="form-control" [(ngModel)]="searchTextPrevious" name="search"
+        placeholder="Search Appointment" /><br>
+
+      <div class="appointment-list" *ngFor="let people of previous|filter:searchTextPrevious">
+        <div class="profile-info-widget">
+          <a class="booking-doc-img">
+            <img *ngIf="!people?.People_IMAGE" class="avatar-img rounded-circle" src="assets/img/NoImg.png"
+              alt="User Image" />
+
+            <img *ngIf="people?.People_IMAGE" class="avatar-img rounded-circle" [src]="people?.People_IMAGE"
+              alt="User Image" />
+          </a>
+
+          <div class="profile-det-info">
+            <h3><a>{{people.DOCTOR_FIRST_NAME}} {{people.DOCTOR_LAST_NAME}}</a></h3>
+            <div class="patient-details">
+              <h5><i class="far fa-clock"></i> {{people.APPOINTMENT_DATE| date : 'dd MMM yyyy'}}
+                {{people.APPOINTMENT_TIME}} - {{people.APPOINTMENT_ENDTIME}}
+              </h5>
+              <h5><i class="fas fa-graduation-cap"></i> {{people?.PROFESSIONAL_TITLE}}</h5>
+              <h5><i class="fas fa-envelope"></i> {{people.PEOPLE_EMAIL}}</h5>
+              <h5 class="mb-0"><i class="fas fa-user"></i> {{people.DOCTOR_RELATIONSHIP_NUMBER}}</h5>
+            </div>
+          </div>
+          <!-- /Appointment List -->
+
+        </div>
+
+        <div class="appointment-action">
+          <!-- <a class="btn btn-sm bg-info-light" style="float: right;width: 151px;"
+            (click)="openModal(reviewtemplate,people.DOCTOR_ID)">
+            <i class="far fa-star"></i> Add Reviews
+          </a> -->
+          <a class="btn btn-sm bg-info-light" style="float: right;width: 151px;"
+            [routerLink]="['/p/appointment-details',people.RN_APPOINTMENT_ID,people.DOCTOR_ID]">
+            <i class="far fa-eye"></i> View Details
+          </a>
+
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="solid-justified-tab3">
+      <div class="row" style="margin:20px">
+        <div class="col-6"></div>
+        <div class="col-5">
+          <div class="change-photo-btn" (click)="openModal(uploadtemplate)" style="float: right;">
+            <span><i class="fa fa-upload"></i> Upload File</span>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="row-border hover table table-hover table-center mb-0">
+          <thead>
+            <tr>
+              <th>Certificate Name</th>
+              <th>Uploaded Date</th>
+              <th>View Report</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of reports">
+              <tr *ngIf="item?.RESULT_FILE">
+                <td>{{item?.NAME|| item?.RESULT_FILE}}</td>
+                <td>{{item?.CreatedDate | date:'MMMM d, y'}}</td>
+                <td class="text-right">
+                  <div class="table-action">
+                    <a href="{{item?.RESULT_FILE_BASEURL}}{{item?.RESULT_FILE}}" target="_blank">
+                      <img src="assets/img/PDFReport.png" style="width:30px" />
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <tr class="text-center" *ngIf="!reports.length">
+              <td colspan="2"> No reports Found</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #uploadtemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Upload File</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate (ngSubmit)="uploadFile(uploadForm)" #uploadForm="ngForm">
+        <div class="row form-row">
+          <div class="col-6 col-sm-6">
+            <div class="form-group">
+              <label>Document Name</label>
+              <!-- <input type="text" class="form-control" name="fileName" #name="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required
+                appInputrestriction="[a-zA-Z]"> -->
+                <select class="form-control" name="fileName" #name="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required>
+                <option *ngFor="let item of documentsLists" value="{{item.id}}"> {{item.value}} </option>
+              </select>
+              <div class="invalid-feedback">
+                {{name?.errors?.requied ? 'Please enter a  name.' :'Special Character not allowed'}}
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-6">
+            <div class="form-group">
+              <label>&nbsp;</label>
+
+              <div class="custom-file">
+                <input id="uploadFile" class="custom-file-input" type="file" class="upload" name="filetoUpload"
+                  [(ngModel)]="filetoUpload" required #file="ngModel" accept=".png, .jpeg,.jpg,.pdf"
+                  (change)="onFileSelect($event)" required [ngClass]="{'is-invalid':isSubmitted && file.errors}">
+                <div class="invalid-feedback">Please add a file to upload.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #reviewtemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Write a review</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- Write Review -->
+      <div class="write-review">
+        <!-- Write Review Form -->
+        <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+          <div class="form-group">
+            <label>Review</label>
+            <div class="star-rating">
+              <input id="star-5" type="radio" name="rating" formControlName="rating" value="5"
+                [checked]="reviewForm.controls.rating.value =='5'">
+              <label for="star-5" title="5 stars">
+                <i class="active fa fa-star"></i>
+              </label>
+              <input id="star-4" type="radio" name="rating" formControlName="rating" value="4"
+                [checked]="reviewForm.controls.rating.value =='4'">
+              <label for="star-4" title="4 stars">
+                <i class="active fa fa-star"></i>
+              </label>
+              <input id="star-3" type="radio" name="rating" formControlName="rating" value="3"
+                [checked]="reviewForm.controls.rating.value =='3'">
+              <label for="star-3" title="3 stars">
+                <i class="active fa fa-star"></i>
+              </label>
+              <input id="star-2" type="radio" name="rating" formControlName="rating" value="2"
+                [checked]="reviewForm.controls.rating.value =='2'">
+              <label for="star-2" title="2 stars">
+                <i class="active fa fa-star"></i>
+              </label>
+              <input id="star-1" type="radio" name="rating" formControlName="rating" value="1"
+                [checked]="reviewForm.controls.rating.value =='1'">
+              <label for="star-1" title="1 star">
+                <i class="active fa fa-star"></i>
+              </label>
+            </div>
+
+          </div>
+          <div class="review-listing comment-reply">
+            <p class="recommend-btn">
+              <span>Recommend?</span>
+              <a href="javascript:void(0)" (click)="isRecommend=1" class="like-btn"
+                [ngClass]="isRecommend ? 'active' :''">
+                <i class="far fa-thumbs-up"></i> Yes
+              </a>
+              <a href="javascript:void(0)" (click)="isRecommend=0" class="dislike-btn"
+                [ngClass]="isRecommend ? '' :'deactive'">
+                <i class="far fa-thumbs-down"></i> No
+              </a>
+            </p>
+          </div>
+          <div class="form-group">
+            <label>Your review</label>
+            <textarea id="revew_desc" maxlength="2000" class="form-control" name="review" formControlName="review"
+              [ngClass]="{'is-invalid':isSubmitted && reviewForm.controls.review.errors}"></textarea>
+            <div class="invalid-feedback">
+              Please enter a review.
+            </div>
+            <div class="d-flex justify-content-between mt-3"><small class="text-muted"><span
+                  id="chars">{{2000- (reviewForm.controls.review.value.length)}}</span>
+                characters remaining</small></div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <div class="terms-accept">
+              <div class="custom-checkbox">
+                <input type="checkbox" id="terms_accept" name="terms" formControlName="terms"
+                  [ngClass]="{'is-invalid':isSubmitted && reviewForm.controls.terms.errors}">
+
+                <label for="terms_accept">&nbsp;I have read and accept <a href="javascript:void(0)"
+                    [routerLink]="'/privacy-policy'" target="_blank">Terms &amp;
+                    Conditions</a></label>
+                <div class="invalid-feedback">
+                  Please accept the terms to submit your review.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button type="submit" class="btn btn-primary submit-btn">Add Review</button>
+          </div>
+        </form>
+        <!-- /Write Review Form -->
+
+      </div>
+    </div>
+    <!-- /Write Review -->
+  </ng-template>
+</div>

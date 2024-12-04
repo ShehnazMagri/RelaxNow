@@ -1,0 +1,13 @@
+.avatar-away::before,
+.avatar-offline::before,
+.avatar-online::before {
+  position: absolute;
+  right: 0;
+  left: 14px;
+  bottom: 0;
+  width: 35%;
+  height: 35%;
+  border-radius: 50%;
+  content: "";
+  border: 2px solid #fff;
+}

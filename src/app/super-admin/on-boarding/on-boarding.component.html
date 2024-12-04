@@ -1,0 +1,81 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">People</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">OnBoarding</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Role</th>
+                    <th>Allow First Assesment</th>
+                    <th>Manage Schedule</th>
+                    <th width="100" class="text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let people of peopleData;index as i">
+                    <td>
+                      <i class="fas fa-arrow-up" *ngIf="i!=0" (click)="updateOrder('RN_PEOPLE_ORDER_DESC',people)" style="cursor:pointer"></i>&nbsp;
+                    <i class="fas fa-arrow-down" *ngIf="i!=peopleData.length-1" (click)="updateOrder('RN_PEOPLE_ORDER_INCREASE',people)" style="cursor:pointer"></i>
+                    </td>
+                    <td>
+                      {{people.LAST_NAME}}
+                    </td>
+                    <td>
+                      {{people.EMAIL}}
+                      <!-- {{people.CREATED_Date | date}} -->
+                    </td>
+                    <td>
+                      {{people.Mobile}}
+                    </td>
+                    <td>
+                      {{people.ROLENAME}}
+                    </td>
+                    <td>
+                      {{people.IS_VISITOR? 'Yes':'No'}}
+                    </td>
+                    <td>
+                      <a  [routerLink]="['/sadm/manage-schedule',people.ID]"> <i class="fa fa-edit"></i></a>
+                    </td>
+                    <td>
+                      <span class="d-none">{{people.ACTIVE}}</span>
+                      <div class="float-right status-toggle">
+                        <input type="checkbox" id="status_{{i}}" class="check" [checked]="people.ACTIVE"
+                          (change)="changeStatus($event.target.checked,people)">
+                        <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

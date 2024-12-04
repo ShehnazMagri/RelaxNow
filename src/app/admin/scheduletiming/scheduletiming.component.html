@@ -1,0 +1,166 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Schedule Timings</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Schedule Timings</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <!-- <h4 class="card-title">Schedule Timings</h4> -->
+            <div class="profile-box">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-xs-12">
+                  <div class="form-group">
+                    <label>Select Doctor</label>
+                    <ng-select2 [(ngModel)]="selectedUserId" [ngModelOptions]="{standalone: true}" width="100%"
+                      (ngModelChange)="onUserChange()">
+                      <option value="">-</option>
+                      <option *ngFor="let user of userData" [value]="user.ID">{{user?.FIRST_NAME}} {{user?.LAST_NAME}}
+                      </option>
+                    </ng-select2>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-0">
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-12 text-center" [hidden]="!selectedUserId">
+                  <div class="form-group">
+
+                    <label>&nbsp;&nbsp;</label>
+
+                    <button class="btn btn-primary float-right w-100"
+                      [routerLink]="['detail',selectedUserId]">Deactivate
+                      Schedule</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card schedule-widget mb-0" [hidden]="!selectedUserId">
+                    <!-- Schedule Header -->
+                    <div class="schedule-header">
+                      <!-- Schedule Nav -->
+                      <div class="schedule-nav">
+                        <ul class="nav nav-tabs nav-justified">
+                          <li class="nav-item" *ngFor="let day of weekDays">
+                            <a class="nav-link" href="#d_{{day}}" data-toggle="tab"
+                              (click)="getSelectedDaySlots(day)">{{day}}</a>
+                          </li>
+                        </ul>
+                      </div>
+                      <!-- /Schedule Nav -->
+
+                    </div>
+                    <!-- /Schedule Header -->
+
+                    <!-- Schedule Content -->
+                    <div class="tab-content schedule-cont">
+                      <!-- Sunday Slot -->
+                      <div class="tab-pane fase" id="d_{{selectedDay}}">
+                        <h4 class="card-title d-flex justify-content-between">
+                          <span>Time Slots</span>
+                          <a class="edit-link" (click)="openModal(timeslottemplate)"><i class="fa fa-plus-circle"></i>
+                            {{currentSlots?.length ? 'Edit':'Add'}} Slot</a>
+                          <a class="edit-link" *ngIf="currentSlots?.length" (click)="copySameSlots()"><i
+                              class="fa fa-copy"></i>
+                            Use Same Slots for All Days</a>
+                        </h4>
+                        <!-- Slot List -->
+                        <div class="doc-times" *ngIf="currentSlots?.length">
+                          <ng-container *ngFor="let slot of currentSlots;index as i">
+
+                            <div class="doc-slot-list">
+                              {{slot?.FROM}} - {{slot?.TO}}
+                              <a href="javascript:void(0)" class="delete_schedule" (click)="removeSlot(i)">
+                                <i class="fa fa-times"></i>
+                              </a>
+                            </div>
+                          </ng-container>
+
+                        </div>
+                        <!-- /Slot List -->
+                        <p class="text-muted mb-0" *ngIf="!currentSlots?.length">Not Available</p>
+                      </div>
+                      <!-- /Sunday Slot -->
+
+                      <!-- /Schedule Content -->
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Time Slot Modal -->
+  <ng-template #timeslottemplate>
+    <div class="modal-header">
+      <h5 class="modal-title">{{weekDays[currentDayIndex]?.timeSlots?.length ? 'Edit':'Add'}} Time Slots</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate (ngSubmit)="submitRange(timeForm)" #timeForm="ngForm">
+        <div class="hours-info">
+          <div class="row form-row hours-cont">
+            <div class="col-12 col-md-10">
+              <div class="row form-row">
+                <div class="col-12 col-md-4">
+                  <div class="form-group">
+                    <label>Start Time</label>
+                    <input class="form-control" type="time" name="openTime" [(ngModel)]="openTime" required />
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="form-group">
+                    <label>End Time</label>
+                    <input class="form-control" type="time" name="closeTime" [(ngModel)]="closeTime" required />
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="form-group">
+                    <label>Timing Slot Duration</label>
+                    <ng-select2 [(ngModel)]="selectedInterval" #interval="ngModel" [ngModelOptions]="{standalone: true}"
+                      [ngClass]="{'is-invalid':isSubmitted && interval.errors}" width="100%" required>
+                      <option value="">-</option>
+                      <option value="15">15 mins</option>
+                      <option value="30">30 mins</option>
+                      <option value="45">45 mins</option>
+                      <option value="60">1 hour</option>
+                    </ng-select2>
+                    <div class="invalid-feedback">
+                      Please select any one duration.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="add-more mb-3">
+            <a href="javascript:void(0);" class="add-hours"><i class="fa fa-plus-circle"></i> Add More</a>
+          </div> -->
+        <div class="submit-section text-center">
+          <button type="submit" class="btn btn-primary submit-btn" data-dismiss="modal" aria-label="Close">Save
+            Changes</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <!-- /Add Time Slot Modal -->

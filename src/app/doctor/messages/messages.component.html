@@ -1,0 +1,178 @@
+<div class="breadcrumb-bar">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <nav aria-label="breadcrumb" class="page-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);" (click)="backClicked()">Back </a></li>
+          </ol>
+        </nav>
+       </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="chat-window" *ngIf="appointments.length">
+
+          <!-- Chat Left -->
+          <div class="chat-cont-left">
+            <div class="chat-header">
+              <i class="back-btn fas fa-arrow-left" href="javascript:void(0);" (click)="backClicked()"></i> <span>Chats</span>
+              <!-- <a href="javascript:void(0)" class="chat-compose">
+                <i class="material-icons">control_point</i>
+              </a> -->
+            </div>
+            <div class="chat-search">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <i class="fas fa-search"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+                  (keyup)="filterUsersChat(searchText)">
+              </div>
+            </div>
+            <div class="chat-users-list">
+              <div class="chat-scroll">
+                <ng-container *ngFor="let channel of appointments;">
+                  <a href="javascript:void(0);" (click)="enterChannel(channel)"
+                    [ngClass]="selectedUser?.CUSTOMER_ID == channel?.CUSTOMER_ID ? 'active' : ''" class="media" >
+                    <div class="media-img-wrap">
+                      <div class="avatar"  [ngClass]="channel?.ISLOGEDIN == 1 ? 'avatar-online' : 'avatar-away'">
+                        <img *ngIf="channel?.Customer_IMAGE" [src]="channel?.Customer_IMAGE" alt="User Image"
+                          class="avatar-img rounded-circle">
+                        <img *ngIf="!channel?.Customer_IMAGE" src="assets/img/patients/patient1.jpg" alt="User Image"
+                          class="avatar-img rounded-circle">
+                      </div>
+                    </div>
+                    <div class="media-body">
+                      <div>
+                        <div class="user-name">{{channel?.RN_CUSTOMER_FIRST_NAME}} {{channel?.RN_CUSTOMER_MIDDLE_NAME}}
+                          {{channel?.RN_CUSTOMER_LAST_NAME}}
+                            <span class="badge badge-danger" *ngIf="channel?.UNREADMESSAGES>0">{{channel?.UNREADMESSAGES}}</span>
+                        </div>
+                        <div class="user-last-chat">{{channel?.BOOKING_DATE}}</div>
+
+                      </div>
+                    </div>
+                  </a>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <!-- /Chat Left -->
+
+          <!-- Chat Right -->
+          <div class="chat-cont-right" [hidden]="!currentChannel">
+            <div class="chat-header">
+              <a id="back_user_list" href="javascript:void(0)" class="back-user-list">
+                <i class="material-icons">chevron_left</i>
+              </a>
+              <div class="media">
+                <div class="media-img-wrap">
+                  <div class="avatar" [ngClass]="selectedUser?.ISLOGEDIN == 1 ? 'avatar-online' : 'avatar-away'">
+                    <img *ngIf="selectedUser?.Customer_IMAGE" [src]="selectedUser?.Customer_IMAGE" alt="User Image"
+                      class="avatar-img rounded-circle">
+                    <img *ngIf="!selectedUser?.Customer_IMAGE" src="assets/img/patients/patient1.jpg" alt="User Image"
+                      class="avatar-img rounded-circle"> </div>
+                </div>
+                <div class="media-body">
+                  <div class="user-name">{{selectedUser?.RN_CUSTOMER_FIRST_NAME}}
+                    {{selectedUser?.RN_CUSTOMER_MIDDLE_NAME}}
+                    {{selectedUser?.RN_CUSTOMER_LAST_NAME}}</div>
+                  <div class="user-status" *ngIf="selectedUser?.ISLOGEDIN == 1">online</div>
+                </div>
+              </div>
+              <div class="chat-options">
+                <a (click)="callUser(selectedUser)">
+                  <i class="material-icons">local_phone</i>
+                </a>
+                <a *ngIf="selectedUser" href="javascript:void(0)" (click)="sendPushNotification(selectedUser)"  >
+                  <i class="material-icons">videocam</i>
+                </a>
+                <!-- <a href="javascript:void(0)">
+                  <i class="material-icons">more_vert</i>
+                </a> -->
+              </div>
+            </div>
+            <div class="chat-body">
+              <div class="chat-scroll" #chatDisplay>
+                <ul class="list-unstyled">
+
+                  <ng-container *ngFor="let message of messages ">
+                    <li class="chat-date">{{message.dateUpdated | niceDateFormatPipe}}</li>
+                    <li class="media" [ngClass]="(userData.EMAIL !== message.author) ? 'received' : 'sent'">
+
+                      <div class="media-body">
+                        <div class="msg-box">
+                          <div>
+                            <p *ngIf="message.body">{{message.body}}</p>
+                            <p *ngIf="message.media" class="media-file" (click)="downloadMedia(message)"> <img
+                                src="assets/img/attached.png" alt="medis" /></p>
+                            <ul class="chat-msg-info">
+                              <li>
+                                <div class="chat-time">
+                                  <span>{{message.dateUpdated | date: 'h:mm a'}}</span>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ng-container>
+                  <li class="media received" *ngIf="membersTyping.length">
+                    <div class="avatar">
+                      <img *ngIf="selectedUser?.Customer_IMAGE" [src]="selectedUser?.Customer_IMAGE" alt="User Image"
+                        class="avatar-img rounded-circle">
+                      <img *ngIf="!selectedUser?.Customer_IMAGE" src="assets/img/patients/patient1.jpg" alt="User Image"
+                        class="avatar-img rounded-circle">
+                    </div>
+                    <div class="media-body">
+                      <div class="msg-box">
+                        <div>
+                          <div class="msg-typing">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <form (submit)="sendMessage()" autocomplete="off" name="chatForm" id="chatForm">
+
+              <div class="chat-footer">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="btn-file btn">
+                      <i class="fa fa-paperclip"></i>
+                      <input type="file" class="upload" accept="image/*,video/*" (change)="onFileSelect($event)">
+                    </div>
+                  </div>
+                  <input type="text" id="chatMessage" name="chatMessage" #chatElement
+                    class="input-msg-send form-control" [(ngModel)]="chatMessage" />
+                  <div class="input-group-append" (click)="sendMessage()">
+                    <button type="button" class="btn msg-send-btn"><i class="fab fa-telegram-plane"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+          <!-- /Chat Right -->
+        </div>
+        <div class="chat-window" *ngIf="!appointments.length">
+          <p>Loading...</p>
+        </div>
+      </div>
+    </div>
+    <!-- /Row -->
+  </div>
+</div>

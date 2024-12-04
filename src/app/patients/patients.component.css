@@ -1,0 +1,15 @@
+.breadcrumb-bar {
+  background-color: #004a83;
+  padding: 15px 0;
+  /*margin-top: 6em;*/
+}
+li.active {
+  background: #adcae0;
+}
+.required {
+  color: red !important;
+}
+
+.timing {
+  cursor: pointer;
+}

@@ -1,0 +1,176 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <nav aria-label="breadcrumb" class="page-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a >Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+          </ol>
+        </nav>
+        <h2 class="breadcrumb-title">Checkout</h2>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-7 col-lg-8">
+        <div class="card">
+          <div class="card-body">
+
+            <!-- Checkout Form -->
+            <form ngNoForm #payuForm action="https://securegw-stage.paytm.in/theia/processTransaction" name="f1" method="POST"
+              target="payment_popup" (submit)="initPayment()">
+
+              <!-- Personal Information -->
+              <div class="info-widget">
+                <h4 class="card-title">Personal Information</h4>
+                <div class="row">
+                  <div class="col-md-6 col-sm-12">
+                    <div class="form-group card-label">
+                      <label>First Name<span class="required">*</span></label>
+                      <input class="form-control" type="text" name="firstname" readonly [(ngModel)]="firstName">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="form-group card-label">
+                      <label>Last Name<span class="required">*</span></label>
+                      <input class="form-control" type="text" name="lastname" readonly [(ngModel)]="lastName">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="form-group card-label">
+                      <label>Email<span class="required">*</span></label>
+                      <input class="form-control" type="email" name="email" readonly [(ngModel)]="email">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="form-group card-label">
+                      <label>Phone<span class="required">*</span></label>
+                      <input class="form-control" type="text" name="phone" [(ngModel)]="phone" readonly
+                        mask="0000000000">
+                    </div>
+                  </div>
+                </div>
+                <!-- <div *ngIf="!isLoggedIn" class="exist-customer">Existing Customer? <a
+                    [queryParams]="{redirect: '/p/doctor-profile/'+doctorId}" [routerLink]="'/login'">Click here
+                    to login</a></div> -->
+              </div>
+              <!-- /Personal Information -->
+
+              <div class="payment-widget">
+
+                <!-- Terms Accept -->
+                <div class="terms-accept">
+                  <div class="custom-checkbox">
+                    <input type="checkbox" id="terms_accept" name="terms" [(ngModel)]="terms" required
+                      (change)="checkPaymentToken()">
+                    <label for="terms_accept">&nbsp;I have read and accept <a href="javascript:void(0)"  href="assets/terms-condition/IC_U_form_for_Indian_Patients.PDF" target="_blank">Terms &amp;
+                        Conditions</a></label>
+                  </div>
+                </div>
+                <!-- /Terms Accept -->
+                <div *ngIf="paytmData">
+                  <input type="text" id="amount" hidden name="amount" [value]="totalAmount">
+
+                  <textarea name="productinfo" id="productinfo" [(ngModel)]="paytmData.productinfo" rows="2" cols="2"
+                    hidden></textarea>
+                  <textarea name="MID" id="MID" [(ngModel)]="paytmData.MID" rows="2" cols="2" hidden></textarea>
+                  <textarea name="WEBSITE" id="WEBSITE" [(ngModel)]="paytmData.WEBSITE" rows="2" cols="2" hidden></textarea>
+                  <textarea name="CHANNEL_ID" id="CHANNEL_ID" [(ngModel)]="paytmData.CHANNEL_ID" rows="2" cols="2" hidden></textarea>
+                  <textarea name="INDUSTRY_TYPE_ID" id="INDUSTRY_TYPE_ID" [(ngModel)]="paytmData.INDUSTRY_TYPE_ID" rows="2" cols="2" hidden></textarea>
+                  <textarea name="ORDER_ID" id="ORDER_ID" [(ngModel)]="paytmData.ORDER_ID" rows="2" cols="2" hidden></textarea>
+                  <textarea name="CUST_ID" id="CUST_ID" [(ngModel)]="paytmData.CUST_ID" rows="2" cols="2" hidden></textarea>
+                  <textarea name="TXN_AMOUNT" id="TXN_AMOUNT" [(ngModel)]="paytmData.TXN_AMOUNT" rows="2" cols="2" hidden></textarea>
+                  <textarea name="CALLBACK_URL" id="CALLBACK_URL" [(ngModel)]="paytmData.CALLBACK_URL" rows="2" cols="2" hidden></textarea>
+                  <textarea name="EMAIL" id="EMAIL" [(ngModel)]="paytmData.EMAIL" rows="2" cols="2" hidden></textarea>
+                  <textarea name="MOBILE_NO" id="MOBILE_NO" [(ngModel)]="paytmData.MOBILE_NO" rows="2" cols="2" hidden></textarea>
+                  <textarea name="CHECKSUMHASH" id="CHECKSUMHASH" [(ngModel)]="paytmData.CHECKSUMHASH" rows="2" cols="2" hidden></textarea>
+                </div>
+                <!-- Submit Section -->
+                <div class="submit-section mt-4">
+                  <button type="submit" class="btn btn-primary submit-btn">Confirm and
+                    Pay</button>
+                </div>
+                <!-- /Submit Section -->
+
+              </div>
+            </form>
+            <!-- /Checkout Form -->
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-5 col-lg-4">
+
+        <!-- Booking Summary -->
+        <div class="card booking-card">
+          <div class="card-header">
+            <h4 class="card-title">Booking Summary</h4>
+          </div>
+          <div class="card-body">
+
+
+
+            <div class="booking-summary">
+              <div class="booking-item-wrap">
+
+                <ul class="booking-fee">
+                  <li> Fee
+                    <span>INR {{payment}}</span>
+                  </li>
+                </ul>
+                <ul class="booking-fee">
+                  <li>Discount Coupon</li>
+                  <li>
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" [(ngModel)]="discountCoupon" placeholder="Discount Coupon"
+                        aria-label="Discount Coupon" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="getDiscountCoupon()"
+                          type="button">Apply</button>
+                      </div>
+                    </div>
+                    <!-- <input type="text"   class="form-control" /> -->
+
+                  </li>
+                  <!-- <a>Apply</a><a>select coupon from list</a> -->
+
+                </ul>
+                <div class="booking-total" >
+                  <ul class="booking-total-list">
+                    <li>
+                      <span>Discount Amount</span>
+                      <span class="total-cost">INR {{discountAmount}}</span>
+                    </li>
+
+                    <li>
+                      <span>Total</span>
+                      <span class="total-cost">INR {{totalAmount}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Booking Summary -->
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- /Page Content -->
+
+

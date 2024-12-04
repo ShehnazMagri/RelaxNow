@@ -1,0 +1,160 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Tests</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Tests</li>
+          </ul>
+        </div>
+        <div class="col-sm-5 col">
+          <a class="btn btn-primary float-right mt-2" data-toggle="modal" (click)="openModal(testformtemplate)">
+            Add
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Test Name</th>
+                    <th>Category</th>
+                    <!-- <th>Created Date</th> -->
+                    <!-- <th width="100" class="text-right">Status</th> -->
+                    <th width="50" class="text-right">Edit</th>
+                    <th width="50" class="text-right">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let test of testData;index as i">
+                    <td>
+                      {{test.Name}}
+                    </td>
+                    <td>
+                      {{test.cat_names}} <span title="Sort Categories" data-toggle="modal"
+                        (click)="openModal(sort,test)"><i class="fas fa-sort"></i></span>
+                    </td>
+                    <!-- <td>
+                      {{test.CREATED_Date | date}}
+                    </td> -->
+                    <!-- <td>
+                      <span class="d-none">{{test.ACTIVE}}</span>
+
+                      <div class="float-right status-toggle">
+                        <input type="checkbox" id="status_{{i}}" class="check" [checked]="test.ACTIVE"
+                          (change)="changeStatus($event.target.checked,test)">
+                        <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td> -->
+                    <td class="text-right">
+                      <div class="actions" data-toggle="modal" (click)="openModal(testformtemplate,test)">
+                        <i class="center fe fe-pencil"></i>
+                      </div>
+
+
+                    </td>
+                    <td class="text-right">
+                      <a data-toggle="modal" (click)="deleteModal(delete,test)" class="btn btn-sm bg-danger-light">
+                        <i class="fe fe-trash"></i> Delete
+                      </a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #testformtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{selectedTest.ID? 'Edit':'Add'}} Test</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+      (click)="modalRef.hide();getCategoryList()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="submitForm(addeditForm)" #addeditForm="ngForm">
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Test Name</label>
+            <input type="text" class="form-control" name="testName" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [value]="selectedTest.Name"
+              [(ngModel)]="selectedTest.Name" required appInputrestriction="[a-zA-Z]">
+            <div class="invalid-feedback">
+              {{name?.errors?.requied ? 'Please enter a test name.' :'Special Character not allowed'}}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 category-dropdown">
+          <div class="form-group">
+            <label>Category</label>
+            <ng-select2 [options]="{ multiple: true, closeOnSelect: false  }" #category="ngModel"
+              [(ngModel)]="selectedCategory" [ngModelOptions]="{standalone: true}"
+              [ngClass]="{'is-invalid':isSubmitted && category.errors}" width="100%" (ngModelChange)="onChange($event)">
+              <option *ngFor="let cat of categoryData" value="{{cat.NAME}}"
+                [selected]="selectedCategory && selectedCategory.includes(cat)">{{cat.NAME}}</option>
+            </ng-select2>
+            <span class="select2-container selected-dropdown" *ngIf="selectedCategory.length">
+              <ul cdkDropList class="select2-results__options category-list" (cdkDropListDropped)="drop($event)">
+                <li class="select2-results__option" *ngFor="let category of selectedCategory" cdkDrag>
+                  {{category}}</li>
+              </ul>
+            </span>
+            <div class="invalid-feedback">
+              Please select any one category.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12">
+          <div class="form-group">
+            <label>Description</label>
+            <!-- <ngx-text-editor name="DESCRIPTION" #DESCRIPTION="ngModel"
+            [ngClass]="{'is-invalid':isSubmitted && DESCRIPTION.errors}" [(ngModel)]="selectedTest.DESCRIPTION"
+            required  ></ngx-text-editor> -->
+              <angular-editor name="DESCRIPTION" #DESCRIPTION="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && DESCRIPTION.errors}" [(ngModel)]="selectedTest.DESCRIPTION"
+              required  [config]="config"></angular-editor>
+
+            <!-- <input type="text" class="form-control"  appInputrestriction="[a-zA-Z]"> -->
+            <div class="invalid-feedback">
+              Please add description
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{selectedTest.ID? 'Edit':'Save'}}</button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to delete this test?
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="deleteTest()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>

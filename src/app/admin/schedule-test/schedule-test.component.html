@@ -1,0 +1,344 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+
+
+    <div class="row">
+
+      <div class="col-12">
+
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Schedule Test</h4>
+          </div>
+          <div class="card-body">
+            <ul class="nav nav-tabs nav-tabs-top nav-justified">
+              <li class="nav-item"><a class="nav-link active" href="#top-justified-tab1" data-toggle="tab">
+                  Information</a></li>
+              <li class="nav-item" *ngIf="testID!=undefined && testModel.anonymous==false"><a class="nav-link" href="#top-justified-tab2"
+                  data-toggle="tab" (click)="getScheduleTestUsers()"> Users</a></li>
+              <li class="nav-item" *ngIf="testID!=undefined && testModel.anonymous==false"><a class="nav-link" href="#top-justified-tab3"
+                  data-toggle="tab">Schedule
+                  Notification</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane show active" id="top-justified-tab1">
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"> <label>Schedule Name* </label>
+                      <input type="text" class="form-control" [(ngModel)]="testModel.name" name="TestName">
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"><label>Select Test*
+                      </label>
+                      <ng-select2 width="100%" [(ngModel)]="testModel.testId" name="testId">
+                        <option value="">-Select Test-</option>
+                        <option *ngFor="let test of testData" [value]="test.ID">{{test.Name}}
+                        </option>
+                      </ng-select2>
+                    </div>
+                    <div class="col-md-4">
+                      <a [routerLink]="['/admin/ewi-controls/tests']">
+                        <label style="visibility: hidden;width: 100%;">Select Test*
+                        </label>
+                        Add New Test</a>
+                    </div>
+
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"><label>Valid From*
+                      </label>
+                      <input type="text" class="form-control" name="practiceFrom" [minDate]="currentDate" (dateSelect)="onDateFromSelected()"
+                        [(ngModel)]="testModel.validFrom" name="validFrom" ngbDatepicker (click)="d1.toggle()"
+                        ngbDatepicker #d1="ngbDatepicker" autocomplete="off" />
+                    </div>
+                    <div class="col-md-4"></div>
+
+                  </div>
+
+                  <!-- <input type="text" class="form-control" > -->
+                </div>
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"><label>Valid To*
+                      </label>
+                      <input type="text" class="form-control" [minDate]="testModel.validFrom" name="practiceFrom"
+                        [(ngModel)]="testModel.validTo" name="validTo" ngbDatepicker (click)="d2.toggle()" ngbDatepicker
+                        #d2="ngbDatepicker" autocomplete="off" />
+                    </div>
+                    <div class="col-md-4"></div>
+
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"><label>No. Of users permitted*
+                      </label>
+                      <input type="number" (keydown)="keydown($event)" min="1" value="1" class="form-control" [(ngModel)]="testModel.noOfUsers" name="noOfUsers">
+                    </div>
+                    <div class="col-md-4"></div>
+
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"> <label>Anonymous User
+                      </label><br>
+                      <input type="checkbox" [(ngModel)]="testModel.anonymous" name="anonymous">
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"><button *ngIf="testID==0 || testID==undefined" class="btn btn-primary" type="submit"
+                        (click)="insertScheduledTest()">
+                    Generate URL
+                      </button>
+                    <button *ngIf="testID>0" class="btn btn-primary" type="submit" (click)="insertScheduledTest()">
+                      Update
+                    </button>
+                    </div>
+                    <div class="col-md-4"></div>
+
+                  </div>
+
+                </div>
+
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8">
+                      <input type="text" [(ngModel)]="testModel.url" #inputTarget class="form-control" disabled>
+                    </div>
+                    <div class="col-md-4">
+                      <button class="btn btn-primary" type="submit" (click)="copy()">Copy To Clipboard</button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+              <div class="tab-pane" id="top-justified-tab2">
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-3" *ngIf="showFileUpload">
+                      <label class="width:100%;display:block">Import User File</label>
+                      <div class="upload-img">
+                        <div class="change-photo-btn" style="width: 151px;margin-left: 0px;">
+                          <span><i class="fa fa-upload"></i> Import User</span>
+                          <input style="width:100% !important" type="file" class="upload" #fileImportInput
+                            name="File Upload" id="csvFileUpload" (change)="fileChangeListener($event)" accept=".csv">
+                        </div>
+
+                      </div>
+
+                    </div>
+                    <div class="col-md-6"><br>
+                      <a class="btn btn-primary" style="margin-top:12px;" href="assets/file/relax_now_user.csv"><i class="fa fa-download"></i> Download CSV File Template</a>
+                    </div>
+                    <div class="col-md-3"><br>
+                      <a class="btn btn-primary" style="margin-top: 14px;float: right;margin-right: 41%;" *ngIf="newUsers.length>0" (click)="insertUsers()">Save Users</a>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row ">
+                    <h3>User List</h3>
+
+                    <div class="col-md-12">
+                      <table class="datatable table table-hover table-center mb-0">
+
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>
+                              <a class="btn btn-primary" data-toggle="modal" (click)="openModal(addUsers)">
+                                <i class="fa fa-plus"></i> Add Manual User
+                              </a>
+
+
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of csvRecords;let i=index">
+                            <td>{{item.Name}}</td>
+                            <td>{{item.Phone}}</td>
+                            <td>{{item.Email}}</td>
+                            <td>{{item.Address}}</td>
+                            <td>
+                              <a class="btn btn-danger" *ngIf="item.Id!=0">
+                                <i class="fa fa-trash" style="color:white"
+                                  (click)="deleteScheduleTestUser(item.Id,i)"></i>
+                              </a>
+                              <a class="btn btn-danger" *ngIf="item.Id==0">
+                                <i class="fa fa-trash" style="color:white" (click)="removeUser(i)"></i>
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="tab-pane" id="top-justified-tab3">
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"> <label>Notification Start Date*
+                      </label>
+                      <input type="text" class="form-control" name="practiceFrom" [maxDate]="testModel.validTo" [minDate]="testModel.validFrom"
+                        (dateSelect)="onNotificationDateSelected()" [(ngModel)]="notificationModel.notificationDate"
+                        ngbDatepicker (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" autocomplete="off" />
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"> <label>Send Reminder
+                      </label><br>
+                      <input type="checkbox" [(ngModel)]="notificationModel.sendNotification" name="sendNotification">
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+                <div class="form-group" *ngIf="notificationModel.sendNotification==true">
+                  <div class="row ">
+                    <div class="col-md-8"> <label>Notification End Date*
+                      </label>
+                      <input type="text" class="form-control" [minDate]="notificationModel.notificationDate"
+                      [maxDate]="testModel.validTo"
+                        name="practiceFrom" [(ngModel)]="notificationModel.notificationEndDate" ngbDatepicker
+                        (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" autocomplete="off" />
+                    </div>
+                    <div class="col-md-4"></div>
+                  </div>
+                </div>
+                <div class="form-group" *ngIf="notificationModel.sendNotification==true">
+                  <div class="row ">
+                    <div class="col-md-8"><label>Reminder days*
+
+                      </label>
+                      <input type="text" (keydown)="keydown($event)" type="number" min="0"  class="form-control" [(ngModel)]="notificationModel.reminderDays">
+                    </div>
+                    <div class="col-md-4"></div>
+
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <div class="row ">
+                    <div class="col-md-8"><button class="btn btn-primary" type="submit"
+                        (click)="activeSchedule()">Activate Schedule</button></div>
+                    <div class="col-md-4"></div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #addUsers>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <div class="row ">
+        <div class="col-md-12"><label style="float: left;">Name*
+          </label>
+          <input type="text" class="form-control" [(ngModel)]="userModel.Name" name="Name">
+        </div>
+
+
+      </div>
+
+    </div>
+    <div class="form-group">
+      <div class="row ">
+        <div class="col-md-12"><label style="float: left;">Phone*
+          </label>
+          <input type="text" class="form-control" [(ngModel)]="userModel.Phone" name="Phone">
+        </div>
+
+      </div>
+
+    </div>
+    <div class="form-group">
+      <div class="row ">
+        <div class="col-md-12"><label style="float: left;">Email*
+          </label>
+          <input type="text" class="form-control" [(ngModel)]="userModel.Email" name="Email">
+        </div>
+
+
+      </div>
+
+    </div>
+    <div class="form-group">
+      <div class="row ">
+        <div class="col-md-12"><label style="float: left;">Address*
+          </label>
+          <input type="text" class="form-control" [(ngModel)]="userModel.Address" name="Email">
+        </div>
+      </div>
+
+    </div>
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="addUsertoArray()">Add</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="modalRef.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>

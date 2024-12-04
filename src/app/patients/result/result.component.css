@@ -1,0 +1,293 @@
+@import "../../../assets/css/test-style.css";
+/* @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&display=swap");
+.header {
+  padding: 25px 0;
+  background: url(/assets/User/img/header_bg.png) no-repeat;
+  background-size: cover;
+}
+.inner_white {
+  box-shadow: 0 0 20px -2px rgb(0 0 0 / 14%);
+  background: #ffffff;
+  width: 100%;
+  display: inline-block;
+  margin: 70px 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.tabs-left {
+  border-bottom: none;
+  padding-top: 2px;
+  font-family: "Josefin Sans", sans-serif;
+}
+.tabs-left {
+  border: 1px solid #e3e3e3;
+  padding: 0;
+  background: #f7f7f7;
+  height: 100%;
+  display: inline-block;
+  width: 100%;
+}
+.tabs-left > li {
+  float: none;
+  margin: 0px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.tabs-left > li > a {
+  border-radius: 0;
+  border: none;
+  margin-right: 0;
+  width: 100%;
+  display: inline-block;
+  font-size: 19px;
+  line-height: 19px;
+  padding: 17px 10px 15px 20px;
+  color: #808080;
+  border-right: 4px solid transparent;
+}
+.nav > li > a > img {
+  margin-right: 15px;
+}
+.tabs-left > li > a img {
+  filter: grayscale(100%);
+}
+.tabs-left > li > a:hover img,
+.tabs-left > li.active > a img,
+.tabs-left > li.active > a:hover img,
+.tabs-left > li.active > a:focus img {
+  filter: grayscale(0%);
+}
+.tabs-left > li > a p {
+  display: inline-block;
+  margin: 0;
+  position: relative;
+  top: 1px;
+}
+.tabs-left > li.active > a,
+.tabs-left > li.active > a:hover,
+.tabs-left > li.active > a:focus,
+.tabs-left > li > a:hover,
+.tabs-left > li > a:focus {
+  border: none;
+  border-right: 4px solid #D21f3c;
+  border-radius: 0;
+  color: #D21f3c;
+  background: #ffffff;
+}
+.tab_con_bg {
+  padding: 0;
+  background: url(/assets/User/img/bg.png) no-repeat top left;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.tab_con_bg:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgb(0 0 0 / 19%);
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+}
+.pl_0 {
+  padding-left: 0;
+}
+.answers {
+  display: inline-block;
+  width: 100%;
+  border-top: 1px solid rgb(128 128 128 / 19%);
+  padding-top: 20px;
+  margin-top: 5px;
+}
+.tab-content {
+  text-align: center;
+}
+.con_white {
+  background: #fff;
+  max-width: 500px;
+  margin: 120px auto;
+  display: inline-block;
+  text-align: left;
+  padding: 30px;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.con_white {
+  background: rgb(255 255 255 / 90%);
+}
+.cont {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  font-family: "Josefin Sans", sans-serif;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 17px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #808080;
+  font-weight: 400;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  background-color: #d0d0d0;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.cont:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.cont input:checked ~ .checkmark {
+  background-color: #D21f3c;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.cont input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.cont .checkmark:after {
+  top: 7px;
+  left: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+.con_white h3 {
+  font-size: 19px;
+  font-weight: 700;
+  font-family: "Josefin Sans", sans-serif;
+  color: #808080;
+  margin: 0 0 10px 0;
+}
+.tab-content {
+  position: relative;
+}
+/* .tab-pane:before{content:'';position:absolute;top:50%;left:50px;background:url(img/arrow_left.png)no-repeat;background-size:100%;width:28px;height:52px;
+    z-index: 1;
+}
+.tab-pane:after{content:'';position:absolute;top:50%;right:50px;background:url(img/arrow_right.png)no-repeat;background-size:100%;width:28px;height:52px;
+    z-index: 1;
+} */
+
+.slick-dots {
+  position: absolute;
+  bottom: -16px !important;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+svg rect {
+  transform: translateY(0%);
+  fill: #b2cbf8;
+  transition: transform 1s ease-in-out;
+}
+
+/* svg:hover rect {
+        transform: translateY(0);
+        fill: pink;
+      } */
+
+svg {
+  width: 300px;
+} */
+
+
+.testButton
+{
+  background-color: #D21f3c;
+  border: #D21f3c;
+}
+
+.btn-success {
+  background-color: #044e80;
+  border: 1px solid #044e80;
+}
+
+.btn-success:hover{
+  background-color: #044e80 !important;
+  border: 1px solid #044e80 !important;
+}
+
+
+.gvRB
+{
+  background-image: url("../../../assets/User/img/resultBg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.ewiAD
+{
+  background-image: url("../../../assets/User/img/result.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.ewiSD
+{
+  background-image: url("../../../assets/User/img/result3.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.resultCenter {
+  text-align: left !important;
+}
+
+
+.blink{
+  animation: blinking 1s linear infinite;
+font-size: 20px;
+color:red
+}
+@keyframes blinking{
+  0%{opacity: 0;}
+50%{opacity: .5;}
+100%{opacity: 1;}
+/* 0%{   color: red;   }
+47%{   color: rgb(112, 5, 5) }
+62%{   color: rgb(112, 5, 5) }
+97%{   color:rgb(112, 5, 5) } */
+}

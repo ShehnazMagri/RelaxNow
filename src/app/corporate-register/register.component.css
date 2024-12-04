@@ -1,0 +1,25 @@
+.required {
+  color: red;
+  padding-left: 3px;
+}
+.content {
+  padding-bottom: 50px;
+}
+.select-label {
+  top: -18px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.forgot-link {
+  color: #0954dc;
+  font-size: 16px;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.nav-link.active:hover {
+  background-color: #eee;
+  border-color: transparent;
+  color: #272b41;
+}

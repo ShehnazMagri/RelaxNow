@@ -1,0 +1,82 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+
+        <!-- Login Tab Content -->
+        <div class="account-content">
+          <div class="row align-items-center justify-content-center">
+            <div class="col-md-7 col-lg-6 login-left">
+              <img src="assets/img/logo.png" class="img-fluid" alt="Doccure Login">
+            </div>
+            <div class="col-md-12 col-lg-6 login-right">
+              <div class="login-header">
+                <h3>Login <span></span></h3>
+              </div>
+              <form [formGroup]="loginForm" (ngSubmit)="login(UnregisterUser)">
+                <div class="form-group form-focus">
+                  <input type="text" name="mobile" id="mobile" class="form-control floating" mask="0000000000"
+                    formControlName="mobile" [ngClass]="{'is-invalid':isSubmitted && loginForm.controls.mobile.errors}">
+                  <label class="focus-label">Mobile Number<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please enter a valid mobile number.
+                  </div>
+                </div>
+                <div class="form-group form-focus">
+                  <input type="password" name="password" id="password" class="form-control floating"
+                    formControlName="password"
+                    [ngClass]="{'is-invalid':isSubmitted && loginForm.controls.password.errors}">
+                  <label class="focus-label">Password<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please enter your password.
+                  </div>
+                </div>
+                <div class="text-right">
+                  <a class="forgot-link" [routerLink]="'/forgot-password'">Forgot Password ?</a>
+
+                </div>
+                <div class="text-right">
+                  <input type="checkbox" formControlName="isCorporate" name="checkbox"> Organizational User?
+                </div>
+                <div class="form-group form-focus" *ngIf="loginForm.value.isCorporate">
+                  <input type="text" name="corporateCode" id="corporateCode" class="form-control floating"
+                    formControlName="corporateCode"
+                    [ngClass]="{'is-invalid':isSubmitted && loginForm.controls.corporateCode.errors}">
+                  <label class="focus-label">Organizational Code<span class="required">*</span></label>
+                  <div class="invalid-feedback">
+                    Please enter your Organizational code.
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-block btn-lg login-btn" type="submit">Login</button>
+                <div class="login-or">
+                  <span class="or-line"></span>
+                  <span class="span-or">or</span>
+                </div>
+                <div class="text-center dont-have">Don’t have an account? <a [routerLink]="'/Register'">Register</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #UnregisterUser>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Unregister</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+  You are already register as a Organisational User. Do you want to unregister from the Organisational account?
+  <br>
+  Please click "Confirm" to unregister.
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="UnregisterCorporate()">Confirm</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="modalRef.hide()" style="margin-left: 18px">No</button>
+    </div>
+  </div>
+</ng-template>

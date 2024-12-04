@@ -1,0 +1,181 @@
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card dash-card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 col-lg-4">
+              <div class="dash-widget dct-border-rht">
+                <div class="circle-bar circle-bar1">
+                  <div class="circle-graph1" data-percent="75">
+                    <img src="assets/img/icon-01.png" class="img-fluid" alt="patient">
+                  </div>
+                </div>
+                <div class="dash-widget-info">
+                  <h6>Total Assessments</h6>
+                  <h3>{{TodayAppointments.length}}</h3>
+                  <p class="text-muted">Till Today</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4 class="mb-4">First Assessments</h4>
+      <div class="appointment-tab">
+
+        <!-- Appointment Tab -->
+        <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+
+          <li class="nav-item">
+            <a class="nav-link active" href="#today" [ngClass]="{ 'active':activeTab==='today'}" data-toggle="tab"
+              (click)="activeTab='today'">Today's</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#upcoming" [ngClass]="{ 'active':activeTab==='upcomming'}"
+              (click)="activeTab='upcomming'" data-toggle="tab">Upcoming</a>
+          </li> -->
+        </ul>
+        <!-- /Appointment Tab -->
+
+        <div class="tab-content">
+
+          <!-- Today Appointment Tab -->
+          <div class="tab-pane" id="today" [ngClass]="{ 'active':activeTab==='today'}">
+            <div class="card card-table mb-0">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-center mb-0">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Appt Date</th>
+                        <th>Relationship Number</th>
+                        <th>Email</th>
+                        <th class="text-center">Phone</th>
+                        <th>Status</th>
+                        <th width="100" class="text-right"></th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let appointment of TodayAppointments">
+                        <td>
+                          <h2 class="table-avatar">
+                            <a class="avatar avatar-sm mr-2">
+                              <img *ngIf="!appointment?.ImageBase64" class="avatar-img rounded-circle"
+                                src="assets/img/NoImg.png" alt="User Image" />
+                              <img *ngIf="appointment?.ImageBase64" class="avatar-img rounded-circle"
+                                [src]="appointment?.ImageBase64" alt="User Image" />
+                            </a>
+                            <a>{{appointment.RN_CUSTOMER_FIRST_NAME}} {{appointment.RN_CUSTOMER_LAST_NAME}}</a>
+                          </h2>
+                        </td>
+                        <td><span class="d-none">{{appointment.APPOINTMENT_DATE |date:'y-MM-dd'}}
+                            {{appointment.APPOINTMENT_TIME}}</span>
+                          {{appointment.APPOINTMENT_DATE| date}}
+                          <span class="text-primary d-block">{{appointment.APPOINTMENT_TIME}} -
+                            {{appointment.APPOINTMENT_ENDTIME}}</span>
+                        </td>
+                        <td>{{appointment.RELATIONSHIP_NUMBER}}</td>
+                        <td>{{appointment.RN_CUSTOMER_EMAIL}}</td>
+                        <td class="text-center">{{appointment.RN_CUSTOMER_MOBILE}}</td>
+                        <td>
+                          <span class="d-none">{{appointment.FSTATUS}}</span>
+
+                          <a
+                            ngbTooltip="First Assessment  {{ appointment?.FSTATUS ==='EDITING' ? ' In Progress' : (appointment?.FSTATUS ==='COMPLETED' ?'Completed ': 'Pending')}}">
+                            <div *ngIf="!appointment?.FSTATUS" class="avatar avatar-online">
+                            </div>
+                            <div *ngIf="appointment?.FSTATUS ==='EDITING'" class="avatar avatar-away">
+                            </div>
+                            <div *ngIf="appointment?.FSTATUS ==='COMPLETED'" class="avatar avatar-offline">
+                            </div>
+                          </a>
+                        </td>
+                        <td class="text-right">
+                          <div class="table-action">
+                            <a href="javascript:void(0);" class="btn btn-sm bg-info-light"
+                              [routerLink]="['/doctor/first-assessment',appointment?.CUSTOMER_ID,appointment?.RN_APPOINTMENT_ID]">
+                              <i class="far fa-edit"></i>
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="text-center" *ngIf="!TodayAppointments.length">
+                        <td colspan="6"> No upcoming assessments</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Today Appointment Tab -->
+
+          <!-- Upcoming Appointment Tab -- >
+          <div class="tab-pane" id="upcoming" [ngClass]="{ 'active':activeTab==='upcomming'}">
+            <div class="card card-table mb-0">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-center mb-0">
+                    <thead>
+                      <tr>
+                        <th>Patient Name</th>
+                        <th>Appt Date</th>
+                        <th>Relationship Number</th>
+                        <th>Email</th>
+                        <th class="text-center">Phone</th>
+                        <th width="100" class="text-right">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let appointment of appointments">
+                        <td
+                          [routerLink]="['/doctor/patient-details',appointment?.CUSTOMER_ID,appointment?.RN_APPOINTMENT_ID]">
+                          <h2 class="table-avatar">
+                            <a class="avatar avatar-sm mr-2">
+                              <img *ngIf="!appointment?.ImageBase64" class="avatar-img rounded-circle"
+                                src="assets/img/NoImg.png" alt="User Image" />
+                              <img *ngIf="appointment?.ImageBase64" class="avatar-img rounded-circle"
+                                [src]="appointment?.ImageBase64" alt="User Image" />
+                            </a>
+                            <a>{{appointment.RN_CUSTOMER_FIRST_NAME}} {{appointment.RN_CUSTOMER_LAST_NAME}}</a>
+                          </h2>
+                        </td>
+                        <td>{{appointment.APPOINTMENT_DATE | date : 'dd MMM yyyy'}}<span
+                            class="d-block text-info">{{appointment.APPOINTMENT_TIME}}</span> - <span
+                            class="d-block text-info">{{appointment.APPOINTMENT_ENDTIME}}</span> </td>
+                        <td>{{appointment.RELATIONSHIP_NUMBER}}</td>
+                        <td>{{appointment.RN_CUSTOMER_EMAIL}}</td>
+                        <td class="text-center">{{appointment.RN_CUSTOMER_MOBILE}}</td>
+                        <td>
+                          <div class="float-right status-toggle">
+                            <input type="checkbox" id="status_{{i}}" class="check"
+                              [checked]="!(appointment.PRESCRIPTION_ID =='0'||!appointment.PRESCRIPTION_ID)" disabled>
+                            <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="text-center">
+                        <td colspan="6"> No upcoming appointments</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          < !-- /Upcoming Appointment Tab -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,139 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Categories</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Categories</li>
+          </ul>
+        </div>
+        <div class="col-sm-5 col">
+          <a class="btn btn-primary float-right mt-2" data-toggle="modal" (click)="openModal(categorytemplate)">
+            Add
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Category Name</th>
+                    <th>Group</th>
+                    <!-- <th>Created Date</th> -->
+                    <th width="100" class="text-right">Status</th>
+                    <th width="50" class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let category of categoryData;index as i">
+                    <td>
+                      {{category?.NAME}}
+                    </td>
+                    <td>{{getGroupName(category.GroupID)}}</td>
+                    <!-- <td>
+                      {{category?.CREATED_Date | date}}
+                    </td> -->
+                    <td>
+                      <span class="d-none">{{category.ACTIVE}}</span>
+
+                      <div class="float-right status-toggle">
+                        <input type="checkbox" id="status_{{i}}" class="check" checked [checked]="category?.ACTIVE"
+                          (change)="changeStatus($event.target.checked,category)">
+                        <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="actions" data-toggle="modal" (click)="openModal(categorytemplate,category)">
+                        <i class="center fe fe-pencil"></i>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #categorytemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{selectedCategory?.ID ? 'Edit':'Add'}} Category</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="submitForm(categoryForm)" #categoryForm="ngForm">
+      <div class="row form-row">
+        <div class="col-12 col-sm-12">
+          <div class="form-group">
+            <label>Category Name</label>
+            <input type="text" class="form-control" name="CategoryName" #name="ngModel"
+              [(ngModel)]="selectedCategory.NAME" [ngClass]="{'is-invalid':isSubmitted && name.errors}" required>
+            <div class="invalid-feedback">
+              Please enter a category name.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Question</label>
+            <ng-select2 [options]="{ multiple: true, closeOnSelect: false }" #question="ngModel"
+              [(ngModel)]="selectedQuestions" [ngModelOptions]="{standalone: true}" required
+              [ngClass]="{'is-invalid':isSubmitted && question.errors}" width="100%">
+              <option *ngFor="let ques of questionData" [value]="ques?.ID"
+                [selected]="selectedQuestions && selectedQuestions.includes(ques.ID)">
+                {{ques?.NAME}}</option>
+            </ng-select2>
+            <div class="invalid-feedback">
+              Please select any one question.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Group</label>
+            <select class="form-control" required name="group" #group="ngModel" [(ngModel)]="selectedCategory.GroupID"
+              [ngClass]="{'is-invalid':isSubmitted && group.errors}">
+              <option *ngFor="let grp of groupData" [value]="grp.ID">
+                {{grp.NAME}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any group.
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{selectedCategory?.ID ? 'Edit':'Save'}}</button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+      (click)="modalRef.hide();getCategoryList()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to delete this category?
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="deleteCategory()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,25 @@
+.breadcrumb-bar {
+  background-color: #004a83;
+  padding: 15px 0;
+  /*margin-top: 6em;*/
+}
+textarea.form-control {
+  min-height: 82px;
+}
+
+.comment .comment-body {
+  width: 100% !important;
+}
+.recommend-btn {
+  float: none;
+}
+.recommend-btn a.active {
+  background-color: #28a745;
+  border: 1px solid #28a745;
+  color: #fff;
+}
+.recommend-btn a.deactive {
+  background-color: #dc3545;
+  border: 1px solid #dc3545;
+  color: #fff;
+}

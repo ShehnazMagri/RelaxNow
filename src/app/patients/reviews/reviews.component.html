@@ -1,0 +1,62 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="page-title">Reviews</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="'/p/dashboard'">Dashboard</a></li>
+        <li class="breadcrumb-item active">Reviews</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /Page Header -->
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="datatable table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th>Doctor</th>
+                <th>Ratings</th>
+                <th>Feedback</th>
+                <th width="200px">Date</th>
+                <!-- <th class="text-right">Actions</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let review of reviews">
+                <td>
+                  <h2 class="table-avatar">
+                    <a [routerLink]="['/p/doctor-profile',review.PEOPLE_ID]">{{review.DOCTOR_NAME}}</a>
+                  </h2>
+                </td>
+
+                <td>
+                  <i class="fe fe-star"
+                    [ngClass]="{'fe-star text-warning':review?.OVERALL_RATING > 0,'fe-star-o text-secondary':review?.OVERALL_RATING < 1}"></i>
+                  <i class="fe fe-star"
+                    [ngClass]="{'fe-star text-warning':review?.OVERALL_RATING > 1,'fe-star-o text-secondary':review?.OVERALL_RATING < 2}"></i>
+                  <i class="fe fe-star"
+                    [ngClass]="{'fe-star text-warning':review?.OVERALL_RATING > 2,'fe-star-o text-secondary':review?.OVERALL_RATING < 3}"></i>
+                  <i class="fe fe-star"
+                    [ngClass]="{'fe-star text-warning':review?.OVERALL_RATING > 3,'fe-star-o text-secondary':review?.OVERALL_RATING < 4}"></i>
+                  <i class="fe fe-star"
+                    [ngClass]="{'fe-star text-warning':review?.OVERALL_RATING > 4,'fe-star-o text-secondary':review?.OVERALL_RATING < 5}"></i>
+                </td>
+
+                <td>
+                  {{review?.REVIEW}}
+                </td>
+                <td>{{review?.REVIEW_DATE | date : "dd MMM yyyy"}}</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

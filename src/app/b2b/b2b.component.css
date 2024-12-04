@@ -1,0 +1,13 @@
+/*.content {
+    min-height: 200px;
+    padding: 7em 0 0;
+}*/
+.breadcrumb-bar {
+  background-color: #004a83;
+  padding: 15px 0;
+  /*margin-top: 6em;*/
+  /*margin-top: 6em;*/
+}
+.dataTable {
+  font-size: 12px !important;
+}

@@ -1,0 +1,180 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="page-title">Appointments</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="'/doctor/dashboard'">Dashboard</a></li>
+        <li class="breadcrumb-item active">Appointments</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /Page Header -->
+<div class="appointments">
+  <!-- Appointment List -->
+  <ul class="nav nav-tabs nav-tabs-top nav-justified">
+    <li class="nav-item"><a class="nav-link active" (click)="changeTab(0)" href="#solid-justified-tab1"
+        data-toggle="tab">UpComing</a></li>
+    <li class="nav-item"><a class="nav-link" (click)="changeTab(1)" href="#solid-justified-tab2" data-toggle="tab">By
+        Date</a></li>
+  </ul>
+  <div class="tab-content">
+
+    <div class="tab-pane active" id="solid-justified-tab1">
+      <div class="row">
+        <div class="col-12">
+          <input type="text" class="form-control" [(ngModel)]="searchText" name="search"
+            placeholder="Search Appointment" /><br>
+        </div>
+      </div>
+
+      <div class="appointment-list" *ngFor="let people of appointments|filter:searchText;let i=index">
+        <div class="profile-info-widget">
+          <!-- <a class="booking-doc-img">
+            <img *ngIf="!people?.ImageBase64" class="avatar-img rounded-circle" src="assets/img/NoImg.png"
+              alt="User Image" />
+            <img *ngIf="people?.ImageBase64" class="avatar-img rounded-circle" [src]="people?.ImageBase64"
+              alt="User Image" />
+          </a> -->
+
+          <div class="profile-det-info">
+            <h3><a href="javascript:void(0);">{{people.RN_CUSTOMER_FIRST_NAME}} {{people.RN_CUSTOMER_LAST_NAME}}</a></h3>
+            <div class="patient-details">
+              <h5><i class="far fa-clock"></i> {{people.APPOINTMENT_DATE}} {{people.APPOINTMENT_TIME}} -
+                {{people.APPOINTMENT_ENDTIME}}
+              </h5>
+              <!-- <h5><i class="fas fa-user"></i> {{people?.RELATIONSHIP_NUMBER}}</h5>
+              <h5><i class="fas fa-envelope"></i> {{people.RN_CUSTOMER_EMAIL}}</h5>
+              <h5 class="mb-0"><i class="fas fa-phone"></i> {{people.RN_CUSTOMER_MOBILE}}</h5> -->
+            </div>
+          </div>
+          <!-- /Appointment List -->
+
+        </div>
+
+        <div class="appointment-action">
+          <a
+          [ngbTooltip]="people?.APPOINTMENT_STATUS ==='Open' ? 'Appointment is open' : 'Appointment is closed '">
+
+          <div *ngIf="people?.APPOINTMENT_STATUS=='Open'" class="avatar avatar-online">
+          </div>
+          <div *ngIf="people?.APPOINTMENT_STATUS ==='Closed'" class="avatar avatar-away">
+          </div>
+
+        </a>
+
+
+          <a
+            [ngbTooltip]="people?.FSTATUS ==='First Assessment EDITING' ? 'First Assessment In Progress' : (people?.FSTATUS ==='COMPLETED' ?'First Assessment Completed ': 'First Assessment Pending')">
+
+            <div *ngIf="!people?.FSTATUS" class="avatar avatar-online">
+            </div>
+            <div *ngIf="people?.FSTATUS ==='EDITING'" class="avatar avatar-away">
+            </div>
+            <div *ngIf="people?.FSTATUS ==='COMPLETED'" class="avatar avatar-offline">
+            </div>
+          </a>
+          <a (click)="callUser(people)" class="btn btn-white" [ngbTooltip]="'Audio Call'">
+            <img src="assets/img/call_64.png" style="width:20px;height:20px" />
+          </a>
+          <a (click)="addChatToAppointment(people)" class="btn btn-white" [ngbTooltip]="'Chat'">
+            <img src="assets/img/chat_64.png" style="width:20px;height:20px" />
+          </a>
+          <a (click)="sendPushNotification(people)" class="btn btn-white" [ngbTooltip]="'Video Call'">
+            <img src="assets/img/video-player_64.png" style="width:20px;height:20px" />
+          </a>
+          <a href="javascript:void(0)" class="btn btn-sm bg-info-light" style="float: right;width: 151px;"
+            [routerLink]="['/doctor/patient-details',people?.CUSTOMER_ID,people?.RN_APPOINTMENT_ID]">
+            <i class="far fa-eye"></i> View Details
+          </a>
+
+        </div>
+      </div>
+      <div class="appointments" *ngIf="!appointments.length">
+        <p class="text-center">No appointments</p>
+      </div>
+
+    </div>
+    <div class="tab-pane" id="solid-justified-tab2">
+
+      <div class="row">
+        <div class="col-6">
+          <input type="text" class="form-control" [(ngModel)]="searchText" name="search"
+            placeholder="Search Appointment" />
+        </div>
+        <div class="col-6">
+
+          <input type="text" class="form-control" name="daterangeInput" placeholder="Select date range to load appointments" daterangepicker [options]="options"
+            (selected)="selectedDate($event, daterange)" />
+        </div>
+      </div> <br />
+      <div class="appointment-list" *ngFor="let people of appointments|filter:searchText;let i=index">
+        <div class="profile-info-widget">
+          <!-- <a class="booking-doc-img">
+            <img *ngIf="!people?.ImageBase64" class="avatar-img rounded-circle" src="assets/img/NoImg.png"
+              alt="User Image" />
+            <img *ngIf="people?.ImageBase64" class="avatar-img rounded-circle" [src]="people?.ImageBase64"
+              alt="User Image" />
+          </a> -->
+
+          <div class="profile-det-info">
+            <h3><a href="javascript:void(0);">{{people.RN_CUSTOMER_FIRST_NAME}} {{people.RN_CUSTOMER_LAST_NAME}}</a></h3>
+            <div class="patient-details">
+              <h5><i class="far fa-clock"></i> {{people.APPOINTMENT_DATE}} {{people.APPOINTMENT_TIME}} -
+                {{people.APPOINTMENT_ENDTIME}}
+              </h5>
+              <!-- <h5><i class="fas fa-user"></i> {{people?.RELATIONSHIP_NUMBER}}</h5>
+              <h5><i class="fas fa-envelope"></i> {{people.RN_CUSTOMER_EMAIL}}</h5>
+              <h5 class="mb-0"><i class="fas fa-phone"></i> {{people.RN_CUSTOMER_MOBILE}}</h5>
+            </div> -->
+            </div>
+            <!-- /Appointment List -->
+
+          </div>
+
+        </div>
+
+        <div class="appointment-action">
+          <a
+          [ngbTooltip]="people?.APPOINTMENT_STATUS ==='Open' ? 'Appointment is open' : 'Appointment is closed '">
+
+          <div *ngIf="people?.APPOINTMENT_STATUS=='Open'" class="avatar avatar-online">
+          </div>
+          <div *ngIf="people?.APPOINTMENT_STATUS ==='Closed'" class="avatar avatar-away">
+          </div>
+
+        </a>
+          <a
+            [ngbTooltip]="people?.FSTATUS ==='First Assessment EDITING' ? 'First Assessment In Progress' : (people?.FSTATUS ==='COMPLETED' ?'First Assessment Completed ': 'First Assessment Pending')">
+
+            <div *ngIf="!people?.FSTATUS" class="avatar avatar-online">
+            </div>
+            <div *ngIf="people?.FSTATUS ==='EDITING'" class="avatar avatar-away">
+            </div>
+            <div *ngIf="people?.FSTATUS ==='COMPLETED'" class="avatar avatar-offline">
+            </div>
+          </a>
+          <a (click)="callUser(people)" class="btn btn-white" [ngbTooltip]="'Audio Call'">
+            <img src="assets/img/call_64.png" style="width:20px;height:20px" />
+          </a>
+          <a (click)="addChatToAppointment(people)" class="btn btn-white" [ngbTooltip]="'Chat'">
+            <img src="assets/img/chat_64.png" style="width:20px;height:20px" />
+          </a>
+          <a (click)="sendPushNotification(people)" class="btn btn-white" [ngbTooltip]="'Video Call'">
+            <img src="assets/img/video-player_64.png" style="width:20px;height:20px" />
+          </a>
+          <a href="javascript:void(0)" class="btn btn-sm bg-info-light" style="float: right;width: 151px;"
+            [routerLink]="['/doctor/patient-details',people?.CUSTOMER_ID,people?.RN_APPOINTMENT_ID]">
+            <i class="far fa-eye"></i> View Details
+          </a>
+
+        </div>
+      </div>
+      <div class="appointments" *ngIf="!appointments.length">
+        <p class="text-center">No appointments</p>
+      </div>
+
+    </div>
+  </div>
+</div>

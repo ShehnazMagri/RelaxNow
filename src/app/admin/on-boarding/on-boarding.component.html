@@ -1,0 +1,423 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">People</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">OnBoarding</li>
+          </ul>
+        </div>
+        <div class="col-sm-5 col">
+          <a class="btn btn-primary float-right mt-2" data-toggle="modal" (click)="editModal(edittemplate,null)">
+            Add
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Role</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Allow First Assesment</th>
+                    <th width="100" class="text-right">Status</th>
+                    <th width="50" class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let people of peopleData;index as i">
+
+                    <td>
+                      <a [routerLink]="['details',people.ID]">{{people.FIRST_NAME}}
+                        {{people.LAST_NAME}}</a>
+                    </td>
+                    <td>
+                      {{people.EMAIL}}
+                      <!-- {{people.CREATED_Date | date}} -->
+                    </td>
+                    <td>
+                      {{people.Mobile}}
+                    </td>
+                    <td>
+                      {{people.ROLENAME}}
+                    </td>
+                    <td>{{people.STATE_NAME}}</td>
+                    <td>{{people.CITY_NAME}}</td>
+                    <td>
+                      {{people.IS_VISITOR? 'Yes':'No'}}
+                    </td>
+                    <td>
+                      <span class="d-none">{{people.ACTIVE}}</span>
+                      <div class="float-right status-toggle">
+                        <input type="checkbox" id="status_{{i}}" class="check" [checked]="people.ACTIVE"
+                          (change)="changeStatus($event.target.checked,people)">
+                        <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="actions" data-toggle="modal" (click)="editModal(edittemplate,people)">
+                        <i class="center fe fe-pencil"></i>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #edittemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add/Edit People</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="save(editForm)" #editForm="ngForm">
+      <div class="row form-row">
+        <div class="col-12 col-sm-3">
+          <div class="form-group">
+            <label>Role</label>
+            <select class="form-control" required name="Role" #Role="ngModel" [(ngModel)]="selectedPeople.ROLEID"
+              [ngClass]="{'is-invalid':isSubmitted && Role.errors}"
+              (ngModelChange)="checkVisitor(selectedPeople.ROLEID)">
+              <option *ngFor="let item of roleData" [value]="item.ID">
+                {{item.NAME}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any one Role.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3">
+          <div class="form-group" [hidden]="!enableCheck">
+            <label class="mt-5">
+
+              <input type="checkbox" name="IS_VISITOR" #IS_VISITOR="ngModel" [value]="selectedPeople.IS_VISITOR"
+                [(ngModel)]="selectedPeople.IS_VISITOR">
+              &nbsp;Allow First Assesment
+            </label>
+
+          </div>
+        </div>
+        <div class="col-12 col-sm-3">
+          <div class="form-group">
+            <label>Prefix</label>
+            <input type="text" class="form-control" name="prefix" #prefix="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && prefix.errors}" [value]="selectedPeople.Prefix"
+              [(ngModel)]="selectedPeople.Prefix">
+            <div class="invalid-feedback">
+              Please enter a Prefix.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" class="form-control" name="firstName" #firstName="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && firstName.errors}" [value]="selectedPeople.FIRST_NAME"
+              [(ngModel)]="selectedPeople.FIRST_NAME" required>
+            <div class="invalid-feedback">
+              Please enter a first name.
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Middle Name</label>
+            <input type="text" class="form-control" name="middleName" #middleName="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && middleName.errors}" [value]="selectedPeople.MIDDLE_NAME"
+              [(ngModel)]="selectedPeople.MIDDLE_NAME">
+            <div class="invalid-feedback">
+              Please enter a middleName name.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" class="form-control" name="lastName" #lastName="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && lastName.errors}" [value]="selectedPeople.LAST_NAME"
+              [(ngModel)]="selectedPeople.LAST_NAME" required>
+            <div class="invalid-feedback">
+              Please enter a Last name.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" required class="form-control" name="Email" #Email="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && Email.errors}"
+              pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$" [value]="selectedPeople.EMAIL"
+              [(ngModel)]="selectedPeople.EMAIL">
+            <div class="invalid-feedback">
+              Please enter a valid email.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Mobile</label>
+            <input type="text" class="form-control" maxlength="15" name="Mobile" #Mobile="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && Mobile.errors}" [value]="selectedPeople.Mobile"
+              [(ngModel)]="selectedPeople.Mobile" [dropSpecialCharacters]="false" required mask="0000000000">
+            <div class="invalid-feedback">
+              Please enter a valid Mobile number.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Category</label>
+            <select class="form-control" name="Category" #Category="ngModel" [(ngModel)]="selectedPeople.CATEGORY_ID"
+              [ngClass]="{'is-invalid':isSubmitted && Category.errors}">
+              <option *ngFor="let item of categoryData" [value]="item.ID">
+                {{item.NAME}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any one Category.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Guardian Name</label>
+            <input type="text" class="form-control" name="GuardianName" #GuardianName="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && GuardianName.errors}" [value]="selectedPeople.GUARDIAN_NAME"
+              [(ngModel)]="selectedPeople.GUARDIAN_NAME">
+            <div class="invalid-feedback">
+              Please enter a Guardian Name.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-12">
+          <div class="form-group">
+            <label>Address</label>
+            <textarea rows="5" class="form-control" name="Address" #Address="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && Address.errors}" [value]="selectedPeople.ADDRESS"
+              [(ngModel)]="selectedPeople.ADDRESS">
+                            </textarea>
+            <div class="invalid-feedback">
+              Please enter ADDRESS.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>DOB</label>
+            <input type="text" class="form-control" name="Age" #Age="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && Age.errors}" [(ngModel)]="birthDate" (click)="d1.toggle()"
+              ngbDatepicker [maxDate]="maxDate" #d1="ngbDatepicker"  [minDate]="{year: 1800, month:1, day: 1}">
+            <div class="invalid-feedback">
+              {{Age?.errors?.required ? 'Please enter DOB.' : 'You must be 18+ old to register.'}}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Registration Number</label>
+            <input type="text" class="form-control" name="UIDNUMBER" #UIDNUMBER="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && UIDNUMBER.errors}" [value]="selectedPeople.UID_NUMBER"
+              [(ngModel)]="selectedPeople.UID_NUMBER">
+            <div class="invalid-feedback">
+              Please enter a Registration Number.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Gender</label>
+            <select class="form-control" required name="Gender" #Gender="ngModel" [(ngModel)]="selectedPeople.GENDER_ID"
+              [ngClass]="{'is-invalid':isSubmitted && Gender.errors}">
+              <option *ngFor="let item of genderData" [value]="item.ID">
+                {{item.NAME}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any one GENDER.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Marital Status</label>
+            <select class="form-control" required name="MaritalStatus" #MaritalStatus="ngModel"
+              [(ngModel)]="selectedPeople.MARITAL_STATUS_ID"
+              [ngClass]="{'is-invalid':isSubmitted && MaritalStatus.errors}">
+              <option *ngFor="let item of maritalStatusData" [value]="item.ID">
+                {{item.NAME}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any one Category.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Citizen Country</label>
+            <select class="form-control" required name="CitizenCountry" #CitizenCountry="ngModel"
+              [(ngModel)]="selectedPeople.CITIZEN_COUNTRY_ID"
+              [ngClass]="{'is-invalid':isSubmitted && CitizenCountry.errors}">
+              <option *ngFor="let item of countryData" [value]="item.id">
+                {{item.name}}-{{item.country_code}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any one Country.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>State</label>
+            <select class="form-control" required name="STATE" #STATE="ngModel" (change)="getCity($event.target.value)"
+              [(ngModel)]="selectedPeople.STATE"
+              [ngClass]="{'is-invalid':isSubmitted && STATE.errors}">
+              <option *ngFor="let item of states" [value]="item.id">
+                {{item.name}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any one State.
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="row form-row">
+
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>City</label>
+            <select class="form-control" required name="CITY" #CITY="ngModel"
+              [(ngModel)]="selectedPeople.CITY"
+              [ngClass]="{'is-invalid':isSubmitted && CITY.errors}">
+              <option *ngFor="let item of cities" [value]="item.id">
+                {{item.city_name}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any one City.
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Monthly Income</label>
+            <select class="form-control" required name="MonthlyIncome" #MonthlyIncome="ngModel"
+              [(ngModel)]="selectedPeople.MONTHLY_INCOME"
+              [ngClass]="{'is-invalid':isSubmitted && MonthlyIncome.errors}">
+              <option *ngFor="let item of incomeData" [value]="item.ID">
+                {{item.INCOME}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select any Monthly Income.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Occupation</label>
+            <input type="text" class="form-control" name="Occupation" #Occupation="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && Occupation.errors}" [value]="selectedPeople.OCCUPATION"
+              [(ngModel)]="selectedPeople.OCCUPATION">
+            <div class="invalid-feedback">
+              Please enter a Occupation.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+
+          <div class="form-group">
+            <label>Aadhar Number</label>
+            <input type="text" class="form-control" [dropSpecialCharacters]="false" mask="000000000000" name="Identity"
+              #Identity="ngModel" [ngClass]="{'is-invalid':isSubmitted && Identity.errors}"
+              [value]="selectedPeople.IDENTIFICATION_NUMBER" [(ngModel)]="selectedPeople.IDENTIFICATION_NUMBER">
+            <div class="invalid-feedback">
+              Please enter a Aadhar Number.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <input type="checkbox" name="IS_VISITOR" #IS_VISITOR="ngModel" [value]="selectedPeople.IS_VISITOR"
+              [(ngModel)]="selectedPeople.IS_VISITOR">
+              &nbsp;
+            <label>Is Visitor</label>
+
+          </div>
+        </div>
+
+      </div> -->
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <button type="button" class="btn btn-primary btn-block" (click)="modalRef.hide()">Cancel</button>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to delete this people?
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="deletePeople()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>

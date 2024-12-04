@@ -1,0 +1,37 @@
+.dash-widget h6 {
+    font-size: 16px;
+    font-weight: 400;
+}
+.dash-widget h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+h4.modal-title.pull-left {
+	font-size: 20px !important;
+    margin-bottom: 0 !important;
+    line-height: 1.5 !important;
+}
+
+.circle-bar > div {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
+.circle-bar > div canvas {
+    width: 90px !important;
+    height: 90px !important;
+}
+.avatar-away::before,
+.avatar-offline::before,
+.avatar-online::before {
+  position: absolute;
+  right: 0;
+  left: 14px;
+  bottom: 15px;
+  width: 35%;
+  height: 35%;
+  border-radius: 50%;
+  content: "";
+  border: 2px solid #fff;
+}

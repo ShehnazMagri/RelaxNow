@@ -1,0 +1,122 @@
+<!-- Header -->
+<div class="header">
+    <!-- Logo -->
+    <div class="header-left">
+      <a href="javascript:void(0);" routerLink="/reception/dashboard" class="logo">
+        <img src="assets/img/logo.png" routerLink="/reception/dashboard" alt="Logo" />
+      </a>
+      <a href="javascript:void(0);" class="logo logo-small">
+        <img src="assets/img/logo.png" alt="Logo" />
+      </a>
+    </div>
+    <a href="javascript:void(0);" id="toggle_btn">
+      <i class="fe fe-text-align-left"></i>
+    </a>
+
+    <div class="top-nav-search">
+      <form>
+      </form>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <a class="mobile_btn" id="mobile_btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    <!-- /Mobile Menu Toggle -->
+
+    <!-- Header Right Menu -->
+    <ul class="nav user-menu">
+
+      <li class="nav-item dropdown has-arrow" id="dropdown">
+        <a href="javascript:void(0)" class="dropdown-toggle nav-link" class="dropdown-toggle nav-link" (click)="user()"
+          [attr.aria-expanded]="!userCollapsed" aria-controls="collapseExample2">
+          <span class="user-img"><img class="rounded-circle" src="assets/admin/img/profiles/avatar-01.jpg" width="31"
+              alt="Ryan Taylor"></span>
+        </a>
+        <div class="dropdown-menu" id="collapseExample2" [ngbCollapse]="userCollapsed">
+          <div class="user-header">
+            <div class="avatar avatar-sm">
+              <img src="assets/admin/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
+            </div>
+            <div class="user-text">
+              <h6>{{userData.FIRSTNAME}} {{userData.LASTNAME}}</h6>
+              <p class="text-muted mb-0">{{userData.ROLE}}</p>
+            </div>
+          </div>
+          <a class="dropdown-item" [routerLink]="'doc-profile'">My Profile</a>
+          <a class="dropdown-item" (click)="clickLogout()">Logout</a>
+        </div>
+      </li>
+      <!-- /User Menu -->
+
+    </ul>
+    <!-- /Header Right Menu -->
+
+  </div>
+  <!-- /Header -->
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+      <div id="sidebar-menu" class="sidebar-menu">
+        <ul>
+          <li class="menu-title">
+            <span>Main</span>
+          </li>
+          <li [routerLink]="'/reception/dashboard'" [class.active]="page.includes('dashboard')">
+            <a><i class="fe fe-home" style="color: #fff"></i>
+              <span style="color: #fff">Dashboard</span></a>
+          </li>
+          <li [class.active]="page.includes('/reception/appointment')">
+            <a [routerLink]="'/reception/appointment'"><i class="fe fe-layout"></i>
+              <span>Appointments</span></a>
+          </li>
+          <li [class.active]="page.includes('/reception/patients')">
+            <a [routerLink]="'/reception/patients'"><i class="fe fe-user"></i>
+              <span>Patients</span></a>
+          </li>
+          <li [class.active]="page.includes('/reception/doctor')">
+            <a [routerLink]="'/reception/doctor'"><i class="fe fe-user-plus"></i>
+              <span>Doctors</span></a>
+          </li>
+          <li [routerLink]="'/reception/book-appointment'" [class.active]="page.includes('book-appointment')">
+            <a><i class="fas fa-hourglass-start" style="color: #fff"></i>
+              <span style="color: #fff">Book Appointment</span></a>
+          </li>
+          <li [routerLink]="'/reception/pending-appointment'" [class.active]="page.includes('pending-appointment')">
+            <a><i class="fe fe-layout" style="color: #fff"></i>
+              <span style="color: #fff">Pending Appointment</span></a>
+          </li>
+<!--
+
+          <li [routerLink]="'/sadm/assesments'" [class.active]="page.includes('assesments')">
+            <a><i class="fe fe-document" style="color: #fff"></i>
+              <span style="color: #fff">Assesments</span></a>
+          </li>
+            <li [routerLink]="'/sadm/medicine'" [class.active]="page.includes('medicine')">
+              <a><i class="fe fe-document" style="color: #fff"></i>
+                <span style="color: #fff">Medicine</span></a>
+            </li>
+          <li  [class.active]="page.includes('admin')">
+            <a href="/RelaxNow/admin/dashboard" target="_blank"><i class="fe fe-user-plus" style="color: #fff"></i>
+              <span style="color: #fff">Admin Login</span></a>
+          </li>
+          <li  [class.active]="page.includes('doctor')">
+            <a href="/RelaxNow/doctor/dashboard"
+            target="_blank"><i class="fe fe-user" style="color: #fff"></i>
+              <span style="color: #fff">Doctor Login</span></a>
+          </li>
+          <li [routerLink]="'/sadm/onboarding'" [class.active]="page.includes('onboarding')">
+            <a><i class="fe fe-user" style="color: #fff"></i>
+              <span style="color: #fff">Doctor</span></a>
+          </li>
+          <li [routerLink]="'/sadm/manage-schedule'" [class.active]="page.includes('manage-schedule')">
+            <a><i class="fas fa-hourglass-start" style="color: #fff"></i>
+              <span style="color: #fff">Manage Schedule</span></a>
+          </li>
+         -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Sidebar -->

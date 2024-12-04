@@ -1,0 +1,257 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Report</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Report</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Recent Orders -->
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <div class="row" style="margin-bottom:15px;" *ngIf="reports.length>0">
+                <div class="col-md-8"></div>
+                <div class="col-md-2"><label for="ShowPersonalInfo"> Show Personal Info</label>&nbsp;
+                  <input type="checkbox" [(ngModel)]="showPersonalInfo" name="ShowPersonalInfo" />
+                </div>
+                <div class="col-md-2">
+                  <button (click)="downloadExcel()" class="btn btn-primary float-right mt-2">Download</button>
+                </div>
+              </div>
+
+
+              <table class="row-border hover table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Schedule Name</th>
+                    <th>Test Name</th>
+                    <th>Person Name</th>
+                    <th data-sort='YYYYMMDD'>Test Taken Date </th>
+                    <th>Email</th>
+                    <th width="100" class="text-right">Action</th>
+                    <th width="100" class="text-right">Score</th>
+                    <th width="100" class="text-right">Questions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of reports;let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{item.SCHEDULE_TEST_NAME}}</td>
+                    <td> {{item.TESTNAME}}</td>
+                    <td> {{item.FIRST_NAME}} {{item.LAST_NAME}} </td>
+
+                    <td>{{item.TEST_DATE |date:'dd MMM yyyy'}} </td>
+                    <td> {{item.EMAIL}}</td>
+                    <td>
+                      <a class="actions" tooltip="Send Email" (click)="sendReportInEmail(item)"><i
+                          class="fa fa-envelope center "></i></a>
+                    </td>
+                    <td>
+                      <a class="actions" tooltip="View Score" (click)="getScores(item,scoretemplate)"><i
+                          class="fa fa-eye center "></i> </a>
+                    </td>
+                    <td>
+                      <a class="actions" tooltip="View Questions" (click)="openModal(answertemplate,item)"><i
+                          class="fa fa-eye center "></i> </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Orders -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div style="width: 10px;height: 10px;display: none;">
+  <table id="testReport">
+    <thead>
+      <tr>
+        <th>Schedule Name</th>
+        <th>Test Name</th>
+        <th>Person Name</th>
+        <th>Test Taken Date </th>
+        <th *ngIf="showPersonalInfo">Email</th>
+        <th *ngIf="showPersonalInfo">
+          Phone
+        </th>
+        <th *ngIf="showPersonalInfo">
+          AAdhar Number
+        </th>
+        <th>
+          Address
+        </th>
+        <th *ngIf="showPersonalInfo">
+          Age
+        </th>
+        <th *ngIf="showPersonalInfo">
+          DOB
+        </th>
+        <th *ngIf="showPersonalInfo">
+          Monthly Income
+        </th>
+        <th>
+          Occupation
+        </th>
+        <th>
+          Test Status
+        </th>
+        <th>
+          Test Date
+        </th>
+        <th>
+          Score
+        </th>
+        <th>
+          Category Name
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of reports">
+        <td>{{item.SCHEDULE_TEST_NAME}}</td>
+        <td> {{item.TESTNAME}}</td>
+        <td> {{item.FIRST_NAME}} {{item.LAST_NAME}} </td>
+
+        <td>{{item.TEST_DATE |date:'dd MMM yyyy'}} </td>
+        <td *ngIf="showPersonalInfo"> {{item.EMAIL}}</td>
+
+        <td *ngIf="showPersonalInfo">
+          {{item.MOBILE}}
+        </td>
+        <td *ngIf="showPersonalInfo">
+          {{item.AADHAR_CARD_NO}}
+        </td>
+        <td>
+          {{item.ADDRESS}}
+        </td>
+        <td *ngIf="showPersonalInfo">
+          {{item.AGE}}
+        </td>
+        <td *ngIf="showPersonalInfo">
+          {{item.DOB}}
+        </td>
+        <td *ngIf="showPersonalInfo">
+          {{item.MONTHLY_INCOME}}
+        </td>
+        <td>
+          {{item.OCCUPATION}}
+        </td>
+        <td>
+          {{item.TEST_STATUS}}
+        </td>
+        <td>
+          {{item.TEST_DATE | date:'y-MM-dd'}}
+        </td>
+        <td>
+          {{item.TEST_SCORE}}
+        </td>
+        <!-- <td >
+                        {{item.TEST_DESCRIPTION}}
+                      </td> -->
+
+        <td>
+          {{item.CATEGORY_NAME}}
+        </td>
+
+        <ng-container *ngFor="let _item of item.items;let i=index">
+          <ng-container>
+            <td>{{_item.QUESTIONNAME}}</td>
+            <td>{{_item.ANSWER_VALUE}}</td>
+          </ng-container>
+
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #answertemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Test Question/Answer</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="">
+      <table class="table table-striped">
+        <tr>
+          <td>S. No</td>
+          <td>Category</td>
+          <td>Questions</td>
+          <td>Answer</td>
+        </tr>
+        <tr *ngFor="let item of questions;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{item.CATEGORY_NAME}}</td>
+          <td>{{item.QUESTIONNAME}}</td>
+          <td>{{item.ANSWER_VALUE}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #scoretemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Scores</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <tr>
+          <td>S. No</td>
+          <td>Category</td>
+          <td *ngIf="selectedItem.TESTID!=3">Range</td>
+          <td>Score</td>
+
+        </tr>
+        <tr *ngFor="let item of categoryScore;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{item.CATEGORY}} </td>
+            <td *ngIf="selectedItem.TESTID!=3"><span *ngIf="item.TOTAL>=0 && item.TOTAL<=27">0 - 27</span>
+              <span *ngIf="item.TOTAL>27 && item.TOTAL<=44">27 - 44</span>
+              <span *ngIf="item.TOTAL>44">More Than 44</span>
+            </td>
+          <td [ngClass]="{'green':selectedItem.TESTID!=3 && item.TOTAL>=0 && item.TOTAL<=27,
+                                        'blue':selectedItem.TESTID!=3 && item.TOTAL>27 && item.TOTAL<=44,
+                                      'yellow':selectedItem.TESTID!=3 && item.TOTAL>44}">
+
+          </td>
+
+
+        </tr>
+        <tr *ngIf="selectedItem.TESTID!=3">
+          <td></td>
+          <td><b>Report</b></td>
+          <td><a *ngIf="selectedItem!=null" href="{{selectedItem.RESULT_FILE_BASEURL}}{{selectedItem.RESULT_FILE}}"
+              target="_blank">Click to view report</a></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><b>Score</b></td>
+          <td>{{getSum()}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</ng-template>

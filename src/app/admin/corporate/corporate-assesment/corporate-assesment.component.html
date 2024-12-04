@@ -1,0 +1,221 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Organizational</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/Organizational-Clients'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Organizational Test Configuration</li>
+          </ul>
+        </div>
+        <div class="col-sm-5 col">
+          <a class="btn btn-primary float-right mt-2" data-toggle="modal" (click)="openModal(corporateTemplate)">
+            Add
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger1"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Organizational</th>
+                    <th>Assignment Code</th>
+                    <th>Assignment Name</th>
+                    <th>Total No. Of Registered</th>
+                    <th>Test Completed Users</th>
+                    <th>Total No. Of Test Done</th>
+                    <th>Reports</th>
+                    <th>Created Date</th>
+                    <th>Copy URL</th>
+                    <th width="50" class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData;index as i">
+                    <td>{{item.companyName}}</td>
+                    <td>
+                      {{item?.AssesmentCode}}
+                    </td>
+                    <td>
+                      {{item?.AssesmentName}}
+                    </td>
+                    <td>{{item?.noUsers}}</td>
+                        <td>{{item?.completedUsers}}</td>
+                    <td>{{item.totalTestTaken}}</td>
+
+                    <td> <a class="actions" [routerLink]="['/admin/Organizational-Assesments-reports',item.AssesmentCode]">
+                        <i class="center fe fe-eye"></i>
+                    </a></td>
+                    <td>{{item?.Created_Date|date:'dd-MM-yyyy'}}</td>
+                    <td><button class="btn btn-primary" type="submit" (click)="copy(code,item)">Copy</button></td>
+                    <td class="text-right">
+                      <div class="actions" data-toggle="modal" (click)="openModalEdit(corporateTemplate,item)">
+                        <i class="center fe fe-pencil"></i>
+                      </div>
+
+                      <div class="actions" data-toggle="modal" (click)="openDeleteModal(delete,item.id)">
+                        <i class="center fe fe-trash"></i>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #corporateTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Organizational Client Test Configuration</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="submitForm(corporateForm)" #corporateForm="ngForm" (keypress)="restrictSingleQuote($event)" autocomplete="off">
+      <div class="row form-row">
+        <div class="row col-12 col-sm-12">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Assessment ID</label>
+              <input type="text" class="form-control" name="assesmentCode" #assesmentCode="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && assesmentCode.errors}" [value]="corporateDetails.assesmentCode"
+                [(ngModel)]="corporateDetails.assesmentCode" disabled>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Assessment Name <span class="required">*</span></label>
+              <input type="text" class="form-control" name="companyName" #companyName="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && companyName.errors}" [value]="corporateDetails.companyName"
+                [(ngModel)]="corporateDetails.companyName" required>
+              <div class="invalid-feedback">
+                Please enter a Assessment Name.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row col-12 col-sm-12">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Test <span class="required">*</span></label>
+
+              <ng-select2 width="100%" [options]="{ multiple: true, closeOnSelect: false }" name="test" #test="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && test.errors}" [(ngModel)]="corporateDetails.testIds" required>
+                <option *ngFor="let test of testData" [value]="test.ID">{{test.Name}}
+                </option>
+              </ng-select2>
+
+              <div class="invalid-feedback">
+                Please select test.
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>No of users <span class="required">*</span></label>
+              <input type="number" (keydown)="keydown($event)" min="1" value="1" class="form-control" name="noUsers" #noUsers="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && noUsers.errors}" [value]="corporateDetails.noUsers"
+                [(ngModel)]="corporateDetails.noUsers" required>
+              <div class="invalid-feedback">
+                Please enter no of users.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row col-12 col-sm-12">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Start Date <span class="required">*</span></label>
+              <input type="text" class="form-control" name="startDate" #startDate="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && startDate.errors}" [maxDate]="corporateDetails.endDate" [(ngModel)]="corporateDetails.startDate"
+                ngbDatepicker (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" autocomplete="off" required>
+              <div class="invalid-feedback">
+                Please enter a start date.
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>End Date <span class="required">*</span></label>
+              <input type="text" class="form-control" name="endDate" #endDate="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && endDate.errors}" [(ngModel)]="corporateDetails.endDate"
+                ngbDatepicker (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" autocomplete="off" required>
+              <div class="invalid-feedback">
+                Please enter end date.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row col-12 col-sm-12">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Payment <span class="required">*</span></label>
+              <select class="form-control" name="payment" #payment="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && payment.errors}" [value]="corporateDetails.payment"
+                [(ngModel)]="corporateDetails.payment" required>
+                <option value="1">Prepaid</option>
+                <option value="2">Discounted</option>
+                <option value="3">Paid</option>
+                <option value="4">Pilot</option>
+                <option value="5">Complementary</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select payment type.
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Amount <span class="required">*</span></label>
+              <input type="number" (keydown)="keydown($event)" min="1" value="1" class="form-control" name="amount" #amount="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && amount.errors}" [value]="corporateDetails.amount"
+                [(ngModel)]="corporateDetails.amount" required>
+              <div class="invalid-feedback">
+                Please enter Amount.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Save</button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    Are you sure want to delete this?
+    <div style="margin-top:25px">
+      <button type="button" class="btn btn-primary btn-yes" (click)="deleteData()">Yes</button>
+      <button type="button" class="btn btn-secondary  btn-no" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>

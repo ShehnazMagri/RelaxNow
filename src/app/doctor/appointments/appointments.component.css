@@ -1,0 +1,27 @@
+h4.modal-title.pull-left {
+  font-size: 20px !important;
+  margin-bottom: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.doctor-action {
+  text-align: center;
+  display: block;
+}
+.appointment-action {
+  margin-top: 10px;
+  width: 400px;
+}
+
+.avatar-away::before,
+.avatar-offline::before,
+.avatar-online::before {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  content: "";
+  border: 2px solid #fff;
+}

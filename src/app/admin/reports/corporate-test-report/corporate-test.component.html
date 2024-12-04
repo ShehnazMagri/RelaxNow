@@ -1,0 +1,150 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Corporate</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/Organizational-Clients'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Corporate</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div>
+              <div class="row form-row col-md-12 col-sm-12">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Organization <span class="required">*</span></label>
+
+                    <ng-select2 width="95%" [options]="{ multiple: false, closeOnSelect: false }" name="corporate"
+                      #corporate="ngModel" [ngClass]="{'is-invalid':isSubmitted && corporate.errors}"
+                      [(ngModel)]="corporateId" required (ngModelChange)="onTestSelect('org')">
+                      <option value="0">Select Organization</option>
+                      <option *ngFor="let test of listData" [value]="test.companyID">{{test.companyName}}
+                      </option>
+                    </ng-select2>
+
+                    <div class="invalid-feedback">
+                      Please select Corporate.
+                    </div>
+                  </div>
+
+                </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label width="90%">Assessment <span class="required">*</span></label>
+
+                      <ng-select2 width="95%" [options]="{ multiple: false, closeOnSelect: false }" name="assesement"
+                        #assesement="ngModel" [ngClass]="{'is-invalid':isSubmitted && test.errors}" (ngModelChange)="getTestList($event)" [(ngModel)]="selectedAssesment"
+                        required>
+                        <option value=null>Select Assessment</option>
+                        <option *ngFor="let test of corprotateAssesment" [value]="test.AssesmentCode">{{test.AssesmentName}}
+                        </option>
+                      </ng-select2>
+
+                      <div class="invalid-feedback">
+                        Please select Assessment.
+                      </div>
+                    </div>
+
+                  </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label width="90%">Test <span class="required">*</span></label>
+
+                    <ng-select2 width="95%" [options]="{ multiple: false, closeOnSelect: false }" name="test"
+                      #test="ngModel" [ngClass]="{'is-invalid':isSubmitted && test.errors}" [(ngModel)]="testId"
+                      required (ngModelChange)="onTestSelect('test')">
+                      <option value="0">Select Test</option>
+                      <option *ngFor="let test of testData" [value]="test.ID">{{test.Name}}
+                      </option>
+                    </ng-select2>
+
+                    <div class="invalid-feedback">
+                      Please select test.
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <button type="button" (click)="getReport();isSubmitted = true"
+                      class="btn btn-primary float-left" *ngIf="chartColors.length>0">Get Reports</button>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <button type="button" (click)="printPdf()" class="btn btn-primary float-left"
+                      *ngIf="isSubmitted&& chartColors.length>0">Print Reports</button>
+                  </div>
+                </div>
+
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" #contentPdf>
+            <div class="col-md-8" style="width: 59%;
+    float: left;" *ngIf="reportDataSet.length>0">
+              <div class="card">
+                <div class="card-body">
+                  <div>
+                    <div class="row" >
+                      <div class="col-md-12">
+                        <!-- <canvas id="myChart" width="700" height="400"></canvas> -->
+                        <div style="display: block" *ngIf="chartColors.length>0">
+                          <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+                            [colors]="chartColors" [options]="pieChartOptions"></canvas>
+                        </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="selectedOrg">
+                        <h3>Organization: {{selectedOrg}}</h3>
+                        <h3>Test: {{selectedTest}}</h3>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" style="width: 39%;
+    float: left;" *ngIf="reportDataSet.length>0">
+              <div class="card">
+                <div class="card-body">
+                  <div>
+                    <div class="row">
+                      <table class="table" style="margin-top: 20px;" *ngIf="reportDataSet.length>0">
+                        <tr>
+                          <th>Terms</th>
+                          <th>Total Users</th>
+                          <th>Pecentage</th>
+                        </tr>
+                        <tr *ngFor="let item of reportDataSet">
+                          <td>{{item.result_term}}</td>
+                          <td>{{item.count}}</td>
+                          <td>{{item.Percentage}} %</td>
+                        </tr>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

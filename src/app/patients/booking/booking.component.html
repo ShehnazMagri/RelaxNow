@@ -1,0 +1,155 @@
+	<!-- Breadcrumb -->
+	<div class="breadcrumb-bar">
+	  <div class="container-fluid">
+	    <div class="row align-items-center">
+	      <div class="col-md-12 col-12">
+	        <nav aria-label="breadcrumb" class="page-breadcrumb">
+	          <ol class="breadcrumb">
+	            <li class="breadcrumb-item"><a [routerLink]="'/p/dashboard'">Back To Dashboard</a></li>
+	            <!-- <li class="breadcrumb-item active" aria-current="page">Booking</li> -->
+	          </ol>
+	        </nav>
+	        <h2 class="breadcrumb-title">Booking</h2>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- /Breadcrumb -->
+
+	<!-- Page Content -->
+	<div class="content">
+	  <div class="container">
+
+	    <div class="row">
+	      <div class="col-12">
+
+	        <div class="card">
+	          <div class="card-body">
+	            <div class="booking-doc-info" *ngIf="doctorDetails">
+	              <a *ngIf="doctorDetails?.BASE64CONTENT" [routerLink]="['/p/doctor-profile',doctorId]"
+	                class="booking-doc-img">
+	                <img [src]="doctorDetails?.BASE64CONTENT" alt="User Image">
+	              </a>
+	              <div class="booking-info">
+	                <h4><a [routerLink]="['/p/doctor-profile',doctorId]">{{doctorDetails?.Prefix}}
+	                    {{doctorDetails?.FIRST_NAME}}
+	                    {{doctorDetails?.MIDDLE_NAME}} {{doctorDetails?.LAST_NAME}}</a></h4>
+	                <!-- <div class="rating">
+	                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 0}"></i>
+	                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 1}"></i>
+	                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 2}"></i>
+	                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 3}"></i>
+	                  <i class="fas fa-star" [ngClass]="{'filled':doctorDetails?.AvgRating > 4}"></i>
+	                  <span class="d-inline-block average-rating">({{doctorDetails?.MAXRating || '0'}})</span>
+	                </div> -->
+	                <div class="clinic-details">
+	                  <h5 class="doc-department">
+	                    <img src="assets/img/specialities/specialities-02.png" class="img-fluid" alt="Speciality">
+	                    {{doctorDetails?.ROLENAME}}</h5>
+	                </div>
+	                <div class="clinic-services"
+	                  *ngIf="doctorDetails?.PEOPLE_PROFILE && doctorDetails?.PEOPLE_PROFILE[0]?.SPECIALITY?.length">
+	                  <span *ngFor="let spc of doctorDetails?.PEOPLE_PROFILE[0]?.SPECIALITY?.split(',')">{{spc}}</span>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	        <div class="row">
+	          <div class="col-6">
+	            <h4 class="mb-1"> {{ currentDate.format("LL") }}</h4>
+	            <p class="text-muted">{{ currentDate.format("dddd") }} </p>
+	          </div>
+	          <div class="col-6">
+	            <ul class="legend float-right">
+                <li><span class="timing" style="background-color:#e9e9e9 !important"></span>Available ( Standard Schedule )</li>
+                <li><span class="custom-slot"></span>Available ( Custom Schedule )</li>
+                <li><span class="cancelled"></span> Cancelled</li>
+                <li><span class="booked"></span> Booked</li>
+	            </ul>
+	          </div>
+	        </div>
+	        <!-- Schedule Widget -->
+	        <div class="card booking-schedule schedule-widget">
+
+	          <!-- Schedule Header -->
+	          <div class="schedule-header">
+	            <div class="row">
+	              <div class="col-md-12">
+
+	                <!-- Day Slot -->
+	                <div class="day-slot">
+	                  <ul>
+	                    <li class="left-arrow">
+	                      <a (click)="changeWeek('prev')">
+	                        <i class="fa fa-chevron-left"></i>
+	                      </a>
+	                    </li>
+	                    <li [ngClass]="{ 'alert-info': day.selected }" *ngFor="let day of weekDays"
+	                      (click)="selectWeekDay(day.mDate)">
+	                      <span>{{ day.mDate.format("DD") }}</span>
+
+	                      <span class="slot-date">{{ day.mDate.format("dddd") }}<small class="slot-year"></small></span>
+	                    </li>
+	                    <li class="right-arrow">
+	                      <a (click)="changeWeek('next')">
+	                        <i class="fa fa-chevron-right"></i>
+	                      </a>
+	                    </li>
+	                  </ul>
+	                </div>
+	                <!-- /Day Slot -->
+
+	              </div>
+
+
+	            </div>
+	          </div>
+	          <!-- /Schedule Header -->
+
+	          <!-- Schedule Content -->
+	          <div class="schedule-cont">
+	            <div class="row">
+	              <div class="col-md-12">
+
+
+	                <!-- Time Slot -->
+	                <div class="time-slot">
+	                  <ul class="clearfix" *ngIf="currentSlots?.length">
+	                    <ng-container *ngFor="let slot of currentSlots;index as i">
+	                      <li (click)="selectSlot(slot,i)">
+	                        <a class="timing"
+                          [ngClass]="{'selected': selectedSlots.indexOf(slot.id) > -1 ,'booked':!slot.available,'disabled':slot.cancelled,'adhoc-slot':(slot.adHoc && slot.available),'custom-slot':slot.MonthData==1}">
+	                          <span>{{slot?.from}} </span> - <span>{{slot?.to}}</span>
+	                        </a>
+	                      </li>
+	                    </ng-container>
+	                  </ul>
+	                  <p *ngIf="!currentSlots?.length">Sorry, No slots available!</p>
+	                </div>
+	                <!-- /Time Slot -->
+
+	              </div>
+	            </div>
+	          </div>
+	          <!-- /Schedule Content -->
+
+	        </div>
+	        <!-- /Schedule Widget -->
+
+	        <!-- Submit Section -->
+	        <div class="submit-section proceed-btn text-right">
+	          <a *ngIf="isLoggedIn" (click)="bookSlot()" class="btn btn-primary submit-btn">Proceed to Pay</a>
+	          <a *ngIf="!isLoggedIn" [routerLink]="'/login'"
+	            [queryParams]="{redirect: '/p/booking',doctorId:doctorId}"
+	            class="btn btn-primary submit-btn">Proceed
+	            to Pay</a>
+	        </div>
+	        <!-- /Submit Section -->
+
+	      </div>
+	    </div>
+	  </div>
+
+	</div>
+	<!-- /Page Content -->

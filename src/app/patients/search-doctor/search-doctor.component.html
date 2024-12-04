@@ -1,0 +1,205 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-8 col-12">
+        <nav aria-label="breadcrumb" class="page-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/p/dashboard'">Back To Dashboard</a></li>
+            <!-- <li class="breadcrumb-item active" aria-current="page">Search</li> -->
+          </ol>
+        </nav>
+        <!-- <h2 class="breadcrumb-title">{{doctors.length}} records found</h2> -->
+      </div>
+      <div class="col-md-4 col-12 d-md-block d-none">
+        <div class="sort-by">
+
+          <span class="sort-title">Sort by</span>
+          <span class="sortby-fliter">
+            <ng-select2 [(ngModel)]="sortBy" [ngModelOptions]="{standalone: true}" width="100%"
+              (ngModelChange)="sortDoctors()">
+              <option value="0">Select</option>
+              <option class="sorting" value="1"> Years of Experience</option>
+              <option class="sorting" value="2">Price Low to High</option>
+              <option class="sorting" value="3">Price High to Low</option>
+            </ng-select2>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12 col-l-3 col-xl-3 theiaStickySidebar">
+
+        <!-- Search Filter -->
+        <div class="card search-filter">
+          <div class="card-header">
+            <h4 class="card-title mb-0 float-left">Search Filter
+            </h4>
+            <a class="float-right clear-link" (click)="clearFilter()">Clear Filter</a>
+
+          </div>
+          <div class="card-body">
+            <!-- <div class="filter-widget">
+              <div class="cal-icon">
+                <input type="text" class="form-control" name="dp" [(ngModel)]="model" (click)="d.toggle()" ngbDatepicker
+                  #d="ngbDatepicker">
+              </div>
+            </div> -->
+            <div class="filter-widget">
+              <div class="search-info">
+                <input type="text" class="search-filter-input form-control" name="searchText" [(ngModel)]="searchText"
+                  [ngModelOptions]="{standalone: true}" (keyup.enter)="getDoctorsList()">
+              </div>
+            </div>
+
+            <div class="filter-widget">
+              <h4>Select Specialist</h4>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="specialist_type" value="Psychiatrist"
+                    (click)="checkSpecialistType($event)" [checked]="specialistType === 'Psychiatrist'">
+                  <span class="checkmark"></span> Psychiatrist
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="specialist_type" value="Psychologist"
+                    [checked]="specialistType === 'Psychologist'" (click)="checkSpecialistType($event)">
+                  <span class="checkmark"></span> Psychologist
+                </label>
+              </div>
+              <div class="filter-widget">
+                <h4>State</h4>
+                <div >
+                  <select class="form-control" [(ngModel)]="stateId" (change)="getCity($event.target.value)">
+                    <option value="0">Select State</option>
+                    <option *ngFor="let item of states" value="{{item.id}}" >{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-widget">
+                <h4>City</h4>
+                <div >
+                  <select class="form-control" [(ngModel)]="cityId">
+                    <option value="0">Select City</option>
+                    <option *ngFor="let item of cities" value="{{item.id}}" >{{item.city_name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="btn-search">
+              <button type="button" class="btn btn-block" (click)="getDoctorsList()">Search</button>
+            </div>
+          </div>
+        </div>
+        <!-- /Search Filter -->
+
+      </div>
+
+      <div class="col-md-12 col-l-9 col-xl-9" *ngIf="doctors.length">
+
+        <!-- Doctor Widget -->
+        <div class="card" *ngFor="let doctor of doctors">
+
+          <div class="card-body">
+            <div class="doctor-widget">
+              <div class="doc-info-left">
+                <div class="doctor-img" *ngIf="doctor?.BASE64CONTENT">
+                  <a [routerLink]="['/p/doctor-profile',doctor?.DOCTOR_ID]">
+                    <img [src]="doctor?.BASE64CONTENT" class="img-fluid" alt="User Image">
+                    <!-- <img  *ngIf="!doctor?.BASE64CONTENT" src="assets/img/psychiatrist1.png" class="img-fluid" alt="User Image"> -->
+                  </a>
+
+                </div>
+                <div class="doc-info-cont">
+                  <h4 class="doc-name"><a
+                      [routerLink]="['/p/doctor-profile',doctor?.DOCTOR_ID]">{{doctor?.Prefix}}
+                      {{doctor?.FIRST_NAME}} {{doctor?.LAST_NAME}}</a>
+                  </h4>
+                  <p class="doc-speciality">
+                    {{doctor?.EXP}} years experience overall
+                  </p>
+                  <!-- <p class="doc-speciality">
+                    <span *ngFor="let edu of doctor?.items;let i=index;">{{edu.QUALIFICATION}}
+                      {{i+1 === doctor?.items.length ? '':', '}}</span>
+                  </p> -->
+                  <p class="doc-department">{{doctor?.PROFESSIONAL_TITLE}}</p>
+
+                  <h5 class="doc-department">
+                    <img src="assets/img/specialities/specialities-02.png" *ngIf="roleList.includes(doctor?.ROLENAME)"
+                      class="img-fluid" alt="Speciality">
+                    {{doctor?.ROLENAME}}</h5>
+                  <!-- <div class="rating">
+                    <i class="fas fa-star" [ngClass]="{'filled':doctor?.AvgRating > 0}"></i>
+                    <i class="fas fa-star" [ngClass]="{'filled':doctor?.AvgRating > 1}"></i>
+                    <i class="fas fa-star" [ngClass]="{'filled':doctor?.AvgRating > 2}"></i>
+                    <i class="fas fa-star" [ngClass]="{'filled':doctor?.AvgRating > 3}"></i>
+                    <i class="fas fa-star" [ngClass]="{'filled':doctor?.AvgRating > 4}"></i>
+                    <span class="d-inline-block average-rating">({{doctor?.AvgRating || '0'}})</span>
+                  </div> -->
+                  <div class="clinic-details">
+                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{doctor?.ADDRESS}}</p>
+                    <!-- <ul class="clinic-gallery">
+                      <li>
+                        <a lightbox-group>
+                          <img   src="assets/img/specialities/specialities-02.png" lightbox />
+                        </a>
+                      </li>
+                    </ul> -->
+                  </div>
+                  <div class="clinic-services" *ngIf="doctor?.SPECIALITY?.length">
+                    <span *ngFor="let spc of doctor?.SPECIALITY?.split(',')">{{spc}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="doc-info-right">
+                <div class="clini-infos">
+                  <ul>
+                    <!-- <li><i class="far fa-thumbs-up"></i> {{doctor?.ReviewCount || '0'}}</li> -->
+                    <!-- <li><i class="far fa-comment"></i> 17 Feedback</li> -->
+                    <li><i class="fas fa-user"></i> {{doctor?.GENDER}}</li>
+                    <li><i class="far fa-money-bill-alt"
+                        *ngIf="doctor?.FIRST_CONSULTATION_FEE || doctor?.FOLLOWUP_CONSULTATION_FEE"></i>
+                      INR {{doctor?.FIRST_CONSULTATION_FEE}}
+                       <!-- -
+                      INR {{(+(doctor?.FIRST_CONSULTATION_FEE) + +(doctor?.FOLLOWUP_CONSULTATION_FEE))}}  -->
+                    </li>
+                  </ul>
+                </div>
+                <div class="clinic-booking">
+                  <a class="view-pro-btn" style="cursor: pointer;"
+                    [routerLink]="['/p/doctor-profile',doctor?.DOCTOR_ID]">View
+                    Profile</a>
+                  <a class="apt-btn" style="cursor: pointer;" [routerLink]="'/p/booking'"
+                    [queryParams]="{id: doctor?.DOCTOR_ID}">Book Appointment</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="load-more text-center" *ngIf="doctors.length !== 0">
+          <a class="btn btn-primary btn-sm" href="javascript:void(0);">Load More</a>
+        </div> -->
+      </div>
+      <div class="col-md-12 col-lg-9 col-xl-9" *ngIf="!doctors.length">
+        <div class="card">
+          <div class="card-body">
+            <h3>No Doctors / Consultants  found that matched your search criteria.</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- /Page Content -->

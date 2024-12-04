@@ -1,0 +1,365 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&display=swap");
+@import "../../../assets/css/test-style.css";
+.header {
+  padding: 25px 0;
+  background: url(/assets/User/img/header_bg.png) no-repeat;
+  background-size: cover;
+}
+.inner_white {
+  box-shadow: 0 0 20px -2px rgb(0 0 0 / 14%);
+  background: #ffffff;
+  width: 100%;
+  display: inline-block;
+  margin: 10px 0;
+  padding: 20px;
+  box-sizing: border-box;
+  /* height: 606px; */
+}
+.tabs-left {
+  border-bottom: none;
+  padding-top: 2px;
+  font-family: "Josefin Sans", sans-serif;
+}
+.tabs-left {
+  border: 1px solid #e3e3e3;
+  padding: 0;
+  background: #f7f7f7;
+  height: 100%;
+  display: inline-block;
+  width: 100%;
+}
+.tabs-left > li {
+  float: none;
+  margin: 0px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.tabs-left > li > a {
+  border-radius: 0;
+  border: none;
+  margin-right: 0;
+  width: 100%;
+  display: inline-block;
+  font-size: 16px;
+  line-height: 19px;
+  padding: 17px 10px 15px 20px;
+  color: #5e5e5e;
+  border-right: 4px solid transparent;
+}
+.nav > li > a > img {
+  margin-right: 15px;
+}
+.tabs-left > li > a img {
+  filter: grayscale(100%);
+}
+.tabs-left > li > a:hover img,
+.tabs-left > li.active > a img,
+.tabs-left > li.active > a:hover img,
+.tabs-left > li.active > a:focus img {
+  filter: grayscale(0%);
+}
+.tabs-left > li > a p {
+  display: inline-block;
+  margin: 0;
+  position: relative;
+  top: 1px;
+}
+.tabs-left > li.active > a,
+.tabs-left > li.active > a:hover,
+.tabs-left > li.active > a:focus,
+.tabs-left > li > a:hover,
+.tabs-left > li > a:focus {
+  border: none;
+  border-right: 4px solid #D21f3c;
+  border-radius: 0;
+  color: #D21f3c;
+  background: #ffffff;
+}
+.tab_con_bg {
+  padding: 0;
+  /* background: url(/assets/User/img/bg.png) no-repeat top left; */
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.tab_con_bg:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgb(0 0 0 / 19%);
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+}
+.pl_0 {
+  padding-left: 0;
+}
+.answers {
+  display: inline-block;
+  width: 100%;
+  /* border-top: 1px solid rgb(128 128 128 / 19%); */
+  /* padding-top: 20px; */
+  margin-top: 5px;
+}
+.tab-content {
+  text-align: center;
+}
+.con_white {
+  background: #fff;
+  max-width: 500px;
+  margin: 120px auto;
+  display: inline-block;
+  text-align: left;
+  padding: 30px;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.con_white {
+  background: rgb(255 255 255 / 90%);
+}
+.cont {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  font-family: "Josefin Sans", sans-serif;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 17px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #5e5e5e;
+  font-weight: 400;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  background-color: #d0d0d0;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.cont:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.cont input:checked ~ .checkmark {
+  background-color: #D21f3c;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.cont input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.cont .checkmark:after {
+  top: 7px;
+  left: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+.con_white h3 {
+  font-size: 19px;
+  font-weight: 700;
+  font-family: "Josefin Sans", sans-serif;
+  color: #5e5e5e;
+  margin: 0 0 10px 0;
+}
+.tab-content {
+  position: relative;
+}
+/* .tab-pane:before{content:'';position:absolute;top:50%;left:50px;background:url(img/arrow_left.png)no-repeat;background-size:100%;width:28px;height:52px;
+    z-index: 1;
+}
+.tab-pane:after{content:'';position:absolute;top:50%;right:50px;background:url(img/arrow_right.png)no-repeat;background-size:100%;width:28px;height:52px;
+    z-index: 1;
+} */
+
+.slick-dots {
+  position: absolute;
+  bottom: -16px !important;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
+.slick-track {
+  opacity: 0.8 !important;
+}
+
+.home-banner-three-slider {
+  height: 550px !important;
+}
+
+.testButton
+{
+  background-color: #D21f3c;
+  border: #D21f3c;
+  padding: 7px;
+}
+
+.con_white_3 {
+  background: #fff;
+  max-width: 750px;
+  margin: 177px auto;
+  display: inline-block;
+  text-align: left;
+  padding: 17px;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.rightinfo h2 {
+  font-family: Josefin Sans;
+  font-weight: bold;
+  font-size: 30px;
+  color: #D21f3c;
+}
+
+.rightinfo h2 span {
+  font-size: 20px;
+}
+
+
+.gridHeaderRow {
+  grid-row: 2/3;
+  grid-column: 2/3;
+  background-color: #fff;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 18px 7px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 18px 7px rgba(0, 0, 0, 0.1);
+  padding: 12px 20px;
+}
+.gvRow {
+  grid-row: 2/3;
+  grid-column: 2/3;
+  text-align: center;
+}
+.gvRow h3 {
+  font-family: Josefin Sans;
+  color: #a92684;
+  font-weight: 500;
+  display: inline-block;
+  font-size: 20px;
+  /* letter-spacing: 12px; */
+}
+.gvRow h2 {
+  font-family: Josefin Sans;
+  text-transform: uppercase;
+  margin: 0px 0px;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+.gridHeaderRow a {
+  display: none;
+}
+
+.sRowFlex {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.leftinfo, .rightinfo {
+  width: 50%;
+}
+
+.leftinfo, .rightinfo {
+  width: 50%;
+}
+radio{
+  visibility: hidden;
+}
+
+.tab-content {
+  padding-top: 0px !important;
+}
+
+.col-md-1
+ {
+  width: 10% !important;
+ }
+
+.slick-disabled {
+  opacity: 0.6 !important;
+  pointer-events: none !important;
+}
+
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus,
+.pharmacy-home-slider .swiper-button-prev:hover,
+.pharmacy-home-slider .swiper-button-next:hover {
+  background-color: #D21f3c;
+  color: #fff;
+  opacity: 1;
+}
+
+.slick-dots li.slick-active button {
+  background-color: #D21f3c;
+}
+.cls1 {
+  background: url(../../../assets/User/img/83_1.jpg) no-repeat;
+}
+.cls2 {
+  background: url(../../../assets/User/img/83_2.jpg) no-repeat;
+}
+.cls3 {
+  background: url(../../../assets/User/img/83_3.jpg) no-repeat;
+}
+.cls4 {
+  background: url(../../../assets/User/img/83_4.jpg) no-repeat;
+}
+.cls5 {
+  background: url(../../../assets/User/img/83_5.jpg) no-repeat;
+}
+/* .cls6 {
+  background: url(/assets/User/img/83_6.jpg) no-repeat;
+} */
+
+ .slick-next {
+  right: 0;
+  z-index: 1 !important;
+}

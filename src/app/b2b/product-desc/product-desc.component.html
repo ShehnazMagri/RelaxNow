@@ -1,0 +1,102 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-12 col-12">
+                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active"><a>Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Product Description</li>
+                    </ol>
+                </nav>
+                <h2 class="breadcrumb-title">Product Description</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content" *ngIf="testDetails">
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-md-7 col-lg-9 col-xl-9">
+                <!-- Doctor Widget -->
+                <div class="card">
+                    <div class="card-body product-description">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div >
+                                    <img src="assets/img/GVSCALE.png" class="img-fluid" *ngIf="testId==3" style="height: 200px;width: 200px;" />
+                                    <img src="assets/img/ewi-logo.png" class="img-fluid" *ngIf="testId!=3" style="height: 200px;width:200px;" />
+                                    <h4 class="doc-name mb-2">{{testDetails.NAME}}</h4>
+                                      <div class="intro-text justify-content-center" [innerHTML]="testDescription ">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /Doctor Widget -->
+
+
+
+            </div>
+            </div>
+
+            <div class="col-md-5 col-lg-3 col-xl-3 theiaStickySidebar">
+
+                <!-- Right Details -->
+                <div class="card search-filter">
+                    <div class="card-body">
+                        <div class="clini-infos mt-0">
+                            <h2> INR {{testDetails.PAYMENT}}</h2>
+                        </div>
+
+                        <div class="clinic-details mt-4">
+                            <div class="clinic-booking">
+                                <a class="apt-btn" (click)="addToCart(testDetails)">Add To Cart</a>
+                                <a class="btn btn-info" *ngIf="testId==3 && currentUserRole=='B2BADMIN'"
+                                href="javascript:void(0);" (click)="openPDFReportModal(reportdetail,'https://noworrynotension.in/RelaxNow/assets/Reports/UW_748_1633272574847.pdf')"
+                                >Sample Report</a>
+                                  <a class="btn btn-info" *ngIf="testId!=3 && currentUserRole=='B2BADMIN'"
+                                     href="javascript:void(0);"
+                                              (click)="openPDFReportModal(reportdetail,'https://noworrynotension.in/RelaxNow/assets/Reports/PDFReport_Normal.pdf')">Sample Report</a>
+                                <a class="btn btn-success" (click)="openQuestionModal(questions)" *ngIf="currentUserRole=='B2BADMIN'">Trial Test</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #reportdetail>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <iframe [src]="pdf" *ngIf="pdf" height="1000px" width="100%"></iframe>
+  </div>
+</ng-template>
+
+<ng-template #questions>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <app-questions-b2b [TESTID]="testId" (newItemEvent)="hideQuestions($event)"
+      *ngIf="hideQuestionsScreen==false"></app-questions-b2b>
+  </div>
+</ng-template>
+
+<!-- /Page Content -->

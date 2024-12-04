@@ -1,0 +1,65 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Payment Configuration</h3><br>
+          <span *ngIf="B2BCode == 'DEFAULT'">
+            You can configure the cost of services per users for both B2B & individual users. This cost will be applicable for all
+            assignments if not customised for any entity.
+          </span>
+          <span *ngIf="B2BCode != 'DEFAULT'">
+          You are going to customise the default cost/user for the entity.
+
+          </span>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Payment Configuration</li>
+          </ul>
+          <div class="col-md-12">
+            <button style="float:right"  *ngIf="B2BCode != 'DEFAULT'" class="btn btn-primary" type="submit" (click)="copyURL()" >Copy URL</button>
+            <button   *ngIf="B2BCode != 'DEFAULT'" class="btn btn-primary" type="submit" (click)="copy()" style="margin-right: 20px;float:right">Copy URL & Send Email</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Recent Orders -->
+        <div class="card">
+          <div class="card-body">
+
+
+            <div class="table-responsive">
+              <table class="row-border hover table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Service Name</th>
+                    <th>Price (signle user)</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of configurations">
+                    <td>{{item.TESTNAME}}</td>
+                    <td>
+                      <input class="form-control" [(ngModel)]="item.PAYMENT" (keydown)="keydown($event)" min="0" />
+
+                    </td>
+                    <td>
+                      <input type="submit" value="Save" class="btn btn-success"  (click)="addPayment(item)"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Orders -->
+      </div>
+    </div>
+  </div>
+</div>

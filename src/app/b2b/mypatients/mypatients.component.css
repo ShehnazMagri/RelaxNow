@@ -1,0 +1,32 @@
+.doctor-action {
+  text-align: center;
+  display: block;
+}
+.contact-btn {
+  display: inline-flex;
+}
+
+.patient-info .bg-info-light {
+  margin: 4px 5px;
+}
+.email-block {
+  overflow-wrap: anywhere;
+}
+.contact-btn {
+  display: flex;
+  flex-wrap: wrap;
+
+  align-items: flex-start;
+  margin-top: 11%;  justify-content: center;
+}
+
+.view_btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 920px) and (min-width:856px) {
+  .contact-btn {
+    align-items: flex-start;  }
+}

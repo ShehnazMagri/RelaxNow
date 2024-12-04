@@ -1,0 +1,246 @@
+<div class="page-wrapper">
+
+  <div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Welcome Reception!</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-xl-4 col-sm-6 col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="dash-widget-header">
+              <span class="dash-widget-icon text-primary border-primary">
+                <i class="fe fe-users"></i>
+              </span>
+              <div class="dash-count">
+                <h3>{{docters.length}}</h3>
+              </div>
+            </div>
+            <div class="dash-widget-info">
+              <h6 class="text-muted">Doctors</h6>
+              <div class="progress progress-sm">
+                <div class="progress-bar bg-primary w-50"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-sm-6 col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="dash-widget-header">
+              <span class="dash-widget-icon text-success">
+                <i class="fe fe-credit-card"></i>
+              </span>
+              <div class="dash-count">
+                <h3>{{patients.length}}</h3>
+              </div>
+            </div>
+            <div class="dash-widget-info">
+
+              <h6 class="text-muted">Patients</h6>
+              <div class="progress progress-sm">
+                <div class="progress-bar bg-success w-50"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-sm-6 col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="dash-widget-header">
+              <span class="dash-widget-icon text-danger border-danger">
+                <i class="fe fe-money"></i>
+              </span>
+              <div class="dash-count">
+                <h3>{{toDateAppointment.length}}</h3>
+              </div>
+            </div>
+            <div class="dash-widget-info">
+              <h6 class="text-muted">Today Appointment</h6>
+              <div class="progress progress-sm">
+                <div class="progress-bar bg-danger w-50"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>     
+    </div> 
+    <div class="row">
+      <div class="col-md-12">
+
+        <!-- Recent Orders -->
+        <div class="card card-table">
+          <div class="card-header">
+            <h4 class="card-title">Appointment List</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive height-table">
+              <table class="table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger1"
+                [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>Doctor Name</th>                    
+                    <th>Patient Name</th>
+                    <th>Relationship Number</th>
+                    <th>Patient Phone Number</th>
+                    <th data-sort='YYYYMMDD HH:MM'>Appointment Time</th>                   
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let item of appointments;let i=index">
+                    <td>
+                      <h2 class="table-avatar">
+                        <p class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.Doctor_ImageBase64 ||'assets/img/doctors/doctor-thumb-01.jpg'"
+                            alt="User Image"></p>                        
+                          {{item.DOCTOR_Prefix }} {{item.DOCTOR_FIRST_NAME }}
+                          {{item.DOCTOR_LAST_NAME}}                        
+                        <br>
+                          {{item?.ROLE}}
+                      </h2>
+                    </td>                   
+                    <td>
+                      <h2 class="table-avatar">
+                        <p class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.ImageBase64 ||'assets/img/doctors/doctor-thumb-01.jpg'" alt="User Image"></p>
+                        <p>{{item.RN_CUSTOMER_Prefix }} {{item.RN_CUSTOMER_FIRST_NAME }}
+                          {{item.RN_CUSTOMER_LAST_NAME}} </p>
+                      </h2>
+                    </td>
+                    <td>
+                      {{item.RELATIONSHIP_NUMBER}}
+                    </td>
+                    <td>
+                      {{item.RN_CUSTOMER_MOBILE}}
+                    </td>
+                    <td><span class="d-none">{{item.APPOINTMENT_DATE |date:'y-MM-dd'}} {{item.APPOINTMENT_TIME}}</span>
+                      {{item.APPOINTMENT_DATE| date}}
+                      <span class="text-primary d-block">{{item.APPOINTMENT_TIME}} -
+                        {{item.APPOINTMENT_ENDTIME}}</span>
+                    </td>                   
+                    <!-- <td class="text-right">
+                      $200.00
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Orders -->
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 d-flex">
+
+        <!-- Recent Orders -->
+        <div class="card card-table flex-fill">
+          <div class="card-header">
+            <h4 class="card-title">Doctors List</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive height-table">
+              <table class="table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger3"
+                [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <!-- <th>Speciality</th> -->
+                    <th>Doctor Name</th>
+                    <th>Role</th>
+                    <th>Doctor Phone Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of docters">
+                    <!-- <td>{{item.PROFESSIONAL_TITLE}}</td> -->
+                    <td>
+                      <!-- [routerLink]="['/admin/on-boarding/details',item.PEOPLE_ID]" -->
+                      <h2 class="table-avatar">
+                        <p class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.BASE64CONTENT ||'assets/img/doctors/doctor-thumb-01.jpg'" alt="User Image"></p>
+                        <p>{{item.Prefix }} {{item.FIRST_NAME }} {{item.LAST_NAME}} </p>
+                      </h2>
+                    </td>
+                    <td>
+                      {{item?.ROLENAME}}
+                      <!-- <i class="fe fe-star text-warning"></i>
+                      <i class="fe fe-star text-warning"></i>
+                      <i class="fe fe-star text-warning"></i>
+                      <i class="fe fe-star text-warning"></i>
+                      <i class="fe fe-star-o text-secondary"></i> -->
+                    </td>
+                    <td>{{item.MOBIKE}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Orders -->
+
+      </div>
+      <div class="col-md-6 d-flex">
+
+        <!-- Feed Activity -->
+        <div class="card  card-table flex-fill">
+          <div class="card-header">
+            <h4 class="card-title">Patients List</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive height-table">
+              <table class="table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger2"
+                [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>Patient Name</th>
+                    <th>Phone</th>
+                    <th>Relationship Number</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of patients">
+                    <td>
+                      <h2 class="table-avatar" (click)="openPatientModal(item)">
+                        <a href="javascript:void(0)" class="avatar avatar-sm mr-2"><img
+                            class="avatar-img rounded-circle"
+                            [src]="item?.Customer_IMAGE ||'assets/img/doctors/doctor-thumb-01.jpg'"
+                            alt="User Image"></a>
+                        <a href="javascript:void(0)">{{item.Prefix }} {{item.FIRST_NAME }} {{item.LAST_NAME}} </a>
+                      </h2>
+                    </td>
+                    <td>{{(item.MOBILE ? +(item.MOBILE.replace('+','')): '')}}</td>
+                    <td>{{item.RELATIONSHIP_NUMBER}}</td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /Feed Activity -->
+
+      </div>
+    </div>
+
+
+  </div>
+</div>

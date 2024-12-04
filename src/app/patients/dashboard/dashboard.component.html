@@ -1,0 +1,396 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="page-title">Welcome {{username}}!</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item active"><a [routerLink]="'/p/dashboard'">Dashboard</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /Page Header -->
+<div class="row" *ngIf="corporateData!=undefined">
+  <div class="col-xl-12 col-sm-12 col-12" style="margin-bottom: 20px;" *ngIf="corporateData[0].tests.length>0">
+    <b>Assessment(s)</b> You can click over "Start Test" button to launch the test</div>
+  <div class="col-xl-3 col-sm-6 col-12" *ngFor="let item of corporateData[0].tests;let i=index">
+    <div class="card">
+      <div class="card-body">
+        <div class="dash-widget-header">
+          <img src="assets/img/GVSCALE.png" class="ques_img" *ngIf="item.testId==3" style="height: 50px;width: 50px;" />
+          <img src="assets/img/ewi-logo.png" class="ques_img" *ngIf="item.testId!=3"
+            style="height: 50px;width: 50px;" />
+          <div class="dash-count" style="min-height: 50px;">
+            <h5>{{item.name}}</h5>
+          </div>
+        </div>
+        <div class="dash-widget-info">
+          <button type="button" class="btn btn-warning" *ngIf="item?.status > 0">Completed</button>
+          <button type="button" class="btn btn-primary" *ngIf="item?.status ==-1">In Progress</button>
+        </div>
+        <div class="dash-widget-info">
+          <button class="btn btn-success" style="cursor: pointer !important;" (click)="redirectToTest(item)" *ngIf="item?.status <= 0 && item.IS_COMPLETED==null">Start Test</button>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row">
+  <div class="card col-md-12">
+    <div class="card-body pt-0">
+      <nav class="user-tabs mb-4">
+        <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+          <li class="nav-item">
+            <a class="nav-link active" href="#pat_billing1" data-toggle="tab">My Purchases</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#pat_prescriptions1" data-toggle="tab">Offered Services</a>
+          </li>
+
+        </ul>
+      </nav>
+      <!-- /Tab Menu -->
+
+      <!-- Tab Content -->
+      <div class="tab-content pt-0">
+
+        <div id="pat_billing1" class="tab-pane fade show active">
+          <div class="card card-table mb-0">
+            <div class="card-body row" style="margin: 20px;">
+              <div class="col-xl-12 col-sm-12 col-12" style="margin-bottom: 20px;" *ngIf="purchasedTest.length>0">
+                <b>Purchased Assessment(s)</b> You can click over "Start Test" button to launch the test
+              </div>
+
+              <div class="col-md-12 col-lg-3 col-xl-3" *ngFor="let item of purchasedTest;let i=index">
+                <div class="card">
+                  <div class="card-body" style="margin: 20px;">
+                    <div class="dash-widget-header">
+                      <img src="assets/img/GVSCALE.png" class="ques_img" *ngIf="item.testId==3" style="height: 50px;width: 50px;" />
+                      <img src="assets/img/ewi-logo.png" class="ques_img" *ngIf="item.testId!=3"
+                        style="height: 50px;width: 50px;" />
+                      <div class="dash-count" style="min-height: 70px;">
+                        <h5>{{item.name}}</h5>
+                      </div>
+                    </div>
+                    <div class="dash-widget-info">
+                      <button class="btn btn-success" style="cursor: pointer !important;"
+                        (click)="redirectTOPurchasedTest(item)" *ngIf="item?.status <= 0 && item.IS_COMPLETED==null">Start Test</button>
+
+                          <button class="btn btn-success" style="cursor: pointer !important;background-color: orange !important;" disabled="true"
+                            *ngIf="item.IS_COMPLETED!=null">Completed</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade " id="pat_prescriptions1">
+          <div class="card">
+            <div class="card-body">
+                   <app-services></app-services>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body pt-0">
+    <nav class="user-tabs mb-4">
+      <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+        <li class="nav-item">
+          <a class="nav-link active" href="#pat_appointments" data-toggle="tab">Appointments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#pat_prescriptions" data-toggle="tab">Attachments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#pat_billing" data-toggle="tab">Billing</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="tab-content pt-0">
+      <div id="pat_appointments" class="tab-pane fade show active">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- <h4 class="mb-4">Patient Appointments</h4> -->
+            <div class="appointment-tab">
+              <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#today" data-toggle="tab" [ngClass]="{ 'active':activeTab==='today'}"
+                    (click)="selectTab('today')">Today's</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#upcoming" data-toggle="tab" [ngClass]="{ 'active':activeTab==='upcoming'}"
+                    (click)="selectTab('upcoming')">Upcoming</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane" id="today" [ngClass]="{ 'active':activeTab==='today'}">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-hover table-center" datatable [dtTrigger]="dtTrigger">
+                          <thead>
+                            <tr>
+                              <th>Doctor</th>
+                              <th>Appt Date</th>
+                              <th>Booking Date</th>
+                              <!-- <th>Amount</th> -->
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let people of todayAppointments">
+                              <td [routerLink]="['/p/appointment-details',people.RN_APPOINTMENT_ID,people.DOCTOR_ID]">
+                                <h2 class="table-avatar">
+                                  <a class="avatar avatar-sm mr-2">
+                                    <img class="avatar-img rounded-circle" *ngIf="people.People_IMAGE==null"
+                                      src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+                                    <img class="avatar-img rounded-circle" *ngIf="people.People_IMAGE!=null"
+                                      src="{{people.People_IMAGE}}" alt="User Image">
+                                  </a>
+                                  <a>{{people.DOCTOR_FIRST_NAME}}
+                                    {{people.DOCTOR_LAST_NAME}} <span>{{people.ROLENAME}}</span></a>
+                                </h2>
+                              </td>
+                              <td><span class="d-none">{{people?.APPOINTMENT_DATE| date:'y-MM-dd'}}
+                                  {{people?.APPOINTMENT_TIME}}</span>{{people?.APPOINTMENT_DATE| date}} <span
+                                  class="d-block text-info">{{people?.APPOINTMENT_TIME}}</span> - <span
+                                  class="d-block text-info">{{people?.APPOINTMENT_ENDTIME}}</span> </td>
+                              <td>
+                                <span *ngIf="people.BOOKING_DATE!='0000-00-00 00:00:00'"
+                                  class="d-none">{{people?.BOOKING_DATE| date:'y-MM-dd'}} </span>
+                                <span *ngIf="people.BOOKING_DATE!='0000-00-00 00:00:00'">{{people.BOOKING_DATE| date
+                                  }}</span>
+                              </td>
+                              <!-- <td>INR {{people.amount || 0}}</td> -->
+                              <td>
+                                <a href="javascript:void(0)" class="btn btn-sm bg-info-light"
+                                  style="float: right;width: 151px;"
+                                  [routerLink]="['/p/appointment-details',people.RN_APPOINTMENT_ID,people.DOCTOR_ID]">
+                                  <i class="far fa-eye"></i> View Details
+                                </a>
+
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="upcoming" [ngClass]="{ 'active':activeTab==='upcoming'}">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-hover table-center" datatable [dtTrigger]="dtTrigger">
+                          <thead>
+                            <tr>
+                              <th>Doctor</th>
+                              <th data-sort='YYYYMMDD HH:MM'>Appt Date</th>
+                              <th data-sort='YYYYMMDD'>Booking Date</th>
+                              <!-- <th>Amount</th> -->
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let people of appointments">
+                              <td [routerLink]="['/p/appointment-details',people.RN_APPOINTMENT_ID,people.DOCTOR_ID]">
+                                <h2 class="table-avatar">
+                                  <a class="avatar avatar-sm mr-2">
+                                    <img class="avatar-img rounded-circle" *ngIf="people.People_IMAGE==null"
+                                      src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+                                    <img class="avatar-img rounded-circle" *ngIf="people.People_IMAGE!=null"
+                                      src="{{people.People_IMAGE}}" alt="User Image">
+                                  </a>
+                                  <a>{{people.DOCTOR_FIRST_NAME}}
+                                    {{people.DOCTOR_LAST_NAME}} <span>{{people.ROLENAME}}</span></a>
+                                </h2>
+                              </td>
+                              <td><span class="d-none">{{people?.APPOINTMENT_DATE| date:'y-MM-dd'}}
+                                  {{people?.APPOINTMENT_TIME}}</span>{{people?.APPOINTMENT_DATE| date}} <span
+                                  class="d-block text-info">{{people?.APPOINTMENT_TIME}}</span> - <span
+                                  class="d-block text-info">{{people?.APPOINTMENT_ENDTIME}}</span> </td>
+                              <td>
+                                <span *ngIf="people.BOOKING_DATE!='0000-00-00 00:00:00'"
+                                  class="d-none">{{people?.BOOKING_DATE| date:'y-MM-dd'}} </span>
+                                <span *ngIf="people.BOOKING_DATE!='0000-00-00 00:00:00'">{{people.BOOKING_DATE| date
+                                  }}</span>
+                              </td>
+                              <!-- <td>INR {{people.amount || 0}}</td> -->
+                              <td>
+                                <a href="javascript:void(0)" class="btn btn-sm bg-info-light"
+                                  style="float: right;width: 151px;"
+                                  [routerLink]="['/p/appointment-details',people.RN_APPOINTMENT_ID,people.DOCTOR_ID]">
+                                  <i class="far fa-eye"></i> View Details
+                                </a>
+
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pat_prescriptions">
+        <div class="card">
+          <div class="card-body">
+            <div class="row" style="margin:20px -14px">
+              <div class="col-6"></div>
+              <div class="col-6">
+                <div class="change-photo-btn" (click)="openModal(uploadtemplate)" style="float: right;">
+                  <span><i class="fa fa-upload"></i> Upload File</span>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive" *ngIf="showReportTable">
+              <table class="table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger2">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Uploaded Date</th>
+                    <th>View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let item of reports">
+                    <tr *ngIf="item?.RESULT_FILE">
+                      <td>{{item?.NAME|| item?.RESULT_FILE}}</td>
+                      <td><span class="d-none">{{item?.CreatedDate | date:'y-MM-dd'}}
+                        </span>{{item?.CreatedDate | date}}</td>
+                      <td class="text-right">
+                        <div class="table-action">
+                          <a href="{{item?.RESULT_FILE_BASEURL}}{{item?.RESULT_FILE}}" target="_blank">
+                            <img src="assets/img/PDFReport.png" style="width:30px" />
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                  <tr class="text-center" *ngIf="!reports.length">
+                    <td colspan="2"> No reports Found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Billing Tab -->
+      <div id="pat_billing" class="tab-pane fade">
+        <div class="card card-table mb-0">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger3" [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>Doctor Name</th>
+                    <th data-sort='YYYYMMDD HH:MM'>Appointment Date</th>
+                    <th data-sort='HH:MM'>Appointment Time</th>
+                    <th>Mode</th>
+                    <th>Billed Amount</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of billings">
+                    <td>{{item.Doctor_FIRST_NAME}} {{item.Doctor_LAST_NAME}}</td>
+                    <td><span class="d-none">{{item.APPOINTMENT_DATE| date:'y-MM-dd'}}
+                        {{item?.APPOINTMENT_TIME}}</span>{{item.APPOINTMENT_DATE|date}} </td>
+                    <td>{{item.APPOINTMENT_TIME}} - {{item.APPOINTMENT_ENDTIME}}</td>
+                    <td>{{item.Mode}} </td>
+                    <td>INR {{item.amount}} </td>
+                    <td class="text-right">
+                      <div class="table-action">
+                        <a href="javascript:void(0)" class="btn btn-sm bg-info-light"
+                          (click)="getInvoice(item.APPOINTMENT_ID,testformtemplate)">
+                          <i class="far fa-eye"></i> View Inovice
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Billing Tab -->
+
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #testformtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Invoice</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <iframe [src]="pdf" *ngIf="pdf" height="1000px" width="100%"></iframe>
+  </div>
+</ng-template>
+
+<ng-template #uploadtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Upload File</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="uploadFile(uploadForm)" #uploadForm="ngForm">
+      <div class="row form-row">
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>Document Name</label>
+            <!-- <input type="text" class="form-control" name="fileName" #name="ngModel"
+              [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required
+              appInputrestriction="[a-zA-Z]"> -->
+              <select class="form-control" name="fileName" #name="ngModel"
+                [ngClass]="{'is-invalid':isSubmitted && name.errors}" [(ngModel)]="fileName" required>
+                <option *ngFor="let item of documentsLists" value="{{item.id}}"> {{item.value}} </option>
+              </select>
+            <div class="invalid-feedback">
+              {{name?.errors?.requied ? 'Please enter a name.' :'Special Character not allowed'}}
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6">
+          <div class="form-group">
+            <label>&nbsp;</label>
+
+            <div class="custom-file">
+              <input id="uploadFile" class="custom-file-input" type="file" class="upload" name="filetoUpload"
+                [(ngModel)]="filetoUpload" required #file="ngModel" accept=".png, .jpeg,.jpg,.pdf"
+                (change)="onFileSelect($event)" required [ngClass]="{'is-invalid':isSubmitted && file.errors}">
+              <div class="invalid-feedback">Please add a file to upload.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Upload</button>
+    </form>
+  </div>
+</ng-template>

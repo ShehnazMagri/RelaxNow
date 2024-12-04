@@ -1,0 +1,78 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">My Purchases</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/b2b/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">My Purchases</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger1"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Purchase Id</th>
+                    <th>Services</th>
+                    <th>No Of Users</th>
+                    <th>Purchase Date</th>
+                    <th>View Invoice</th>
+                    <th width="50" class="text-right" *ngIf="currentUserRole=='B2BADMIN'">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData;index as i">
+                    <td>
+                      P00 {{item?.ID}}
+                    </td>
+                    <td>
+                      <div *ngFor="let item of item?.PNAME.split(',')">
+                        {{item}}
+                      </div>
+                  </td>
+                    <td>
+                      {{item?.CART_USERS}}
+                    </td>
+                    <td>{{item?.CREATED_Date|date:'dd-MM-yyyy'}}</td>
+                    <td style="text-align: center;">
+
+                      <a (click)="getInvoice(item?.ID,testformtemplate)" class="center btn btn-success" style="cursor: pointer;color:white"><i class='fas fa-file-invoice'></i></a>
+                    </td>
+                    <td style="text-align: center;" *ngIf="currentUserRole=='B2BADMIN'">
+                      <a class="actions center btn btn-success" [ngbTooltip]="'Add Assessments'" (click)="redirectToAssesment(item)" style="cursor: pointer;color:white">
+                        <i class="fe fe-plus"></i>
+                      </a>
+                    </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #testformtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Invoice</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <iframe [src]="pdf" *ngIf="pdf" height="1000px" width="100%"></iframe>
+  </div>
+</ng-template>

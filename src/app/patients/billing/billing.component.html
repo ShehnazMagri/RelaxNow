@@ -1,0 +1,72 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="page-title">Appointment Billing</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="'/p/dashboard'">Dashboard</a></li>
+        <li class="breadcrumb-item active">Appointment Billing</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /Page Header -->
+<div class="row">
+  <div class="col-md-12">
+    <!-- Recent Orders -->
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+
+          <table class="row-border hover table table-hover table-center mb-0" datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions">
+            <thead>
+              <tr>
+                <th>Doctor Name</th>
+                <th data-sort='YYYYMMDD HH:MM'>Appointmnet Date</th>
+                <th data-sort='HH:MM'>Appointment Time</th>
+                <th>Mode</th>
+                <th>Billed Amount</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of billings">
+                <td>{{item.Doctor_FIRST_NAME}} {{item.Doctor_LAST_NAME}}</td>
+                <td><span class="d-none">{{item.APPOINTMENT_DATE | date:'y-MM-dd'}}
+                    {{item?.APPOINTMENT_TIME}}</span>{{item.APPOINTMENT_DATE| date}}
+                </td>
+                <td>{{item.APPOINTMENT_TIME}} - {{item.APPOINTMENT_ENDTIME}}</td>
+                <td>{{item.Mode}} </td>
+                <td>INR {{item.amount}} </td>
+                <td class="text-right">
+                  <div class="table-action">
+                    <a href="javascript:void(0)" class="btn btn-sm bg-info-light"
+                      (click)="getInvoice(item.APPOINTMENT_ID,testformtemplate)">
+                      <i class="far fa-eye"></i> View Inovice
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- /Recent Orders -->
+  </div>
+</div>
+
+
+
+
+<ng-template #testformtemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Invoice</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <iframe [src]="pdf" *ngIf="pdf" height="1000px" width="100%"></iframe>
+  </div>
+</ng-template>

@@ -1,0 +1,218 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-7 col-auto">
+          <h3 class="page-title">Test Result Range</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Dashboard</a></li>
+            <li class="breadcrumb-item active">Test Result Range</li>
+          </ul>
+        </div>
+        <div class="col-sm-5 col">
+          <a class="btn btn-primary float-right mt-2" data-toggle="modal"
+            (click)="openModal(answertemplate,rangeDataModel)">
+            Add
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions"
+                class="datatable table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Test Name</th>
+                    <th>Range</th>
+                    <th>Result Term</th>
+                    <!-- <th>Created Date</th> -->
+                    <th width="100" class="text-right">Status</th>
+                    <th width="50" class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let range of rangeData;index as i">
+                    <td>
+                      {{range?.Test_Name}}
+                    </td>
+                    <td>
+                      {{range?.MIN_VALUE}} - {{range?.MAX_VALUE}}
+                    </td>
+                    <td>{{range.RESULT_TERM}}</td>
+                    <!-- <td>
+                      {{Answer?.CREATED_Date | date}}
+                    </td> -->
+                    <td>
+                      <span class="d-none">{{range.ACTIVE}}</span>
+
+                      <div class="float-right status-toggle">
+                        <input type="checkbox" id="status_{{i}}" class="check" [checked]="range.ACTIVE"
+                          (change)="changeStatus($event.target.checked,range)">
+                        <label for="status_{{i}}" class="checktoggle">checkbox</label>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="actions" data-toggle="modal" (click)="openModal(answertemplate,range)">
+                        <i class="center fe fe-pencil"></i>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #answertemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{rangeDataModel?.ID>0 ? 'Edit':'Add'}} Test Result Range</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+      (click)="modalRef.hide();getTestRangeList()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="submitForm(answerForm)" #answerForm="ngForm">
+      <div class="row form-row">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Test </label>
+            <select class="form-control" required name="testValue" #testValue="ngModel"
+              [(ngModel)]="rangeDataModel.TEST_ID" [ngClass]="{'is-invalid':isSubmitted && testValue.errors}" required>
+              <option *ngFor="let grp of testData" [value]="grp?.ID">
+                {{grp?.Name}}</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select test.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Result Term </label>
+            <input type="text" class="form-control" name="resultTerm" #resultTerm="ngModel"
+              [(ngModel)]="rangeDataModel.RESULT_TERM" [ngClass]="{'is-invalid':isSubmitted && resultTerm.errors}"
+              required>
+            <div class="invalid-feedback">
+              Please enter result term.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Min Value </label>
+            <input type="text" class="form-control" (keydown)="keydown($event)" name="minValue" #minValue="ngModel"
+              [(ngModel)]="rangeDataModel.MIN_VALUE" [ngClass]="{'is-invalid':isSubmitted && minValue.errors}" required>
+            <div class="invalid-feedback">
+              Please enter min value.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Max Value </label>
+            <input type="text" class="form-control" (keydown)="keydown($event)" name="maxValue" #maxValue="ngModel"
+              [(ngModel)]="rangeDataModel.MAX_VALUE" [ngClass]="{'is-invalid':isSubmitted && maxValue.errors}" required>
+            <div class="invalid-feedback">
+              Please enter max value.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label>Color </label>
+            <input [(colorPicker)]="rangeDataModel.COLOR" [cpOutputFormat]="'hex'" class="form-control"
+              (keydown)="keydown($event)" name="colors" #colors="ngModel" [(ngModel)]="rangeDataModel.COLOR"
+              [ngClass]="{'is-invalid':isSubmitted && colors.errors}" required>
+            <div class="invalid-feedback">
+              Please enter color.
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label style="width:100%">Smiley </label>
+            <a (click)="selectSmiley('lvl1')"> <img src="assets/admin/img/lvl1.png" style="width:40px"
+                class="img img-round" [ngClass]="{'selected_smiley':rangeDataModel.SMILEY=='lvl1'}" />
+            </a>
+            <img src="assets/admin/img/lvl2.png" style="width:40px" class="img img-round"
+              [ngClass]="{'selected_smiley':rangeDataModel.SMILEY=='lvl2'}" (click)="selectSmiley('lvl2')" />
+
+            <img src="assets/admin/img/lvl3.png" style="width:40px" class="img img-round"
+              [ngClass]="{'selected_smiley':rangeDataModel.SMILEY=='lvl3'}" (click)="selectSmiley('lvl3')" />
+
+            <img src="assets/admin/img/lvl4.png" style="width:40px" class="img img-round"
+              [ngClass]="{'selected_smiley':rangeDataModel.SMILEY=='lvl4'}" (click)="selectSmiley('lvl4')" />
+
+            <img src="assets/admin/img/lvl5.png" style="width:40px" class="img img-round"
+              [ngClass]="{'selected_smiley':rangeDataModel.SMILEY=='lvl5'}" (click)="selectSmiley('lvl5')" />
+
+            <img src="assets/admin/img/lvl6.png" style="width:40px" class="img img-round"
+              [ngClass]="{'selected_smiley':rangeDataModel.SMILEY=='lvl6'}" (click)="selectSmiley('lvl6')" />
+
+
+            <div style="width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;" *ngIf="isSubmitted && rangeDataModel.SMILEY==null">
+              Please select smiley.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-12">
+          <div class="form-group">
+            <label>Interpretation </label>
+            <angular-editor name="Description" #Description="ngModel" [(ngModel)]="rangeDataModel.RESULT_DESCRIPTION"
+              [ngClass]="{'is-invalid':isSubmitted && Description.errors}" [config]="config" required></angular-editor>
+            <!-- <input type="text" class="form-control" name="Description" #Description="ngModel" [(ngModel)]="rangeDataModel.RESULT_DESCRIPTION"
+                  [ngClass]="{'is-invalid':isSubmitted && Description.errors}" required> -->
+            <div class="invalid-feedback">
+              Please enter interpretation.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-12">
+          <div class="form-group">
+            <label>Consultation with a Psychologist </label>
+            <angular-editor name="Consultation" #Consultation="ngModel" [(ngModel)]="rangeDataModel.Consultation"
+              [ngClass]="{'is-invalid':isSubmitted && Consultation.errors}" [config]="config" required></angular-editor>
+            <!-- <input type="text" class="form-control" name="Description" #Description="ngModel" [(ngModel)]="rangeDataModel.RESULT_DESCRIPTION"
+                          [ngClass]="{'is-invalid':isSubmitted && Description.errors}" required> -->
+            <div class="invalid-feedback">
+              Please enter Consultation with a Psychologis.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-12">
+          <div class="form-group">
+            <label>Recommendations/Suggestions </label>
+            <angular-editor name="Recommendations" #Recommendations="ngModel" [(ngModel)]="rangeDataModel.Recommendations"
+              [ngClass]="{'is-invalid':isSubmitted && Recommendations.errors}" [config]="config" required></angular-editor>
+            <!-- <input type="text" class="form-control" name="Description" #Description="ngModel" [(ngModel)]="rangeDataModel.RESULT_DESCRIPTION"
+                          [ngClass]="{'is-invalid':isSubmitted && Description.errors}" required> -->
+            <div class="invalid-feedback">
+              Please enter Recommendations/Suggestions.
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{rangeDataModel?.ID>0 ? 'Edit':'Save'}} </button>
+    </form>
+  </div>
+</ng-template>

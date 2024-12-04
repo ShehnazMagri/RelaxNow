@@ -1,0 +1,17 @@
+<div id="participant-list">
+  <div id="alone" [ngClass]="{ 'table': isAlone, 'd-none': !isAlone }">
+    <p class="text-center text-monospace h3" style="display: table-cell">
+      Waiting for Patient to Join.
+    </p>
+  </div>
+  <!--
+      TODO:
+      Add a list of participants, by their identity.
+      Make the list items become a click target.
+      Clicking a participant will make them their video most prominent.
+      Future: Watch for the dominantSpeaker feature to be implemented and do this automatically.
+  -->
+  <div [ngClass]="{ 'd-none': isAlone }">
+    <div #list></div>
+  </div>
+</div>
